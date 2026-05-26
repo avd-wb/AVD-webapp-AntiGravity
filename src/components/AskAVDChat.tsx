@@ -6,7 +6,7 @@ export function AskAVDChat() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [chatInput, setChatInput] = useState("");
   const [chatHistory, setChatHistory] = useState<any[]>(() => {
-    const saved = localStorage.getItem("avd_chat_history");
+    const saved = localStorage.getItem("avd_chat_history_v2");
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -17,7 +17,7 @@ export function AskAVDChat() {
     return [
       {
         sender: "avd",
-        content: "Respectful greetings, colleague. I am Shri A. K. Ray, IAS (Retd.), Senior Administrative Advisor to the Association of Veterinary Doctors (AVD). I stand ready to assist you regarding official departmental procedures, MCAS file structures, or service confirmation prayers. Please formulate your administrative query.",
+        content: "Greetings! I am the AVD AI Assistant, ready to assist you regarding official departmental procedures, MCAS advancement policies, service confirmation processes, or general transfer guidelines. Please feel free to formulate your administrative query.",
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }
     ];
@@ -26,7 +26,7 @@ export function AskAVDChat() {
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    localStorage.setItem("avd_chat_history", JSON.stringify(chatHistory));
+    localStorage.setItem("avd_chat_history_v2", JSON.stringify(chatHistory));
   }, [chatHistory]);
 
   useEffect(() => {
@@ -50,7 +50,6 @@ export function AskAVDChat() {
     setIsChatTyping(true);
 
     try {
-      // Package recent turn history to retain contextual coherence
       const recentHistory = chatHistory.slice(-6).map(h => ({
         role: h.sender === "user" ? "user" : "model",
         content: h.content
@@ -73,7 +72,7 @@ export function AskAVDChat() {
       } else {
         setChatHistory(prev => [...prev, {
           sender: "avd",
-          content: "With due respect, I encountered a communication block with the administrative servers. Please reformulate your prayer or try again.",
+          content: "I encountered a communication block with the AVD servers. Please reformulate your query or try again.",
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }]);
       }
@@ -81,7 +80,7 @@ export function AskAVDChat() {
       setIsChatTyping(false);
       setChatHistory(prev => [...prev, {
         sender: "avd",
-        content: "I must respectfully advise that a connection delay is restricting server access. Administrative servers will be online shortly.",
+        content: "A connection delay is restricting server access. Please verify your connection and try again.",
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }]);
     }
@@ -95,7 +94,7 @@ export function AskAVDChat() {
     const defaultMsg = [
       {
         sender: "avd",
-        content: "Respectful greetings, colleague. I am Shri A. K. Ray, IAS (Retd.), Senior Administrative Advisor to the Association of Veterinary Doctors (AVD). I stand ready to assist you regarding official departmental procedures, MCAS file structures, or service confirmation prayers. Please formulate your administrative query.",
+        content: "Greetings! I am the AVD AI Assistant, ready to assist you regarding official departmental procedures, MCAS advancement policies, service confirmation processes, or general transfer guidelines. Please feel free to formulate your administrative query.",
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }
     ];
@@ -122,10 +121,10 @@ export function AskAVDChat() {
                 </div>
                 <div>
                   <h3 className="text-sm font-black text-white flex items-center gap-1.5">
-                    Ask AVD Advisor <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                    Ask AVD Assistant <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
                   </h3>
-                  <p className="text-[10px] text-slate-300 font-bold uppercase tracking-wider">Shri A. K. Ray, IAS (Retd.)</p>
-                  <p className="text-[9px] text-saffron-400 font-medium italic">Senior Administrative Advisor</p>
+                  <p className="text-[10px] text-slate-300 font-bold uppercase tracking-wider">AVD AI Assistant</p>
+                  <p className="text-[9px] text-saffron-400 font-medium italic">Official Administrative Guide</p>
                 </div>
               </div>
               <div className="flex items-center gap-1">
@@ -155,7 +154,7 @@ export function AskAVDChat() {
                   <div className="flex gap-2 max-w-[85%]">
                     {msg.sender === "avd" && (
                       <div className="w-6 h-6 rounded-lg bg-saffron-50 border border-saffron-100 flex items-center justify-center text-saffron-600 shrink-0 text-[10px] font-black">
-                        Ray
+                        AI
                       </div>
                     )}
                     <div>
@@ -178,14 +177,14 @@ export function AskAVDChat() {
                 <div className="flex justify-start">
                   <div className="flex gap-2 max-w-[85%]">
                     <div className="w-6 h-6 rounded-lg bg-saffron-50 border border-saffron-100 flex items-center justify-center text-saffron-600 shrink-0 text-[10px] font-black animate-pulse">
-                      Ray
+                      AI
                     </div>
                     <div>
                       <div className="p-3 bg-white text-slate-500 border border-slate-200/60 rounded-2xl rounded-tl-none shadow-sm flex items-center gap-1.5 font-medium italic">
                         <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce"></span>
                         <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce delay-75"></span>
                         <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce delay-150"></span>
-                        <span className="text-[10px] text-slate-400 ml-1">Advisor Ray is drafting a reply...</span>
+                        <span className="text-[10px] text-slate-400 ml-1">AI Assistant is drafting a reply...</span>
                       </div>
                     </div>
                   </div>
@@ -252,7 +251,7 @@ export function AskAVDChat() {
       >
         <div className="absolute inset-0 bg-gradient-to-r from-saffron-500 to-saffron-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
         <MessageSquare className="w-6 h-6 relative z-10 text-saffron-400 group-hover:text-white" />
-        <span className="text-xs font-black relative z-10 pr-1 group-hover:text-white text-saffron-50 hidden sm:inline">Ask AVD Advisor</span>
+        <span className="text-xs font-black relative z-10 pr-1 group-hover:text-white text-saffron-50 hidden sm:inline">Ask AVD Assistant</span>
       </motion.button>
     </div>
   );

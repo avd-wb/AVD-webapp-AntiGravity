@@ -382,7 +382,7 @@ export function Orders() {
 
         </div>
 
-        {/* Info card calling to AI bot AVD Advisor Ray */}
+        {/* Info card calling to AI bot AVD Advisor */}
         <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 text-white relative overflow-hidden flex flex-col md:flex-row gap-6 items-center justify-between shadow-lg">
           <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-b from-saffron-500/10 to-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
           <div className="flex items-start gap-4">
@@ -394,7 +394,7 @@ export function Orders() {
                 Need administrative or scale-progression counsel?
               </h3>
               <p className="text-slate-300 text-xs mt-1 max-w-xl font-medium leading-relaxed">
-                Consult with <strong>Shri A. K. Ray, IAS (Retd.)</strong>, our global administrative bot. Click the floating orange bubble to get instant procedural drafts, MCAS calculation rules, or official representations templates.
+                Consult with our global <strong>AVD AI Assistant</strong>. Click the floating orange bubble to get instant procedural drafts, MCAS calculation rules, or official representations templates.
               </p>
             </div>
           </div>
@@ -406,7 +406,7 @@ export function Orders() {
             }}
             className="bg-saffron-600 hover:bg-saffron-700 text-white py-3 px-6 rounded-2xl font-bold text-xs shadow-md shadow-saffron-600/15 active:scale-[0.98] transition-all whitespace-nowrap shrink-0 border border-saffron-500"
           >
-            Launch Ask AVD Advisor
+            Launch AVD Assistant
           </button>
         </div>
 
