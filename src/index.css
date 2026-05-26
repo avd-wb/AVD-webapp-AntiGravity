@@ -1,0 +1,15 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-saffron-50: #fff9f0;
+  --color-saffron-100: #feebd1;
+  --color-saffron-200: #fcd2a0;
+  --color-saffron-300: #faba6a;
+  --color-saffron-400: #f8a03c;
+  --color-saffron-500: #FF9933;
+  --color-saffron-600: #e98024;
+  --color-saffron-700: #c1631e;
+  --color-saffron-800: #9a4e1d;
+  --color-saffron-900: #7d411b;
+}

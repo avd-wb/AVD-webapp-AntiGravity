@@ -1,0 +1,26 @@
+[
+  {
+    "hrms_id": "1990001016",
+    "full_name": "Dr. Samir Kumar Modak",
+    "email": "samirmodak87@yahoo.com",
+    "association_affiliation": "WBVAA",
+    "status": "pending",
+    "signup_date": "2026-05-26"
+  },
+  {
+    "hrms_id": "1995004001",
+    "full_name": "Dr. Abani Kanta Chand",
+    "email": "abani.chand@avdwb.org",
+    "association_affiliation": "AVD",
+    "status": "active",
+    "signup_date": "2026-05-25"
+  },
+  {
+    "hrms_id": "2011000715",
+    "full_name": "Dr. A.H.M. Abidur Rahaman",
+    "email": "abidur.rahaman@avdwb.org",
+    "association_affiliation": "AVD & WBVAA",
+    "status": "active",
+    "signup_date": "2026-05-26"
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "name": "Association of Veterinary Doctors - WB",
+  "description": "A professional association of veterinarians in West Bengal.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
