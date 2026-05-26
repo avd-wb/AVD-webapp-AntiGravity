@@ -116,8 +116,8 @@ export function AskAVDChat() {
             {/* Header */}
             <div className="bg-slate-900 text-white p-4 flex items-center justify-between border-b border-saffron-500/30">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-saffron-50 rounded-xl flex items-center justify-center text-saffron-600 ring-2 ring-saffron-500/20 shadow-inner">
-                  <Shield className="w-5 h-5" />
+                <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center ring-2 ring-saffron-500/20 shadow-inner overflow-hidden shrink-0">
+                  <img src="https://ik.imagekit.io/avdwb/Logo/20260517%20Logo_AVD_trans.webp" alt="AVD Logo" className="w-8 h-8 object-contain" />
                 </div>
                 <div>
                   <h3 className="text-sm font-black text-white flex items-center gap-1.5">
@@ -247,11 +247,13 @@ export function AskAVDChat() {
         onClick={() => setIsChatOpen(!isChatOpen)}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="bg-slate-900 text-white p-4 rounded-full hover:bg-saffron-600 transition-colors shadow-xl ring-4 ring-slate-900/10 border-2 border-saffron-500/50 flex items-center justify-center gap-2 group relative overflow-hidden"
+        className="bg-slate-900 text-white p-3 rounded-full hover:bg-saffron-600 transition-colors shadow-xl ring-4 ring-slate-900/10 border-2 border-saffron-500/50 flex items-center justify-center gap-2.5 group relative overflow-hidden"
       >
         <div className="absolute inset-0 bg-gradient-to-r from-saffron-500 to-saffron-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-        <MessageSquare className="w-6 h-6 relative z-10 text-saffron-400 group-hover:text-white" />
-        <span className="text-xs font-black relative z-10 pr-1 group-hover:text-white text-saffron-50 hidden sm:inline">Ask AVD Assistant</span>
+        <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center relative z-10 overflow-hidden shrink-0 border border-saffron-500/20">
+          <img src="https://ik.imagekit.io/avdwb/Logo/20260517%20Logo_AVD_trans.webp" alt="AVD Logo" className="w-6 h-6 object-contain" />
+        </div>
+        <span className="text-xs font-black relative z-10 pr-2 group-hover:text-white text-saffron-50 hidden sm:inline font-sans">Ask AVD Assistant</span>
       </motion.button>
     </div>
   );
