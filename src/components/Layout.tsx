@@ -3,6 +3,7 @@ import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { PwaInstallPrompt } from "./PwaInstallPrompt";
 import { NotificationPrompt } from "./NotificationPrompt";
+import { AskAVDChat } from "./AskAVDChat";
 
 export default function Layout() {
   return (
@@ -14,6 +15,8 @@ export default function Layout() {
       <Footer />
       <PwaInstallPrompt />
       <NotificationPrompt />
+      <AskAVDChat />
     </div>
   );
 }
+

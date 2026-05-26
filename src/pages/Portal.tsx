@@ -3961,65 +3961,10 @@ export function Portal() {
 
               <div className="space-y-4">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase block tracking-wider">Select Google Account for Testing</label>
-                  <div className="flex flex-col gap-2">
-                    <button 
-                      onClick={() => handleGoogleLoginSimulate("beraprasanta1973@gmail.com")}
-                      className="w-full text-left p-3 rounded-xl border border-slate-200/80 hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-between"
-                    >
-                      <div>
-                        <div className="font-extrabold text-slate-800 text-[11px]">Dr. Prasanta Kumar Bera</div>
-                        <div className="text-[9px] text-slate-400">beraprasanta1973@gmail.com (Initial Admin)</div>
-                      </div>
-                      <span className="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-[8.5px] font-bold uppercase tracking-wider">Admin</span>
-                    </button>
-                    <button 
-                      onClick={() => handleGoogleLoginSimulate("roysukanta10@gmail.com")}
-                      className="w-full text-left p-3 rounded-xl border border-slate-200/80 hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-between"
-                    >
-                      <div>
-                        <div className="font-extrabold text-slate-800 text-[11px]">Dr. Sukanta Roy</div>
-                        <div className="text-[9px] text-slate-400">roysukanta10@gmail.com (Initial Admin)</div>
-                      </div>
-                      <span className="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-[8.5px] font-bold uppercase tracking-wider">Admin</span>
-                    </button>
-                    <button 
-                      onClick={() => handleGoogleLoginSimulate("drpradippati@rediffmail.com")}
-                      className="w-full text-left p-3 rounded-xl border border-slate-200/80 hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-between"
-                    >
-                      <div>
-                        <div className="font-extrabold text-slate-800 text-[11px]">Dr. Pradip Pati</div>
-                        <div className="text-[9px] text-slate-400">drpradippati@rediffmail.com (Initial Admin)</div>
-                      </div>
-                      <span className="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-[8.5px] font-bold uppercase tracking-wider">Admin</span>
-                    </button>
-                    <button 
-                      onClick={() => handleGoogleLoginSimulate("jayantam_1966@rediffmail.com")}
-                      className="w-full text-left p-3 rounded-xl border border-slate-200/80 hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-between"
-                    >
-                      <div>
-                        <div className="font-extrabold text-slate-800 text-[11px]">Dr. Jayanta Kumar Mukhopadhyay</div>
-                        <div className="text-[9px] text-slate-400">jayantam_1966@rediffmail.com (Standard Member)</div>
-                      </div>
-                      <span className="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-[8.5px] font-bold uppercase tracking-wider">Member</span>
-                    </button>
-                  </div>
-                </div>
-
-                <div className="relative my-4 text-center">
-                  <div className="absolute inset-0 flex items-center" aria-hidden="true">
-                    <div className="w-full border-t border-slate-100"></div>
-                  </div>
-                  <div className="relative flex justify-center text-[9px] font-bold uppercase tracking-wider">
-                    <span className="bg-white px-2 text-slate-400">Or use another account</span>
-                  </div>
-                </div>
-
-                <div className="space-y-1.5">
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Google Email Coordinate</label>
                   <input 
                     type="email" 
-                    className="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 text-xs"
+                    className="w-full p-3.5 rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 text-xs font-semibold text-slate-800 bg-slate-50/50"
                     placeholder="name@gmail.com"
                     value={googleEmailInput}
                     onChange={(e) => setGoogleEmailInput(e.target.value)}

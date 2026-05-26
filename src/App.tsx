@@ -11,6 +11,7 @@ import Layout from "./components/Layout";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { Home } from "./pages/Home";
 import { About } from "./pages/About";
+import { Orders } from "./pages/Orders";
 import { Membership } from "./pages/Membership";
 import { Districts } from "./pages/Districts";
 import { Notices } from "./pages/Notices";
@@ -40,6 +41,7 @@ export default function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="about" element={<About />} />
+            <Route path="orders" element={<Orders />} />
             <Route path="membership" element={<Membership />} />
             <Route path="districts" element={<Districts />} />
             <Route path="notices" element={<Notices />} />
@@ -53,3 +55,4 @@ export default function App() {
     </HelmetProvider>
   );
 }
+
