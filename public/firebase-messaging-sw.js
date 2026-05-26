@@ -2,12 +2,12 @@ importScripts('https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js'
 importScripts('https://www.gstatic.com/firebasejs/10.9.0/firebase-messaging-compat.js');
 
 firebase.initializeApp({
-  apiKey: "AIzaSyB1IgFvznmhD8fajKMbts6Hfl0XErXQSM4",
-  authDomain: "nimble-reserve-ws7sz.firebaseapp.com",
-  projectId: "nimble-reserve-ws7sz",
-  storageBucket: "nimble-reserve-ws7sz.firebasestorage.app",
-  messagingSenderId: "1038907174254",
-  appId: "1:1038907174254:web:0056dfe2cf8d4b22c4a57f"
+  apiKey: "AIzaSyCxsQ4SEAN5nDP7xuNxT3FKCHuFENJai6o",
+  authDomain: "avd-wb-portal.firebaseapp.com",
+  projectId: "avd-wb-portal",
+  storageBucket: "avd-wb-portal.firebasestorage.app",
+  messagingSenderId: "589128110508",
+  appId: "1:589128110508:web:29af72a95cd6eaf1d0ea09"
 });
 
 const messaging = firebase.messaging();
