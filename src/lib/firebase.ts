@@ -152,3 +152,21 @@ export async function getRepositoryOrders(filters: { search?: string; type?: str
   }
   return [];
 }
+
+/**
+ * Request notification permission from the user.
+ */
+export async function requestNotificationPermission(): Promise<boolean> {
+  if (!("Notification" in window)) {
+    console.warn("This browser does not support notifications.");
+    return false;
+  }
+  
+  try {
+    const permission = await Notification.requestPermission();
+    return permission === "granted";
+  } catch (err) {
+    console.error("Error requesting notification permission:", err);
+    return false;
+  }
+}
