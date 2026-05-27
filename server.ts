@@ -20,10 +20,21 @@ import {
 } from "firebase/firestore";
 import firebaseConfig from "./firebase-applet-config.json";
 
-const firebaseApp = initializeApp(firebaseConfig);
-const db = firebaseConfig.firestoreDatabaseId 
-  ? initializeFirestore(firebaseApp, {}, firebaseConfig.firestoreDatabaseId)
-  : getFirestore(firebaseApp);
+let dbInstance: any = null;
+function getDb() {
+  if (!dbInstance) {
+    try {
+      const firebaseApp = initializeApp(firebaseConfig);
+      dbInstance = firebaseConfig.firestoreDatabaseId 
+        ? initializeFirestore(firebaseApp, {}, firebaseConfig.firestoreDatabaseId)
+        : getFirestore(firebaseApp);
+    } catch (err: any) {
+      console.warn("[FIREBASE] Initialization failed, using offline fallback:", err.message);
+      dbInstance = {};
+    }
+  }
+  return dbInstance;
+}
 
 // Cache for 10 hours
 const cache = new NodeCache({ stdTTL: 10 * 60 * 60 });
@@ -1070,13 +1081,13 @@ async function startServer() {
       const seedCollectionInBatches = async (colName: string, items: any[], idKey: string) => {
         logs.push(`[SEED] Seeding collection '${colName}' (${items.length} items)...`);
         
-        let batch = writeBatch(db);
+        let batch = writeBatch(getDb());
         let count = 0;
         let batchCount = 0;
         
         for (const item of items) {
           const id = item[idKey] || `ref_${Math.random().toString(36).substring(7)}`;
-          const docRef = doc(db, colName, id.toString());
+          const docRef = doc(getDb(), colName, id.toString());
           batch.set(docRef, item);
           count++;
           
@@ -1084,7 +1095,7 @@ async function startServer() {
             await batch.commit();
             batchCount += count;
             logs.push(`[SEED] Committed batch of ${count} documents for '${colName}' (Total: ${batchCount})`);
-            batch = writeBatch(db);
+            batch = writeBatch(getDb());
             count = 0;
             // Short delay to avoid rate limiting
             await new Promise(resolve => setTimeout(resolve, 100));
@@ -1243,7 +1254,7 @@ async function startServer() {
 
         // Sync order to Firestore!
         try {
-          await setDoc(doc(db, "orders", orderId), newOrder);
+          await setDoc(doc(getDb(), "orders", orderId), newOrder);
           logs.push(`[FIRESTORE-SYNC] [SUCCESS] Appended order '${orderId}' to Firestore collection 'orders'`);
         } catch (dbErr: any) {
           logs.push(`[FIRESTORE-SYNC] [WARNING] Firestore write bypassed or offline: ${dbErr.message}`);
@@ -1276,7 +1287,7 @@ async function startServer() {
 
           // Sync mapping to Firestore!
           try {
-            await setDoc(doc(db, "employee_order_links", orderId), newLink);
+            await setDoc(doc(getDb(), "employee_order_links", orderId), newLink);
             logs.push(`[FIRESTORE-SYNC] [SUCCESS] Mapped and synced employee link to Firestore`);
           } catch (dbErr: any) {
             logs.push(`[FIRESTORE-SYNC] [WARNING] Firestore mapping bypassed or offline: ${dbErr.message}`);
