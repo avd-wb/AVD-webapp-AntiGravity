@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { MessageSquare, X, Send, Shield } from "lucide-react";
 
@@ -17,7 +17,7 @@ export function AskAVDChat() {
     return [
       {
         sender: "avd",
-        content: "Greetings! I am the AVD AI Assistant, ready to assist you regarding official departmental procedures, MCAS advancement policies, service confirmation processes, or general transfer guidelines. Please feel free to formulate your administrative query.",
+        content: "Respectful greetings, colleague. I am Shri A. K. Ray, IAS (Retd.), Senior Administrative Advisor to the Association of Veterinary Doctors (AVD). I stand ready to assist you regarding official departmental procedures, MCAS file structures, or service confirmation prayers. Please formulate your administrative query.",
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }
     ];
@@ -94,7 +94,7 @@ export function AskAVDChat() {
     const defaultMsg = [
       {
         sender: "avd",
-        content: "Greetings! I am the AVD AI Assistant, ready to assist you regarding official departmental procedures, MCAS advancement policies, service confirmation processes, or general transfer guidelines. Please feel free to formulate your administrative query.",
+        content: "Respectful greetings, colleague. I am Shri A. K. Ray, IAS (Retd.), Senior Administrative Advisor to the Association of Veterinary Doctors (AVD). I stand ready to assist you regarding official departmental procedures, MCAS file structures, or service confirmation prayers. Please formulate your administrative query.",
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }
     ];
@@ -121,10 +121,10 @@ export function AskAVDChat() {
                 </div>
                 <div>
                   <h3 className="text-sm font-black text-white flex items-center gap-1.5">
-                    Ask AVD Assistant <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                    Ask AVD Advisor <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
                   </h3>
-                  <p className="text-[10px] text-slate-300 font-bold uppercase tracking-wider">AVD AI Assistant</p>
-                  <p className="text-[9px] text-saffron-400 font-medium italic">Official Administrative Guide</p>
+                  <p className="text-[10px] text-slate-300 font-bold uppercase tracking-wider">Shri A. K. Ray, IAS (Retd.)</p>
+                  <p className="text-[9px] text-saffron-400 font-medium italic">Senior Administrative Advisor</p>
                 </div>
               </div>
               <div className="flex items-center gap-1">
@@ -153,8 +153,12 @@ export function AskAVDChat() {
                 >
                   <div className="flex gap-2 max-w-[85%]">
                     {msg.sender === "avd" && (
-                      <div className="w-6 h-6 rounded-lg bg-saffron-50 border border-saffron-100 flex items-center justify-center text-saffron-600 shrink-0 text-[10px] font-black">
-                        AI
+                      <div className="w-6 h-6 rounded-lg bg-white border border-saffron-100 flex items-center justify-center shrink-0 overflow-hidden shadow-sm">
+                        <img 
+                          src="https://ik.imagekit.io/avdwb/Logo/20260517%20Logo_AVD_trans.webp" 
+                          alt="AVD Logo" 
+                          className="w-5 h-5 object-contain" 
+                        />
                       </div>
                     )}
                     <div>
@@ -176,15 +180,19 @@ export function AskAVDChat() {
               {isChatTyping && (
                 <div className="flex justify-start">
                   <div className="flex gap-2 max-w-[85%]">
-                    <div className="w-6 h-6 rounded-lg bg-saffron-50 border border-saffron-100 flex items-center justify-center text-saffron-600 shrink-0 text-[10px] font-black animate-pulse">
-                      AI
+                    <div className="w-6 h-6 rounded-lg bg-white border border-saffron-100 flex items-center justify-center shrink-0 overflow-hidden animate-pulse shadow-sm">
+                      <img 
+                        src="https://ik.imagekit.io/avdwb/Logo/20260517%20Logo_AVD_trans.webp" 
+                        alt="AVD Logo" 
+                        className="w-5 h-5 object-contain" 
+                      />
                     </div>
                     <div>
                       <div className="p-3 bg-white text-slate-500 border border-slate-200/60 rounded-2xl rounded-tl-none shadow-sm flex items-center gap-1.5 font-medium italic">
                         <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce"></span>
                         <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce delay-75"></span>
                         <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce delay-150"></span>
-                        <span className="text-[10px] text-slate-400 ml-1">AI Assistant is drafting a reply...</span>
+                        <span className="text-[10px] text-slate-400 ml-1">Advisor Ray is drafting a reply...</span>
                       </div>
                     </div>
                   </div>
