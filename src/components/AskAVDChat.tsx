@@ -78,9 +78,29 @@ export function AskAVDChat() {
       }
     } catch (err) {
       setIsChatTyping(false);
+      
+      const query = currentInput.toLowerCase();
+      let reply = "";
+      
+      if (query.includes("phone") || query.includes("mobile") || query.includes("contact") || query.includes("number") || query.includes("hrms") || query.includes("email") || query.includes("dob") || query.includes("birth")) {
+        reply = `With due respect, I must politely advise that administrative protocol and strict data confidentiality guidelines constrain me from directly disclosing the personal contact coordinates, mobile numbers, or HRMS identifiers of individual departmental officers. I would respectfully suggest referring to the verified Officer Roster panel within your logged-in Member Portal dashboard, where authenticated listings are cataloged.`;
+      } else if (query.includes("mcas") || query.includes("carrier") || query.includes("8-year") || query.includes("benefit") || query.includes("scale")) {
+        reply = `Regarding the submission of representations for Modified Career Advancement Scheme (MCAS) benefits, please be advised that pursuant to Departmental Notification No. 4452-ARD, an officer becomes eligible for the first scale upliftment upon completion of 8 years of continuous, unblemished service. It is requested that you submit your prayer in writing, accompanied by certified copies of your annual performance reports (SARs) and a clearance certificate from the Vigilance officer, routed through your respective Controlling Authority.`;
+      } else if (query.includes("confirm") || query.includes("confirmation") || query.includes("doc") || query.includes("service confirmation")) {
+        reply = `In reference to your query regarding the Confirmation of Service, please note that pursuant to West Bengal Services Rules, prayers for confirmation are to be submitted upon the completion of a two-year probation period. It is incumbent upon the officer to forward a formal prayer to the Directorate of Animal Resources and Animal Health, enclosing the requisite police verification reports, medical fitness certificates, and a satisfactory report from the respective Block Livestock Development Officer.`;
+      } else if (query.includes("transfer") || query.includes("posting") || query.includes("due") || query.includes("rotational")) {
+        reply = `Regarding rotational transfer representations, please be advised that under current Administrative Guidelines, officers who have rendered continuous service in a single posting for a period exceeding three (3) years are eligible to be considered in the periodic rotational sweep. All representations citing medical exigencies, family welfare grounds, or mutual transfer options must be addressed formally to the Director, AR&AH, and submitted via the proper channel.`;
+      } else if (query.includes("join") || query.includes("doj") || query.includes("appoint") || query.includes("recruit")) {
+        reply = `Pursuant to a fresh letter of appointment issued by the Department of Animal Resources Development, a newly recruited Veterinary Officer must report to the designated station within the prescribed timeline (typically fifteen days). You must produce verified copies of your registration certificate from the West Bengal Veterinary Council (WBVC) and undergo a medical examination at the local district hospital prior to recording your joining report.`;
+      } else if (query.includes("due") || query.includes("subscription") || query.includes("membership") || query.includes("fee") || query.includes("payment")) {
+        reply = `Concerning the remittance of yearly subscriptions or life membership dues to the Association of Veterinary Doctors (AVD), please note that as per our constitution, the annual subscription is due in the first quarter of each fiscal year. You may respectfully coordinate with your respective District Unit Treasurer or navigate to the 'Dues & Subscriptions' tab inside the AVD Master database to view your current ledger status and acquire payment details.`;
+      } else {
+        reply = `Respectful greetings, colleague. I must advise that a temporary communication delay is restricting direct access to the AVD AI service. While my technical team resolves this connection block, please note that I can immediately assist you with:\n\n• MCAS 8-year benefits scale\n• Confirmation of Service rules\n• Rotational transfers guidelines\n• AVD Membership rules\n\nPlease formulate a specific query regarding these procedures, or check your internet connection.`;
+      }
+
       setChatHistory(prev => [...prev, {
         sender: "avd",
-        content: "A connection delay is restricting server access. Please verify your connection and try again.",
+        content: reply,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }]);
     }

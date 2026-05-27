@@ -1,24 +1,11 @@
 import express from "express";
 import path from "path";
-import axios from "axios";
-import * as cheerio from "cheerio";
 import NodeCache from "node-cache";
 import https from "https";
 import crypto from "crypto";
 import fs from "fs";
 import { GoogleGenAI } from "@google/genai";
 import { fileURLToPath } from "url";
-
-// Initialize Firebase SDK on Backend (100% Free Spark Tier compatibility)
-import { initializeApp } from "firebase/app";
-import { 
-  initializeFirestore, 
-  doc, 
-  collection, 
-  writeBatch, 
-  setDoc, 
-  getFirestore 
-} from "firebase/firestore";
 
 const dirname = typeof __dirname !== "undefined"
   ? __dirname
@@ -29,9 +16,12 @@ const firebaseConfig = JSON.parse(
 );
 
 let dbInstance: any = null;
-function getDb() {
+async function getDb() {
   if (!dbInstance) {
     try {
+      const { initializeApp } = await import("firebase/app");
+      const { initializeFirestore, getFirestore } = await import("firebase/firestore");
+      
       const firebaseApp = initializeApp(firebaseConfig);
       dbInstance = firebaseConfig.firestoreDatabaseId 
         ? initializeFirestore(firebaseApp, {}, firebaseConfig.firestoreDatabaseId)
@@ -72,6 +62,7 @@ async function startServer() {
         return res.json(cachedData);
       }
 
+      const axios = (await import("axios")).default;
       // Fetch from the actual API endpoint
       const response = await axios.get("https://ard.wb.gov.in/api/v1/appointments", {
         httpsAgent,
@@ -104,6 +95,7 @@ async function startServer() {
         return res.json(cachedData);
       }
 
+      const axios = (await import("axios")).default;
       // Fetch from the orders API endpoint
       const response = await axios.get("https://ard.wb.gov.in/api/v1/orders", {
         httpsAgent,
@@ -1089,13 +1081,15 @@ async function startServer() {
       const seedCollectionInBatches = async (colName: string, items: any[], idKey: string) => {
         logs.push(`[SEED] Seeding collection '${colName}' (${items.length} items)...`);
         
-        let batch = writeBatch(getDb());
+        const db = await getDb();
+        const { writeBatch, doc } = await import("firebase/firestore");
+        let batch = writeBatch(db);
         let count = 0;
         let batchCount = 0;
         
         for (const item of items) {
           const id = item[idKey] || `ref_${Math.random().toString(36).substring(7)}`;
-          const docRef = doc(getDb(), colName, id.toString());
+          const docRef = doc(db, colName, id.toString());
           batch.set(docRef, item);
           count++;
           
@@ -1103,7 +1097,7 @@ async function startServer() {
             await batch.commit();
             batchCount += count;
             logs.push(`[SEED] Committed batch of ${count} documents for '${colName}' (Total: ${batchCount})`);
-            batch = writeBatch(getDb());
+            batch = writeBatch(db);
             count = 0;
             // Short delay to avoid rate limiting
             await new Promise(resolve => setTimeout(resolve, 100));
@@ -1148,6 +1142,9 @@ async function startServer() {
       logs.push(`[GDRIVE] Locating single point of truth Google Sheet 'AVD_Master_Sheet.xlsx' in GDrive folder... [CONNECTED]`);
       logs.push(`[GDRIVE] Successfully established socket with six sheet tabs: 'Employees', 'Postings', 'Transfer Orders', 'Service Confirmations', 'Rules & Acts', 'Admin Logins'`);
       logs.push(`[SCRAPER] Scraping Animal Resources Development portal (https://ard.wb.gov.in/order-notifications)...`);
+
+      const axios = (await import("axios")).default;
+      const cheerio = await import("cheerio");
 
       // 1. Scrape portals
       let parsedWebOrdersCount = 0;
@@ -1222,6 +1219,9 @@ async function startServer() {
 
       let syncedCount = 0;
 
+      const db = await getDb();
+      const { setDoc, doc } = await import("firebase/firestore");
+
       for (const file of organizedFiles) {
         // Renaming log
         logs.push(`[GDRIVE-RENAMER] Organized: '${file.originalName}' -> renamed to '${file.organizedName}' and stored in '${file.folderPath}'`);
@@ -1262,7 +1262,7 @@ async function startServer() {
 
         // Sync order to Firestore!
         try {
-          await setDoc(doc(getDb(), "orders", orderId), newOrder);
+          await setDoc(doc(db, "orders", orderId), newOrder);
           logs.push(`[FIRESTORE-SYNC] [SUCCESS] Appended order '${orderId}' to Firestore collection 'orders'`);
         } catch (dbErr: any) {
           logs.push(`[FIRESTORE-SYNC] [WARNING] Firestore write bypassed or offline: ${dbErr.message}`);
@@ -1295,7 +1295,7 @@ async function startServer() {
 
           // Sync mapping to Firestore!
           try {
-            await setDoc(doc(getDb(), "employee_order_links", orderId), newLink);
+            await setDoc(doc(db, "employee_order_links", orderId), newLink);
             logs.push(`[FIRESTORE-SYNC] [SUCCESS] Mapped and synced employee link to Firestore`);
           } catch (dbErr: any) {
             logs.push(`[FIRESTORE-SYNC] [WARNING] Firestore mapping bypassed or offline: ${dbErr.message}`);
