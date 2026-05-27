@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "motion/react";
 import { 
@@ -67,7 +67,7 @@ export function Portal() {
   // Roster stores
   const [employeesList, setEmployeesList] = useState<Employee[]>(employeesData as Employee[]);
   const [ordersIndexList, setOrdersIndexList] = useState<OrderIndex[]>(ordersData as OrderIndex[]);
-  const [linksList, setLinksList] = useState<OrderLink[]>(linksData as OrderLink[]);
+  const [linksList, setLinksList] = useState<OrderLink[]>(linksData as any as OrderLink[]);
 
   // Registered Users & Auth State
   const [registeredUsers, setRegisteredUsers] = useState<any[]>([]);
@@ -3792,8 +3792,12 @@ export function Portal() {
               {/* Header */}
               <div className="bg-slate-900 text-white p-4 flex items-center justify-between border-b border-saffron-500/30">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-saffron-50 rounded-xl flex items-center justify-center text-saffron-600 ring-2 ring-saffron-500/20 shadow-inner">
-                    <Shield className="w-5 h-5" />
+                  <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center ring-2 ring-saffron-500/20 shadow-inner overflow-hidden">
+                    <img 
+                      src="https://ik.imagekit.io/avdwb/Logo/20260517%20Logo_AVD_trans.webp" 
+                      alt="AVD Logo" 
+                      className="w-8 h-8 object-contain" 
+                    />
                   </div>
                   <div>
                     <h3 className="text-sm font-black text-white flex items-center gap-1.5">
@@ -3820,8 +3824,12 @@ export function Portal() {
                   >
                     <div className="flex gap-2 max-w-[85%]">
                       {msg.sender === "avd" && (
-                        <div className="w-6 h-6 rounded-lg bg-saffron-50 border border-saffron-100 flex items-center justify-center text-saffron-600 shrink-0 text-[10px] font-black">
-                          Ray
+                        <div className="w-6 h-6 rounded-lg bg-white border border-saffron-100 flex items-center justify-center shrink-0 overflow-hidden shadow-sm">
+                          <img 
+                            src="https://ik.imagekit.io/avdwb/Logo/20260517%20Logo_AVD_trans.webp" 
+                            alt="AVD Logo" 
+                            className="w-5 h-5 object-contain" 
+                          />
                         </div>
                       )}
                       <div>
@@ -3843,8 +3851,12 @@ export function Portal() {
                 {isChatTyping && (
                   <div className="flex justify-start">
                     <div className="flex gap-2 max-w-[85%]">
-                      <div className="w-6 h-6 rounded-lg bg-saffron-50 border border-saffron-100 flex items-center justify-center text-saffron-600 shrink-0 text-[10px] font-black animate-pulse">
-                        Ray
+                      <div className="w-6 h-6 rounded-lg bg-white border border-saffron-100 flex items-center justify-center shrink-0 overflow-hidden animate-pulse shadow-sm">
+                        <img 
+                          src="https://ik.imagekit.io/avdwb/Logo/20260517%20Logo_AVD_trans.webp" 
+                          alt="AVD Logo" 
+                          className="w-5 h-5 object-contain" 
+                        />
                       </div>
                       <div>
                         <div className="p-3 bg-white text-slate-500 border border-slate-200/60 rounded-2xl rounded-tl-none shadow-sm flex items-center gap-1.5 font-medium italic">
@@ -3914,10 +3926,14 @@ export function Portal() {
           onClick={() => setIsChatOpen(!isChatOpen)}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="bg-slate-900 text-white p-4 rounded-full hover:bg-saffron-600 transition-colors shadow-xl ring-4 ring-slate-900/10 border-2 border-saffron-500/50 flex items-center justify-center gap-2 group relative overflow-hidden"
+          className="bg-slate-900 text-white p-3.5 rounded-full hover:bg-saffron-600 transition-colors shadow-xl ring-4 ring-slate-900/10 border-2 border-saffron-500/50 flex items-center justify-center gap-2 group relative overflow-hidden"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-saffron-500 to-saffron-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          <MessageSquare className="w-6 h-6 relative z-10 text-saffron-400 group-hover:text-white" />
+          <img 
+            src="https://ik.imagekit.io/avdwb/Logo/20260517%20Logo_AVD_trans.webp" 
+            alt="AVD Logo" 
+            className="w-7 h-7 object-contain relative z-10 bg-white rounded-full p-0.5" 
+          />
           <span className="text-xs font-black relative z-10 pr-1 group-hover:text-white text-saffron-50 hidden sm:inline">Ask AVD Advisor</span>
         </motion.button>
       </div>
@@ -3961,10 +3977,65 @@ export function Portal() {
 
               <div className="space-y-4">
                 <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold text-slate-400 uppercase block tracking-wider">Select Google Account for Testing</label>
+                  <div className="flex flex-col gap-2">
+                    <button 
+                      onClick={() => handleGoogleLoginSimulate("beraprasanta1973@gmail.com")}
+                      className="w-full text-left p-3 rounded-xl border border-slate-200/80 hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-between"
+                    >
+                      <div>
+                        <div className="font-extrabold text-slate-800 text-[11px]">Dr. Prasanta Kumar Bera</div>
+                        <div className="text-[9px] text-slate-400">beraprasanta1973@gmail.com (Initial Admin)</div>
+                      </div>
+                      <span className="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-[8.5px] font-bold uppercase tracking-wider">Admin</span>
+                    </button>
+                    <button 
+                      onClick={() => handleGoogleLoginSimulate("roysukanta10@gmail.com")}
+                      className="w-full text-left p-3 rounded-xl border border-slate-200/80 hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-between"
+                    >
+                      <div>
+                        <div className="font-extrabold text-slate-800 text-[11px]">Dr. Sukanta Roy</div>
+                        <div className="text-[9px] text-slate-400">roysukanta10@gmail.com (Initial Admin)</div>
+                      </div>
+                      <span className="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-[8.5px] font-bold uppercase tracking-wider">Admin</span>
+                    </button>
+                    <button 
+                      onClick={() => handleGoogleLoginSimulate("drpradippati@rediffmail.com")}
+                      className="w-full text-left p-3 rounded-xl border border-slate-200/80 hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-between"
+                    >
+                      <div>
+                        <div className="font-extrabold text-slate-800 text-[11px]">Dr. Pradip Pati</div>
+                        <div className="text-[9px] text-slate-400">drpradippati@rediffmail.com (Initial Admin)</div>
+                      </div>
+                      <span className="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-[8.5px] font-bold uppercase tracking-wider">Admin</span>
+                    </button>
+                    <button 
+                      onClick={() => handleGoogleLoginSimulate("jayantam_1966@rediffmail.com")}
+                      className="w-full text-left p-3 rounded-xl border border-slate-200/80 hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-between"
+                    >
+                      <div>
+                        <div className="font-extrabold text-slate-800 text-[11px]">Dr. Jayanta Kumar Mukhopadhyay</div>
+                        <div className="text-[9px] text-slate-400">jayantam_1966@rediffmail.com (Standard Member)</div>
+                      </div>
+                      <span className="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-[8.5px] font-bold uppercase tracking-wider">Member</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="relative my-4 text-center">
+                  <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                    <div className="w-full border-t border-slate-100"></div>
+                  </div>
+                  <div className="relative flex justify-center text-[9px] font-bold uppercase tracking-wider">
+                    <span className="bg-white px-2 text-slate-400">Or use another account</span>
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Google Email Coordinate</label>
                   <input 
                     type="email" 
-                    className="w-full p-3.5 rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 text-xs font-semibold text-slate-800 bg-slate-50/50"
+                    className="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 text-xs"
                     placeholder="name@gmail.com"
                     value={googleEmailInput}
                     onChange={(e) => setGoogleEmailInput(e.target.value)}

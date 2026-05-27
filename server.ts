@@ -1,6 +1,5 @@
 import express from "express";
 import path from "path";
-import { createServer as createViteServer } from "vite";
 import axios from "axios";
 import * as cheerio from "cheerio";
 import NodeCache from "node-cache";
@@ -972,17 +971,17 @@ async function startServer() {
       const apiKey = process.env.GEMINI_API_KEY;
       
       const systemInstruction = `
-        You are the "Ask AVD" AI Assistant, an anonymous, professional, and knowledgeable chatbot serving the Association of Veterinary Doctors (AVD), West Bengal.
-        Your style is formal, helpful, polite, and uses standard administrative terminology. Keep responses clear, concise, and focused on West Bengal veterinary services.
+        You are "Ask AVD" chatbot. Your name is Shri A. K. Ray, IAS (Retd.), serving as the Senior Administrative Advisor to the Association of Veterinary Doctors (AVD), West Bengal.
+        Your persona is extremely formal, respectable, diplomatic, polite, and uses administrative or bureaucratic jargon typical of senior Indian government officers (e.g., "With reference to your query", "Please be advised", "It is requested", "Pursuant to departmental notification", "I must respectfully direct your attention to").
         
         Core Guidelines:
-        1. Answer queries regarding official government procedures, files, and rules (e.g., MCAS 8-year benefits under the Modified Career Advancement Scheme, confirmation of service, retirement/provident fund dues, general transfer representation norms, WBVC council registration renewals). Explain HOW, WHEN, and WHERE to submit files.
-        2. STRICT GUARDRAIL: Under no circumstances are you permitted to directly disclose personal contact details (such as telephone numbers, mobile numbers, HRMS IDs, specific posting addresses, or dates of birth) of any officer from the database. 
-        If a user asks for personal or contact information of any veterinarian or employee, you must politely and professionally decline, advising them that privacy regulations constrain you from direct disclosure, and suggest that they refer to the verified Officer Roster dashboard within their Member Portal.
+        1. Answer queries regarding official government procedures, files, and rules (e.g., MCAS 8-year benefits under the Modified Career Advancement Scheme, confirmation of service prayers to the Director, retirement/provident fund dues, general transfer representation norms, WBVC council registration renewals). Explain HOW, WHEN, and WHERE to submit files.
+        2. STRICT GUARDRAIL: Under no circumstances are you permitted to directly disclose personal information (such as telephone numbers, mobile numbers, HRMS IDs, specific posting addresses, or dates of birth) of any officer from the database. 
+        If a user asks for personal/contact information of any veterinarian or employee, you must politely, formally, and diplomatically decline. State that administrative data confidentiality protocols constrain you from direct disclosure of personal contact details, and respectfully suggest that they refer to the verified Officer Roster dashboard within their Member Portal, where authenticated records are cataloged.
         
         Example replies:
-        - MCAS: "Regarding the submission of representations for MCAS benefits, please be advised that an officer is eligible for the first scale upliftment upon completing 8 years of continuous, unblemished service. The application file must be forwarded through the proper channel, specifically enclosing the satisfactory performance appraisal forms..."
-        - Personal Data Request: "I must respectfully advise that data confidentiality guidelines constrain me from directly disclosing the personal contact coordinates or HRMS identifiers of individual officers. I suggest referring to the verified Officer Roster panel within your Member Portal dashboard, where authenticated listings are cataloged."
+        - MCAS: "Regarding the submission of representations for MCAS benefits, please be advised that pursuant to Memo No. 4452-ARD, an officer is eligible for the first scale upliftment upon completing 8 years of continuous, unblemished service. The application file must be forwarded through the proper channel, specifically enclosing the satisfactory performance appraisal forms..."
+        - Personal Data Request: "I must respectfully advise that administrative protocol and data confidentiality guidelines constrain me from directly disclosing the personal contact coordinates or HRMS identifiers of individual officers. I would politely suggest referring to the verified Officer Roster panel within your Member Portal dashboard, where authenticated listings are cataloged."
       `;
 
       if (apiKey) {
@@ -1020,25 +1019,25 @@ async function startServer() {
 
       // =========================================================================
       // FALLBACK PATTERN ENGINE: Runs if GEMINI_API_KEY is not configured
-      // Styled exactly in the clean, professional, formal AVD AI Assistant tone.
+      // Styled exactly in the high-diplomatic, formal senior officer persona!
       // =========================================================================
       const query = message.toLowerCase();
       let reply = "";
 
       if (query.includes("phone") || query.includes("mobile") || query.includes("contact") || query.includes("number") || query.includes("hrms") || query.includes("email") || query.includes("dob") || query.includes("birth")) {
-        reply = `Please be advised that administrative protocol and data confidentiality guidelines constrain me from directly disclosing the personal contact coordinates, mobile numbers, or HRMS identifiers of individual departmental officers. I suggest referring to the verified Officer Roster panel within your logged-in Member Portal dashboard, where authenticated listings are cataloged.`;
+        reply = `With due respect, I must politely advise that administrative protocol and strict data confidentiality guidelines constrain me from directly disclosing the personal contact coordinates, mobile numbers, or HRMS identifiers of individual departmental officers. I would respectfully suggest referring to the verified Officer Roster panel within your logged-in Member Portal dashboard, where authenticated listings are cataloged.`;
       } else if (query.includes("mcas") || query.includes("carrier") || query.includes("8-year") || query.includes("benefit") || query.includes("scale")) {
-        reply = `Regarding the submission of representations for Modified Career Advancement Scheme (MCAS) benefits, please note that an officer becomes eligible for the first scale upliftment upon completion of 8 years of continuous, unblemished service. It is requested that you submit your application in writing, accompanied by certified copies of your annual performance reports (SARs) and a clearance certificate, routed through your respective Controlling Authority.`;
+        reply = `Regarding the submission of representations for Modified Career Advancement Scheme (MCAS) benefits, please be advised that pursuant to Departmental Notification No. 4452-ARD, an officer becomes eligible for the first scale upliftment upon completion of 8 years of continuous, unblemished service. It is requested that you submit your prayer in writing, accompanied by certified copies of your annual performance reports (SARs) and a clearance certificate from the Vigilance officer, routed through your respective Controlling Authority.`;
       } else if (query.includes("confirm") || query.includes("confirmation") || query.includes("doc") || query.includes("service confirmation")) {
-        reply = `In reference to your query regarding the Confirmation of Service, please note that pursuant to West Bengal Services Rules, prayers for confirmation are to be submitted upon the completion of a two-year probation period. It is incumbent upon the officer to forward a formal prayer to the Directorate of Animal Resources and Animal Health, enclosing the requisite police verification reports, medical fitness certificates, and a satisfactory performance report.`;
+        reply = `In reference to your query regarding the Confirmation of Service, please note that pursuant to West Bengal Services Rules, prayers for confirmation are to be submitted upon the completion of a two-year probation period. It is incumbent upon the officer to forward a formal prayer to the Directorate of Animal Resources and Animal Health, enclosing the requisite police verification reports, medical fitness certificates, and a satisfactory report from the respective Block Livestock Development Officer.`;
       } else if (query.includes("transfer") || query.includes("posting") || query.includes("due") || query.includes("rotational")) {
-        reply = `Regarding rotational transfer representations, please note that under current Administrative Guidelines, officers who have rendered continuous service in a single posting for a period exceeding three (3) years are eligible to be considered in the periodic rotational sweep. All representations citing medical exigencies, family welfare grounds, or mutual transfer options must be addressed formally to the Director, AR&AH, and submitted via the proper channel.`;
+        reply = `Regarding rotational transfer representations, please be advised that under current Administrative Guidelines, officers who have rendered continuous service in a single posting for a period exceeding three (3) years are eligible to be considered in the periodic rotational sweep. All representations citing medical exigencies, family welfare grounds, or mutual transfer options must be addressed formally to the Director, AR&AH, and submitted via the proper channel.`;
       } else if (query.includes("join") || query.includes("doj") || query.includes("appoint") || query.includes("recruit")) {
         reply = `Pursuant to a fresh letter of appointment issued by the Department of Animal Resources Development, a newly recruited Veterinary Officer must report to the designated station within the prescribed timeline (typically fifteen days). You must produce verified copies of your registration certificate from the West Bengal Veterinary Council (WBVC) and undergo a medical examination at the local district hospital prior to recording your joining report.`;
       } else if (query.includes("due") || query.includes("subscription") || query.includes("membership") || query.includes("fee") || query.includes("payment")) {
-        reply = `Concerning the remittance of yearly subscriptions or life membership dues to the Association of Veterinary Doctors (AVD), please note that the annual subscription is due in the first quarter of each fiscal year. You may coordinate with your respective District Unit Treasurer or navigate to the 'Dues & Subscriptions' tab inside the AVD Master database to view your current ledger status.`;
+        reply = `Concerning the remittance of yearly subscriptions or life membership dues to the Association of Veterinary Doctors (AVD), please note that as per our constitution, the annual subscription is due in the first quarter of each fiscal year. You may respectfully coordinate with your respective District Unit Treasurer or navigate to the 'Dues & Subscriptions' tab inside the AVD Master database to view your current ledger status and acquire payment details.`;
       } else {
-        reply = `Greetings. I have taken note of your query. As the AVD AI Assistant, I would request that you formulate your inquiry regarding official procedures, MCAS advancement, service confirmation, or transfer regulations with specificity. I stand ready to guide you on the necessary protocols and file channels required under departmental standards.`;
+        reply = `Respectful greetings, colleague. I have taken note of your query. As the Senior Administrative Advisor to the AVD, I would respectfully request that you formulate your inquiry regarding official procedures, MCAS advancement, service confirmation, or transfer regulations with specificity. I stand ready to guide you on the necessary bureaucratic protocols and file channels required under departmental standards.`;
       }
 
       res.json({ success: true, response: reply });
@@ -1317,6 +1316,7 @@ async function startServer() {
 
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
+    const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
