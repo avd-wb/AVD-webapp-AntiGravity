@@ -7,6 +7,7 @@ import https from "https";
 import crypto from "crypto";
 import fs from "fs";
 import { GoogleGenAI } from "@google/genai";
+import { fileURLToPath } from "url";
 
 // Initialize Firebase SDK on Backend (100% Free Spark Tier compatibility)
 import { initializeApp } from "firebase/app";
@@ -18,8 +19,13 @@ import {
   setDoc, 
   getFirestore 
 } from "firebase/firestore";
+
+const dirname = typeof __dirname !== "undefined"
+  ? __dirname
+  : path.dirname(fileURLToPath((import.meta as any).url));
+
 const firebaseConfig = JSON.parse(
-  fs.readFileSync(path.resolve("firebase-applet-config.json"), "utf8")
+  fs.readFileSync(path.join(dirname, "firebase-applet-config.json"), "utf8")
 );
 
 let dbInstance: any = null;
