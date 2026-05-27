@@ -18,7 +18,9 @@ import {
   setDoc, 
   getFirestore 
 } from "firebase/firestore";
-import firebaseConfig from "./firebase-applet-config.json";
+const firebaseConfig = JSON.parse(
+  fs.readFileSync(path.resolve("firebase-applet-config.json"), "utf8")
+);
 
 let dbInstance: any = null;
 function getDb() {
