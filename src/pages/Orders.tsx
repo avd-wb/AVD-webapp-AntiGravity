@@ -7,6 +7,26 @@ import {
   Award, FileText, Sparkles, HelpCircle, Layers
 } from "lucide-react";
 import ordersData from "../data/orders_master_index.json";
+import employeesData from "../data/employees_master.json";
+import orderLinksData from "../data/employee_order_links.json";
+
+interface Employee {
+  hrms_id: string;
+  employee_id: string;
+  wbvc_no: string;
+  full_name: string;
+}
+
+interface OrderLink {
+  matched_hrms_id: string;
+  matched_full_name: string;
+  officer_name_raw: string;
+  order_type: string;
+  order_no: string;
+  order_date: string;
+  file_id?: string;
+  order_id?: string;
+}
 
 interface Order {
   id: string;
@@ -26,6 +46,44 @@ interface Order {
 
 export function Orders() {
   const allOrders = ordersData as Order[];
+
+  // Build fast employee map
+  const employeeMap = useMemo(() => {
+    const map = new Map<string, Employee>();
+    (employeesData as Employee[]).forEach(emp => {
+      if (emp.hrms_id) {
+        map.set(emp.hrms_id.trim(), emp);
+      }
+    });
+    return map;
+  }, []);
+
+  // Build fast order-to-officers lookup map
+  const orderOfficersMap = useMemo(() => {
+    const map = new Map<string, { name: string; hrms_id: string; employee_id: string; wbvc_no: string }[]>();
+    (orderLinksData as OrderLink[]).forEach(link => {
+      const fileId = link.file_id || link.order_id;
+      if (!fileId) return;
+      
+      const cleanHrms = link.matched_hrms_id?.trim();
+      const emp = cleanHrms ? employeeMap.get(cleanHrms) : undefined;
+      const officerInfo = {
+        name: link.matched_full_name || link.officer_name_raw,
+        hrms_id: link.matched_hrms_id || "",
+        employee_id: emp?.employee_id || "",
+        wbvc_no: emp?.wbvc_no || ""
+      };
+      
+      if (!map.has(fileId)) {
+        map.set(fileId, []);
+      }
+      const existing = map.get(fileId)!;
+      if (!existing.some(off => off.hrms_id === officerInfo.hrms_id && off.name === officerInfo.name)) {
+        existing.push(officerInfo);
+      }
+    });
+    return map;
+  }, [employeeMap]);
 
   // Basic States
   const [searchQuery, setSearchQuery] = useState("");
@@ -145,11 +203,21 @@ export function Orders() {
           const title = o.title.toLowerCase();
           const category = (o.order_type || "").toLowerCase();
           
+          const officers = orderOfficersMap.get(o.id) || [];
+          
           expandedTerms.forEach((term, idx) => {
             // First term (original query) gets higher weight
             const weight = idx === 0 ? 10 : 3;
             if (title.includes(term)) score += weight;
             if (category.includes(term)) score += weight / 2;
+            
+            // Check officers
+            officers.forEach(off => {
+              if (off.name.toLowerCase().includes(term)) score += weight * 1.5;
+              if (off.hrms_id.toLowerCase().includes(term)) score += weight * 1.5;
+              if (off.employee_id.toLowerCase().includes(term)) score += weight * 1.5;
+              if (off.wbvc_no.toLowerCase().includes(term)) score += weight * 1.5;
+            });
           });
 
           return { order: o, score };
@@ -162,11 +230,20 @@ export function Orders() {
           .map(s => s.order);
       } else {
         // Standard text search
-        result = result.filter(o => 
-          o.title.toLowerCase().includes(query) || 
-          (o.order_type || "").toLowerCase().includes(query) ||
-          (o.order_date || "").includes(query)
-        );
+        result = result.filter(o => {
+          const officers = orderOfficersMap.get(o.id) || [];
+          const matchesOfficer = officers.some(off => 
+            off.name.toLowerCase().includes(query) ||
+            off.hrms_id.toLowerCase().includes(query) ||
+            off.employee_id.toLowerCase().includes(query) ||
+            off.wbvc_no.toLowerCase().includes(query)
+          );
+          
+          return o.title.toLowerCase().includes(query) || 
+            (o.order_type || "").toLowerCase().includes(query) ||
+            (o.order_date || "").includes(query) ||
+            matchesOfficer;
+        });
       }
     }
 
@@ -382,7 +459,7 @@ export function Orders() {
 
         </div>
 
-        {/* Info card calling to AI bot AVD Advisor */}
+        {/* Info card calling to AI bot AVD Assistant */}
         <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 text-white relative overflow-hidden flex flex-col md:flex-row gap-6 items-center justify-between shadow-lg">
           <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-b from-saffron-500/10 to-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
           <div className="flex items-start gap-4">
@@ -464,6 +541,25 @@ export function Orders() {
                         </td>
                         <td className="py-4.5 px-6">
                           <div className="font-extrabold text-slate-800 leading-snug text-sm mb-1">{order.title}</div>
+                          {(() => {
+                            const officers = orderOfficersMap.get(order.id) || [];
+                            if (officers.length === 0) return null;
+                            return (
+                              <div className="flex flex-wrap gap-1.5 mt-2 mb-1.5">
+                                {officers.map((off, idx) => (
+                                  <span 
+                                    key={idx} 
+                                    className="inline-flex items-center gap-1 bg-slate-50 text-slate-700 ring-1 ring-slate-200 py-0.5 px-2 rounded-md text-[10px] font-semibold"
+                                    title={`HRMS ID: ${off.hrms_id} | Emp ID: ${off.employee_id} | Vet Reg ID: ${off.wbvc_no}`}
+                                  >
+                                    <Briefcase className="w-2.5 h-2.5 text-slate-400 shrink-0" />
+                                    Dr. {off.name}
+                                    {off.wbvc_no && <span className="text-[9px] text-slate-400 font-normal">({off.wbvc_no})</span>}
+                                  </span>
+                                ))}
+                              </div>
+                            );
+                          })()}
                           {order.full_path ? (
                             <div className="text-[11px] text-slate-400 font-semibold truncate max-w-md">
                               Location: {order.full_path}
@@ -517,10 +613,29 @@ export function Orders() {
                   </div>
 
                   {/* Title & Metadata */}
-                  <div className="space-y-1">
+                  <div className="space-y-1.5">
                     <h4 className="font-extrabold text-slate-800 text-[13px] leading-snug">
                       {order.title}
                     </h4>
+                    {(() => {
+                      const officers = orderOfficersMap.get(order.id) || [];
+                      if (officers.length === 0) return null;
+                      return (
+                        <div className="flex flex-wrap gap-1.5 pt-1 pb-1">
+                          {officers.map((off, idx) => (
+                            <span 
+                              key={idx} 
+                              className="inline-flex items-center gap-1 bg-slate-50 border border-slate-200/60 py-0.5 px-2 rounded-md text-[10px] font-medium text-slate-600"
+                              title={`HRMS ID: ${off.hrms_id} | Emp ID: ${off.employee_id} | Vet Reg ID: ${off.wbvc_no}`}
+                            >
+                              <Briefcase className="w-2.5 h-2.5 text-slate-400 shrink-0" />
+                              Dr. {off.name}
+                              {off.wbvc_no && <span className="text-[9px] text-slate-400 font-normal">({off.wbvc_no})</span>}
+                            </span>
+                          ))}
+                        </div>
+                      );
+                    })()}
                     {order.full_path && (
                       <p className="text-[10px] text-slate-400 font-semibold truncate">
                         Location: {order.full_path}

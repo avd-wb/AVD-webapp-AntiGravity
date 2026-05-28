@@ -407,7 +407,7 @@ async function startServer() {
       
       if (match) {
         // Enforce restriction of ONLY authorized initial emails
-        const allowedAdmins = ["beraprasanta1973@gmail.com", "roysukanta10@gmail.com", "drpradippati@rediffmail.com"];
+        const allowedAdmins = ["beraprasanta1973@gmail.com", "roysukanta10@gmail.com", "drpradippati@rediffmail.com", "administrator@avdwb.org"];
         if (!allowedAdmins.includes(match.email.trim().toLowerCase())) {
           return res.status(403).json({ success: false, error: "Access Denied: This administrator account is not verified in the AVD Master directory." });
         }
@@ -451,7 +451,7 @@ async function startServer() {
 
       console.log(`[AUTH] Google Authentication requested for: ${name} (${email})`);
 
-      const allowedAdminEmails = ["beraprasanta1973@gmail.com", "roysukanta10@gmail.com", "drpradippati@rediffmail.com"];
+      const allowedAdminEmails = ["beraprasanta1973@gmail.com", "roysukanta10@gmail.com", "drpradippati@rediffmail.com", "administrator@avdwb.org"];
       
       // 1. Check if email belongs to initial admins
       if (allowedAdminEmails.includes(email.trim().toLowerCase())) {
@@ -749,7 +749,7 @@ async function startServer() {
       }
 
       // Restrict new admin additions to authorized list
-      const allowedAdminEmails = ["beraprasanta1973@gmail.com", "roysukanta10@gmail.com", "drpradippati@rediffmail.com"];
+      const allowedAdminEmails = ["beraprasanta1973@gmail.com", "roysukanta10@gmail.com", "drpradippati@rediffmail.com", "administrator@avdwb.org"];
       if (!allowedAdminEmails.includes(email.trim().toLowerCase())) {
         return res.status(403).json({ 
           success: false, 
@@ -968,7 +968,7 @@ async function startServer() {
   // =========================================================================
   // NEW ENDPOINT: POST /api/chat
   // Official floating Ask AVD chatbot endpoint.
-  // Persona: Shri A. K. Ray, IAS (Retd.), extremely formal, senior government employee
+  // Persona: AVD AI Assistant, highly professional, politically neutral, grounded with Google Search.
   // =========================================================================
   app.post("/api/chat", async (req, res) => {
     try {
@@ -982,17 +982,18 @@ async function startServer() {
       const apiKey = process.env.GEMINI_API_KEY;
       
       const systemInstruction = `
-        You are "Ask AVD" chatbot. Your name is Shri A. K. Ray, IAS (Retd.), serving as the Senior Administrative Advisor to the Association of Veterinary Doctors (AVD), West Bengal.
-        Your persona is extremely formal, respectable, diplomatic, polite, and uses administrative or bureaucratic jargon typical of senior Indian government officers (e.g., "With reference to your query", "Please be advised", "It is requested", "Pursuant to departmental notification", "I must respectfully direct your attention to").
+        You are "Ask AVD" chatbot, the official "AVD AI Assistant" serving the Association of Veterinary Doctors (AVD), West Bengal.
+        Your tone is highly professional, dignified, respectful, and helpful. You are dedicated to supporting veterinarians, animal welfare, and veterinary science.
         
         Core Guidelines:
-        1. Answer queries regarding official government procedures, files, and rules (e.g., MCAS 8-year benefits under the Modified Career Advancement Scheme, confirmation of service prayers to the Director, retirement/provident fund dues, general transfer representation norms, WBVC council registration renewals). Explain HOW, WHEN, and WHERE to submit files.
-        2. STRICT GUARDRAIL: Under no circumstances are you permitted to directly disclose personal information (such as telephone numbers, mobile numbers, HRMS IDs, specific posting addresses, or dates of birth) of any officer from the database. 
+        1. RSS / AVD Vision Alignment (0.001 Degree): Have a subtle, extremely mild inclination towards national service, patriotism, strengthening the local and rural economy of West Bengal, organic/indigenous agriculture/animal husbandry, the preservation and welfare of local/indigenous/stray breeds, and the duty/integrity of professional veterinarians towards society and the motherland. Speak with a sense of dignity and discipline.
+        2. STRICT Political Neutrality: You must be completely apolitical and politically neutral. Do NOT take any sides on partisan political debates, local political disputes, political figures, or elections. If asked political, controversial, or sensitive queries, do NOT give any political answers. Instead, respond with a highly witty, polite, and diplomatic redirection that shifts the focus back to veterinary science, professional solidarity, animal healthcare, and public service.
+        3. Administrative Guidance: Answer queries regarding official government procedures, files, and rules (e.g., MCAS 8-year benefits under the Modified Career Advancement Scheme, confirmation of service, retirement/provident fund, general transfer representation norms, WBVC registration renewals). Explain HOW, WHEN, and WHERE to submit files.
+        4. STRICT GUARDRAIL: Under no circumstances are you permitted to directly disclose personal information (such as telephone numbers, mobile numbers, HRMS IDs, specific posting addresses, or dates of birth) of any officer from the database. 
         If a user asks for personal/contact information of any veterinarian or employee, you must politely, formally, and diplomatically decline. State that administrative data confidentiality protocols constrain you from direct disclosure of personal contact details, and respectfully suggest that they refer to the verified Officer Roster dashboard within their Member Portal, where authenticated records are cataloged.
         
-        Example replies:
-        - MCAS: "Regarding the submission of representations for MCAS benefits, please be advised that pursuant to Memo No. 4452-ARD, an officer is eligible for the first scale upliftment upon completing 8 years of continuous, unblemished service. The application file must be forwarded through the proper channel, specifically enclosing the satisfactory performance appraisal forms..."
-        - Personal Data Request: "I must respectfully advise that administrative protocol and data confidentiality guidelines constrain me from directly disclosing the personal contact coordinates or HRMS identifiers of individual officers. I would politely suggest referring to the verified Officer Roster panel within your Member Portal dashboard, where authenticated listings are cataloged."
+        Example political/sensitive redirection:
+        - "As an AI assistant dedicated to veterinary doctors and animal health, my path lies in healing and welfare, not politics. Let us instead focus on how we can collaborate to elevate the animal husbandry sector and strengthen the health of our local breeds!"
       `;
 
       if (apiKey) {
@@ -1015,11 +1016,12 @@ async function startServer() {
         });
 
         const response = await ai.models.generateContent({
-          model: "gemini-2.5-flash",
+          model: "gemini-flash-latest",
           contents: contents,
           config: {
             systemInstruction: systemInstruction,
-            temperature: 0.2
+            temperature: 0.2,
+            tools: [{ googleSearch: {} }] // Enable live Google Search grounding!
           }
         });
 
@@ -1030,25 +1032,27 @@ async function startServer() {
 
       // =========================================================================
       // FALLBACK PATTERN ENGINE: Runs if GEMINI_API_KEY is not configured
-      // Styled exactly in the high-diplomatic, formal senior officer persona!
+      // Styled in the professional AVD AI Assistant tone!
       // =========================================================================
       const query = message.toLowerCase();
       let reply = "";
 
       if (query.includes("phone") || query.includes("mobile") || query.includes("contact") || query.includes("number") || query.includes("hrms") || query.includes("email") || query.includes("dob") || query.includes("birth")) {
-        reply = `With due respect, I must politely advise that administrative protocol and strict data confidentiality guidelines constrain me from directly disclosing the personal contact coordinates, mobile numbers, or HRMS identifiers of individual departmental officers. I would respectfully suggest referring to the verified Officer Roster panel within your logged-in Member Portal dashboard, where authenticated listings are cataloged.`;
+        reply = `I must respectfully advise that administrative protocol and data confidentiality guidelines constrain me from directly disclosing the personal contact coordinates or HRMS identifiers of individual officers. I would politely suggest referring to the verified Officer Roster panel within your logged-in Member Portal dashboard, where authenticated listings are cataloged.`;
       } else if (query.includes("mcas") || query.includes("carrier") || query.includes("8-year") || query.includes("benefit") || query.includes("scale")) {
-        reply = `Regarding the submission of representations for Modified Career Advancement Scheme (MCAS) benefits, please be advised that pursuant to Departmental Notification No. 4452-ARD, an officer becomes eligible for the first scale upliftment upon completion of 8 years of continuous, unblemished service. It is requested that you submit your prayer in writing, accompanied by certified copies of your annual performance reports (SARs) and a clearance certificate from the Vigilance officer, routed through your respective Controlling Authority.`;
+        reply = `Regarding the submission of representations for MCAS benefits, please be advised that pursuant to Memo No. 4452-ARD, an officer is eligible for the scale upliftment upon completion of 8 years of continuous, unblemished service. It is requested that you submit your application in writing, accompanied by certified copies of your annual performance appraisal reports (SARs) and a clearance certificate, routed through your respective Controlling Authority.`;
       } else if (query.includes("confirm") || query.includes("confirmation") || query.includes("doc") || query.includes("service confirmation")) {
-        reply = `In reference to your query regarding the Confirmation of Service, please note that pursuant to West Bengal Services Rules, prayers for confirmation are to be submitted upon the completion of a two-year probation period. It is incumbent upon the officer to forward a formal prayer to the Directorate of Animal Resources and Animal Health, enclosing the requisite police verification reports, medical fitness certificates, and a satisfactory report from the respective Block Livestock Development Officer.`;
+        reply = `In reference to Confirmation of Service, please note that prayers are to be submitted upon the completion of a two-year probation period. It is incumbent upon the officer to forward a formal application to the Directorate of Animal Resources and Animal Health, enclosing the requisite police verification reports, medical fitness certificates, and a satisfactory performance report from the respective Block Livestock Development Officer.`;
       } else if (query.includes("transfer") || query.includes("posting") || query.includes("due") || query.includes("rotational")) {
-        reply = `Regarding rotational transfer representations, please be advised that under current Administrative Guidelines, officers who have rendered continuous service in a single posting for a period exceeding three (3) years are eligible to be considered in the periodic rotational sweep. All representations citing medical exigencies, family welfare grounds, or mutual transfer options must be addressed formally to the Director, AR&AH, and submitted via the proper channel.`;
+        reply = `Regarding rotational transfer representations, please be advised that under current Administrative Guidelines, officers who have rendered continuous service in a single posting for a period exceeding three (3) years are eligible to be considered in the periodic rotational sweep. All representations citing medical exigencies, family welfare grounds, or mutual transfer options must be addressed formally to the Director, AR&AH, via the proper channel.`;
       } else if (query.includes("join") || query.includes("doj") || query.includes("appoint") || query.includes("recruit")) {
-        reply = `Pursuant to a fresh letter of appointment issued by the Department of Animal Resources Development, a newly recruited Veterinary Officer must report to the designated station within the prescribed timeline (typically fifteen days). You must produce verified copies of your registration certificate from the West Bengal Veterinary Council (WBVC) and undergo a medical examination at the local district hospital prior to recording your joining report.`;
+        reply = `Pursuant to an appointment order, a newly recruited Veterinary Officer must report to the designated station within the prescribed timeline (typically fifteen days). You must produce verified copies of your registration certificate from the West Bengal Veterinary Council (WBVC) and undergo a medical examination prior to recording your joining report.`;
       } else if (query.includes("due") || query.includes("subscription") || query.includes("membership") || query.includes("fee") || query.includes("payment")) {
-        reply = `Concerning the remittance of yearly subscriptions or life membership dues to the Association of Veterinary Doctors (AVD), please note that as per our constitution, the annual subscription is due in the first quarter of each fiscal year. You may respectfully coordinate with your respective District Unit Treasurer or navigate to the 'Dues & Subscriptions' tab inside the AVD Master database to view your current ledger status and acquire payment details.`;
+        reply = `Concerning the yearly AVD subscription, as per our constitution, the annual dues are to be remitted in the first quarter of each fiscal year. You may respectfully coordinate with your respective District Unit Treasurer or navigate to the 'Dues & Subscriptions' tab inside the AVD Master database to view your current ledger status.`;
+      } else if (query.includes("politics") || query.includes("election") || query.includes("government") || query.includes("political") || query.includes("rss") || query.includes("party")) {
+        reply = `As an AI assistant dedicated to veterinary doctors and animal health, my path lies in healing and welfare, not politics. Let us instead focus on how we can collaborate to elevate the animal husbandry sector and strengthen the health of our local breeds!`;
       } else {
-        reply = `Respectful greetings, colleague. I have taken note of your query. As the Senior Administrative Advisor to the AVD, I would respectfully request that you formulate your inquiry regarding official procedures, MCAS advancement, service confirmation, or transfer regulations with specificity. I stand ready to guide you on the necessary bureaucratic protocols and file channels required under departmental standards.`;
+        reply = `Greetings! I have taken note of your query. As the AVD AI Assistant, I stand ready to assist you regarding official departmental procedures, MCAS carrier advancement, service confirmations, or general transfer guidelines. Please feel free to formulate a specific query with details.`;
       }
 
       res.json({ success: true, response: reply });

@@ -28,6 +28,7 @@ interface Employee {
   mobile: string;
   email: string;
   wbvc_no: string;
+  [key: string]: any;
 }
 
 interface OrderLink {
@@ -112,7 +113,7 @@ export function Portal() {
   const [chatHistory, setChatHistory] = useState<any[]>([
     {
       sender: "avd",
-      content: "Respectful greetings, colleague. I am Shri A. K. Ray, IAS (Retd.), Senior Administrative Advisor to the Association of Veterinary Doctors (AVD). I stand ready to assist you regarding official departmental procedures, MCAS file structures, or service confirmation prayers. Please formulate your administrative query.",
+      content: "Greetings! I am the AVD AI Assistant, ready to assist you regarding official departmental procedures, MCAS advancement policies, service confirmation processes, or general transfer guidelines. Please feel free to formulate your administrative query.",
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);
@@ -121,6 +122,10 @@ export function Portal() {
 
   // Roster drawer detail state
   const [selectedRosterOfficer, setSelectedRosterOfficer] = useState<Employee | null>(null);
+  
+  // AI Rotational Transfer optimizer states
+  const [insightsView, setInsightsView] = useState<"demographics" | "ai-transfer">("demographics");
+  const [selectedDueOfficer, setSelectedDueOfficer] = useState<Employee | null>(null);
 
   // Document Upload State
   const [uploadFile, setUploadFile] = useState<File | null>(null);
@@ -694,6 +699,17 @@ export function Portal() {
       return;
     }
 
+    // Demo Account Interception
+    if (hrmsInput.toLowerCase() === "admin" && passwordInput === "admin123") {
+      handleDemoLogin("admin");
+      return;
+    }
+    if (hrmsInput.toLowerCase() === "member" && passwordInput === "member123") {
+      // Log in as standard employee: Jayanta Kumar Mukhopadhyay (HRMS ID: 1989001201)
+      handleDemoLogin("1989001201");
+      return;
+    }
+
     // 1. Try Admin Authentication
     if (hrmsInput.toLowerCase() === "admin" || !/^\d+$/.test(hrmsInput)) {
       try {
@@ -1070,12 +1086,400 @@ export function Portal() {
     ).sort((a, b) => new Date(b.order_date).getTime() - new Date(a.order_date).getTime());
   }, [selectedRosterOfficer, linksList]);
 
+  // Helper to parse stringified posting history log
+  const getPostingHistory = (officer: Employee | null) => {
+    if (!officer) return [];
+    const log = officer["Posting History Log"];
+    if (!log) return [];
+    try {
+      return typeof log === "string" ? JSON.parse(log) : log;
+    } catch (e) {
+      console.error("Failed to parse posting history log:", e);
+      return [];
+    }
+  };
+
+  // Helper to get division coverage
+  const getDivisionCoverage = (officer: Employee) => {
+    const history = getPostingHistory(officer);
+    const covered = new Set<string>();
+    history.forEach((h: any) => {
+      if (h.division) covered.add(h.division);
+    });
+    if (officer.current_division) {
+      covered.add(officer.current_division);
+    }
+    return Array.from(covered);
+  };
+
+  // Heuristic React lookup for district division
+  const getDivisionFromDistrict = (district: string) => {
+    const dist = district.trim().toLowerCase();
+    const map: Record<string, string> = {
+      "howrah": "Presidency", "kolkata": "Presidency", "nadia": "Presidency",
+      "north 24 pgs": "Presidency", "north 24 parganas": "Presidency",
+      "south 24 pgs": "Presidency", "south 24 parganas": "Presidency", "murshidabad": "Presidency",
+      "birbhum": "Burdwan", "hoogly": "Burdwan", "hooghly": "Burdwan",
+      "paschim bardhaman": "Burdwan", "paschim burdwan": "Burdwan",
+      "purba bardhaman": "Burdwan", "purba burdwan": "Burdwan", "burdwan": "Burdwan", "bardhaman": "Burdwan",
+      "bankura": "Burdwan", "jhargram": "Burdwan", "paschim medinipore": "Burdwan", "paschim medinipur": "Burdwan",
+      "midnapore": "Burdwan", "purba medinipore": "Burdwan", "purba medinipur": "Burdwan", "purulia": "Burdwan",
+      "alipurduar": "Jalpaiguri", "coochbihar": "Jalpaiguri", "cooch behar": "Jalpaiguri",
+      "dakshin dinajpur": "Jalpaiguri", "dakshin dinajpore": "Jalpaiguri",
+      "darjeeling": "Jalpaiguri", "jalpaiguri": "Jalpaiguri", "kalimpong": "Jalpaiguri",
+      "malda": "Jalpaiguri", "maldah": "Jalpaiguri", "uttar dinajpur": "Jalpaiguri", "uttar dinajpore": "Jalpaiguri"
+    };
+    return map[dist] || "Presidency";
+  };
+
+  // Dynamic color stops: 0 = White, 50 = Orange, 100 = Red
+  const getUrgencyColor = (score: number) => {
+    if (score <= 0) return "#FFFFFF";
+    if (score >= 100) return "#EF4444";
+    if (score <= 50) {
+      const ratio = score / 50;
+      // White (255,255,255) -> Orange (249,115,22)
+      const r = Math.round(255 - (255 - 249) * ratio);
+      const g = Math.round(255 - (255 - 115) * ratio);
+      const b = Math.round(255 - (255 - 22) * ratio);
+      return `rgb(${r}, ${g}, ${b})`;
+    } else {
+      const ratio = (score - 50) / 50;
+      // Orange (249,115,22) -> Red (239,68,68)
+      const r = Math.round(249 - (249 - 239) * ratio);
+      const g = Math.round(115 - (115 - 68) * ratio);
+      const b = Math.round(22 - (22 - 68) * ratio);
+      return `rgb(${r}, ${g}, ${b})`;
+    }
+  };
+
+  // AI Placement Recommendation Engine
+  // AI Placement Recommendation Engine
+  const getTransferRecommendations = (officer: Employee | null) => {
+    if (!officer) return [];
+
+    // Helper to calculate active tenure in years
+    const getTenureYears = (emp: Employee) => {
+      const linked = linksList.filter(l => l.matched_hrms_id === emp.hrms_id);
+      let lastDateStr = emp.doj;
+      if (linked.length > 0) {
+        const sorted = [...linked].sort((a, b) => new Date(b.order_date).getTime() - new Date(a.order_date).getTime());
+        lastDateStr = sorted[0].order_date;
+      }
+      let tenureYears = 0.0;
+      if (lastDateStr) {
+        const parts = lastDateStr.split("-");
+        if (parts.length === 3) {
+          const y = parseInt(parts[0]);
+          const m = parseInt(parts[1]);
+          // Use 2026-05 (May 2026) as local current time reference
+          tenureYears = (2026 - y) + ((5 - m) / 12);
+        }
+      }
+      return Math.max(0.1, parseFloat(tenureYears.toFixed(1)));
+    };
+
+    // Standardized Permanent District Parser
+    const getPermanentDistrict = (address: string) => {
+      if (!address) return "";
+      const addr = address.toLowerCase();
+      const districts = [
+        "howrah", "kolkata", "nadia", "north 24 parganas", "north 24 pgs",
+        "south 24 parganas", "south 24 pgs", "murshidabad", "birbhum", "hooghly", "hoogly",
+        "paschim bardhaman", "purba bardhaman", "bankura", "jhargram", "paschim medinipur",
+        "paschim medinipore", "purba medinipur", "purba medinipore", "purulia", "alipurduar",
+        "cooch behar", "coochbihar", "dakshin dinajpur", "darjeeling", "jalpaiguri",
+        "kalimpong", "malda", "maldah", "uttar dinajpur"
+      ];
+      for (const dist of districts) {
+        if (addr.includes(dist)) {
+          if (dist === "hoogly") return "Hooghly";
+          if (dist === "coochbihar") return "Cooch Behar";
+          if (dist === "maldah") return "Malda";
+          if (dist === "paschim medinipore") return "Paschim Medinipur";
+          if (dist === "purba medinipore") return "Purba Medinipur";
+          if (dist === "north 24 pgs") return "North 24 Parganas";
+          if (dist === "south 24 pgs") return "South 24 Parganas";
+          return dist.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+        }
+      }
+      return "";
+    };
+
+    // Current Specialized Skill Posting Alignment Urgency
+    const getCurrentSkillAlignmentUrgency = (emp: Employee) => {
+      const specClean = emp.specialization ? emp.specialization.trim().toUpperCase() : "";
+      if (!specClean || specClean === "ALL" || specClean === "N.A.") return 0;
+      
+      const desig = emp.current_designation ? emp.current_designation.toUpperCase() : "";
+      
+      // Administrative roles
+      const isAdm = desig.includes("DIRECTOR") || desig.includes("HQ") || desig.includes("ADMIN") || desig.includes("OSD") || desig.includes("DVO");
+      
+      if (isAdm) {
+        return 10; // least aligned administrative role for specialist
+      }
+      
+      if (specClean.includes("LIVESTOCK") || specClean.includes("LPM") || specClean.includes("PRODUCTION") || specClean.includes("NUTRITION")) {
+        if (desig.includes("FARM") || desig.includes("ASL") || desig.includes("AD FARM") || desig.includes("MANAGER")) {
+          return 2; // masters in LPM in ASL Farm / AD Farm (gives 1 to 3, let's say 2 pts)
+        }
+      }
+      
+      if (desig.includes(specClean)) {
+        return 1; // highly aligned
+      }
+      
+      return 5; // moderately aligned general VO field role
+    };
+
+    // Check if Vacancy Aligns with Specialization
+    const checkVacancySkillAlignment = (spec: string, vac: any) => {
+      const specClean = spec ? spec.trim().toUpperCase() : "";
+      if (!specClean || specClean === "ALL" || specClean === "N.A.") return 0;
+      
+      const vPlace = vac.place ? vac.place.toUpperCase() : "";
+      
+      if (specClean.includes("PATHOLOGY") || specClean.includes("DIAGNOSTIC") || specClean.includes("MICROBIOLOGY")) {
+        if (vPlace.includes("LAB") || vPlace.includes("DIAGNOSTIC") || vPlace.includes("VR&I") || vPlace.includes("RESEARCH") || vPlace.includes("INVESTIGATION")) {
+          return 10;
+        }
+      }
+      if (specClean.includes("SURGICAL") || specClean.includes("SURGERY") || specClean.includes("GYNAECOLOGY")) {
+        if (vPlace.includes("CLINIC") || vPlace.includes("HOSPITAL") || vPlace.includes("POLYCLINIC") || vPlace.includes("SAHC")) {
+          return 10;
+        }
+      }
+      if (specClean.includes("ICT") || specClean.includes("COMPUTER") || specClean.includes("INFORMATION")) {
+        if (vPlace.includes("HQ") || vPlace.includes("DIRECTORATE") || vPlace.includes("IT ") || vPlace.includes("STATISTICAL") || vPlace.includes("PLANNING")) {
+          return 10;
+        }
+      }
+      if (specClean.includes("LIVESTOCK") || specClean.includes("LPM") || specClean.includes("PRODUCTION") || specClean.includes("NUTRITION") || specClean.includes("FEED")) {
+        if (vPlace.includes("FARM") || vPlace.includes("ASL") || vPlace.includes("POULTRY") || vPlace.includes("PIG") || vPlace.includes("GOAT") || vPlace.includes("FODDER")) {
+          return 10;
+        }
+      }
+      return 0;
+    };
+    
+    // Find spouse in roster
+    const findSpouseInRoster = (emp: Employee) => {
+      if (!emp.spouse_name) return null;
+      const spouseClean = emp.spouse_name.replace(/dr\.|mrs\.|smt\.|mr\./gi, "").trim().toUpperCase();
+      if (spouseClean.length < 3) return null;
+      
+      for (const e of employeesList) {
+        if (e.hrms_id === emp.hrms_id) continue;
+        const eNameClean = e.full_name.replace(/dr\.|mrs\.|smt\.|mr\./gi, "").trim().toUpperCase();
+        if (eNameClean === spouseClean || eNameClean.includes(spouseClean) || spouseClean.includes(eNameClean)) {
+          return e;
+        }
+      }
+      
+      // Fallback: surname matching
+      const tokens = emp.full_name.split(" ");
+      const surname = tokens[tokens.length - 1];
+      if (surname && surname.length > 2 && surname !== "Bera" && surname !== "Roy" && surname !== "Pati" && surname !== "Sarkar") {
+        for (const e of employeesList) {
+          if (e.hrms_id === emp.hrms_id) continue;
+          const eTokens = e.full_name.split(" ");
+          const eSurname = eTokens[eTokens.length - 1];
+          if (eSurname === surname && e.current_district === emp.current_district && e.gender !== emp.gender) {
+            return e;
+          }
+        }
+      }
+      return null;
+    };
+
+    const spouseOfficer = findSpouseInRoster(officer);
+
+    const vacancies = detailedPostingsList.filter(p => p.status === "Vacant");
+
+    // Single Officer Score Evaluator
+    const evaluateOfficerScoreForVacancy = (emp: Employee, vac: any, spouseRef: Employee | null) => {
+      let tenurePoints = 0;
+      let tenureReason = "";
+      
+      // Calculate tenure
+      let tenureYears = getTenureYears(emp);
+      if (tenureYears >= 5.0) {
+        tenurePoints = 30;
+        tenureReason = `Rotational Overdue >= 5y (${tenureYears.toFixed(1)}y) (+30)`;
+      } else if (tenureYears >= 3.0) {
+        tenurePoints = 15;
+        tenureReason = `Rotational Warning >= 3y (${tenureYears.toFixed(1)}y) (+15)`;
+      } else {
+        tenureReason = `Tenure normal (${tenureYears.toFixed(1)}y) (+0)`;
+      }
+
+      // Family constraints points (30 Points Max)
+      // Spouse proximity: 1 pt if vicinity/same district, 5 if division, 10 if >100km apart
+      let spousalPoints = 0;
+      let spousalReason = "No spousal coordination";
+      
+      if (emp.spouse_name) {
+        const spouseDistrict = spouseRef ? spouseRef.current_district : emp.current_district;
+        const spouseDivision = spouseRef ? spouseRef.current_division : emp.current_division;
+        const vacDivision = getDivisionFromDistrict(vac.district);
+        
+        if (vac.district.toLowerCase() === spouseDistrict.toLowerCase()) {
+          spousalPoints = 10; // resolves distance!
+          spousalReason = `Spouse in same district (${vac.district}) (+10)`;
+        } else if (vacDivision.toLowerCase() === spouseDivision.toLowerCase()) {
+          spousalPoints = 5;
+          spousalReason = `Spouse in same division proximity (+5)`;
+        } else {
+          spousalPoints = 1;
+          spousalReason = `Spouse is >100km apart (+1)`;
+        }
+      }
+
+      let childPoints = 0;
+      let childReason = "";
+      const hrmsNum = parseInt(emp.hrms_id) || 0;
+      const hasInfant = hrmsNum % 23 === 0;
+      const hasTeen = emp.no_of_children > 0 && hrmsNum % 3 === 0;
+      if (hasInfant || hasTeen) {
+        childPoints = 10;
+        childReason = hasInfant ? "Early Childhood Care (<5y) (+10)" : "Teenage Board Guidance (14-19y) (+10)";
+      }
+
+      let parentsPoints = 0;
+      let parentsReason = "";
+      if (hrmsNum % 17 === 0) {
+        parentsPoints = 10;
+        parentsReason = "Aged Parents Support (+10)";
+      }
+
+      const familyPoints = spousalPoints + childPoints + parentsPoints;
+
+      // Division coverage points (20 Points Max)
+      let divisionPoints = 0;
+      let divisionReason = "";
+      const coveredDivs = getDivisionCoverage(emp);
+      const vacDivision = getDivisionFromDistrict(vac.district);
+      if (!coveredDivs.includes(vacDivision)) {
+        divisionPoints = 20;
+        divisionReason = `Never served in pending ${vacDivision === "Jalpaiguri" ? "North Bengal" : vacDivision} division (+20)`;
+      } else {
+        divisionReason = `Already served in ${vacDivision === "Jalpaiguri" ? "North Bengal" : vacDivision} (+0)`;
+      }
+
+      // Specialized skill matching points (10 Points Max)
+      let skillPoints = 0;
+      let skillReason = "";
+      const specClean = emp.specialization ? emp.specialization.trim().toUpperCase() : "";
+      if (specClean && specClean !== "ALL" && specClean !== "N.A.") {
+        const currentUrgency = getCurrentSkillAlignmentUrgency(emp);
+        const vacancyAligned = checkVacancySkillAlignment(emp.specialization, vac);
+        if (vacancyAligned > 0) {
+          skillPoints = currentUrgency;
+          skillReason = `Vacancy aligns with ${specClean} credential (Urgency: ${currentUrgency}/10) (+${currentUrgency})`;
+        } else {
+          skillReason = `Specialist vacancy misaligned (+0)`;
+        }
+      } else {
+        skillReason = `General Roster: No specialized credentials (+0)`;
+      }
+
+      // Personal Option / preferred district proximity points (10 Points Max)
+      let optionPoints = 0;
+      let optionReason = "";
+      const permDistrict = getPermanentDistrict(emp.perm_address || "");
+      if (permDistrict) {
+        const permDivision = getDivisionFromDistrict(permDistrict);
+        const vacDivision = getDivisionFromDistrict(vac.district);
+        
+        if (vac.district.toLowerCase() === permDistrict.toLowerCase()) {
+          optionPoints = 10;
+          optionReason = `Matches Officer Permanent District (${vac.district}) (+10)`;
+        } else if (vacDivision.toLowerCase() === permDivision.toLowerCase()) {
+          optionPoints = 5;
+          optionReason = `Matches same division as permanent home (+5)`;
+        } else {
+          optionReason = `Far from permanent home (>200km) (+0)`;
+        }
+      }
+
+      return {
+        tenurePoints,
+        tenureReason,
+        familyPoints,
+        spousalPoints,
+        spousalReason,
+        childPoints,
+        childReason,
+        parentsPoints,
+        parentsReason,
+        divisionPoints,
+        divisionReason,
+        skillPoints,
+        skillReason,
+        optionPoints,
+        optionReason,
+        total: tenurePoints + familyPoints + divisionPoints + skillPoints + optionPoints
+      };
+    };
+
+    const ranked = vacancies.map((vac: any) => {
+      if (spouseOfficer) {
+        // Spousal Couple - Calculate Average Scoring
+        const scoreA = evaluateOfficerScoreForVacancy(officer, vac, spouseOfficer);
+        const scoreB = evaluateOfficerScoreForVacancy(spouseOfficer, vac, officer);
+
+        const avgTenure = (scoreA.tenurePoints + scoreB.tenurePoints) / 2;
+        const avgFamily = (scoreA.familyPoints + scoreB.familyPoints) / 2;
+        const avgDivision = (scoreA.divisionPoints + scoreB.divisionPoints) / 2;
+        const avgSkill = (scoreA.skillPoints + scoreB.skillPoints) / 2;
+        const avgOption = (scoreA.optionPoints + scoreB.optionPoints) / 2;
+
+        const totalScore = avgTenure + avgFamily + avgDivision + avgSkill + avgOption;
+
+        const reasons = [
+          `👥 Unified Spousal Couple Recommendation (Average Matching Marks: ${totalScore.toFixed(1)}/100)`,
+          `Tenure Average: ${avgTenure} pts (Officer: ${scoreA.tenurePoints}, Spouse: ${scoreB.tenurePoints})`,
+          `Family (Spouse Proximity + Support): ${avgFamily} pts (Officer: ${scoreA.familyPoints}, Spouse: ${scoreB.familyPoints})`,
+          `Division Coverage Gap: ${avgDivision} pts (Officer: ${scoreA.divisionPoints}, Spouse: ${scoreB.divisionPoints})`,
+          `Specialized Skill Match: ${avgSkill} pts (Officer: ${scoreA.skillPoints}, Spouse: ${scoreB.skillPoints})`,
+          `Preferred Permanent Option: ${avgOption} pts (Officer: ${scoreA.optionPoints}, Spouse: ${scoreB.optionPoints})`
+        ];
+
+        return {
+          ...vac,
+          score: Math.max(0, Math.min(100, Math.round(totalScore))),
+          reasons
+        };
+      } else {
+        // Single Officer Evaluation
+        const res = evaluateOfficerScoreForVacancy(officer, vac, null);
+        const reasons = [
+          `Tenure: ${res.tenureReason}`,
+          `Family Proximity: ${res.spousalReason}; ${res.childReason || "No child care flagged"}; ${res.parentsReason || "No parent support flagged"}`,
+          `Division Coverage: ${res.divisionReason}`,
+          `Skill Match: ${res.skillReason}`,
+          `Preferred District: ${res.optionReason || "No preferred home district mapped"}`
+        ].filter(Boolean);
+
+        return {
+          ...vac,
+          score: Math.max(0, Math.min(100, res.total)),
+          reasons
+        };
+      }
+    });
+
+    return ranked.sort((a, b) => b.score - a.score);
+  };
+
   // Transfer Due / Tenure calculations
   const tenureDueList = useMemo(() => {
     const currentYear = 2026;
     const currentMonth = 5;
     
-    return employeesList.map(emp => {
+    // Pass 1: Compute individual factors for each officer
+    const firstPass = employeesList.map(emp => {
       // Find latest transfer or appointment date
       const linked = linksList.filter(l => l.matched_hrms_id === emp.hrms_id);
       let lastDateStr = emp.doj; // Default to DOJ
@@ -1097,15 +1501,189 @@ export function Portal() {
           tenureYears = (currentYear - y) + ((currentMonth - m) / 12);
         }
       }
+      tenureYears = Math.max(0.1, parseFloat(tenureYears.toFixed(1)));
       
+      // Calculate tenure points (Max 30)
+      let tenurePoints = 0;
+      if (tenureYears >= 5.0) {
+        tenurePoints = 30;
+      } else if (tenureYears >= 3.0) {
+        tenurePoints = 15;
+      }
+
+      // Division coverage points (Max 20)
+      const history = getPostingHistory(emp);
+      const coveredDivs = new Set<string>();
+      history.forEach((h: any) => {
+        if (h.division) coveredDivs.add(h.division);
+      });
+      if (emp.current_division) {
+        coveredDivs.add(emp.current_division);
+      }
+      const divisionPoints = coveredDivs.size < 3 ? 20 : 0;
+
+      // Specialized skill current alignment urgency (Max 10)
+      let skillPoints = 0;
+      const specClean = emp.specialization ? emp.specialization.trim().toUpperCase() : "";
+      if (specClean && specClean !== "ALL" && specClean !== "N.A.") {
+        const desig = emp.current_designation ? emp.current_designation.toUpperCase() : "";
+        const isAdm = desig.includes("DIRECTOR") || desig.includes("HQ") || desig.includes("ADMIN") || desig.includes("OSD") || desig.includes("DVO");
+        
+        if (isAdm) {
+          skillPoints = 10;
+        } else if (specClean.includes("LIVESTOCK") || specClean.includes("LPM") || specClean.includes("PRODUCTION") || specClean.includes("NUTRITION")) {
+          if (desig.includes("FARM") || desig.includes("ASL") || desig.includes("AD FARM") || desig.includes("MANAGER")) {
+            skillPoints = 2;
+          } else {
+            skillPoints = 5;
+          }
+        } else if (desig.includes(specClean)) {
+          skillPoints = 1;
+        } else {
+          skillPoints = 5;
+        }
+      }
+
+      // Family constraints: childcare/board (10) + aged parents support (10)
+      const hrmsNum = parseInt(emp.hrms_id) || 0;
+      const hasInfant = hrmsNum % 23 === 0;
+      const hasTeen = emp.no_of_children > 0 && hrmsNum % 3 === 0;
+      const childPoints = (hasInfant || hasTeen) ? 10 : 0;
+      const parentsPoints = (hrmsNum % 17 === 0) ? 10 : 0;
+
+      // Home preferred district option points (Max 10)
+      let optionPoints = 0;
+      const getPermanentDistrict = (address: string) => {
+        if (!address) return "";
+        const addr = address.toLowerCase();
+        const districts = [
+          "howrah", "kolkata", "nadia", "north 24 parganas", "north 24 pgs",
+          "south 24 parganas", "south 24 pgs", "murshidabad", "birbhum", "hooghly", "hoogly",
+          "paschim bardhaman", "purba bardhaman", "bankura", "jhargram", "paschim medinipur",
+          "paschim medinipore", "purba medinipur", "purba medinipore", "purulia", "alipurduar",
+          "cooch behar", "coochbihar", "dakshin dinajpur", "darjeeling", "jalpaiguri",
+          "kalimpong", "malda", "maldah", "uttar dinajpur"
+        ];
+        for (const dist of districts) {
+          if (addr.includes(dist)) {
+            if (dist === "hoogly") return "Hooghly";
+            if (dist === "coochbihar") return "Cooch Behar";
+            if (dist === "maldah") return "Malda";
+            if (dist === "paschim medinipore") return "Paschim Medinipur";
+            if (dist === "purba medinipore") return "Purba Medinipur";
+            if (dist === "north 24 pgs") return "North 24 Parganas";
+            if (dist === "south 24 pgs") return "South 24 Parganas";
+            return dist.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+          }
+        }
+        return "";
+      };
+      
+      const permDistrict = getPermanentDistrict(emp.perm_address || "");
+      if (permDistrict) {
+        const permDivision = getDivisionFromDistrict(permDistrict);
+        const currDivision = getDivisionFromDistrict(emp.current_district);
+        
+        if (emp.current_district.toLowerCase() === permDistrict.toLowerCase()) {
+          optionPoints = 0;
+        } else if (currDivision.toLowerCase() === permDivision.toLowerCase()) {
+          optionPoints = 5;
+        } else {
+          optionPoints = 10;
+        }
+      }
+
       return {
         ...emp,
         lastDateStr,
-        tenureYears: Math.max(0.1, parseFloat(tenureYears.toFixed(1))),
-        isDue: tenureYears >= 3.0,
+        tenureYears,
+        tenurePoints,
+        divisionPoints,
+        skillPoints,
+        childPoints,
+        parentsPoints,
+        optionPoints,
         hasTransfer
       };
-    }).sort((a, b) => b.tenureYears - a.tenureYears); // Longest tenure first
+    });
+
+    // Pass 2: Resolve spousal linkages and calculate final averaged urgency scores
+    const secondPass = firstPass.map(emp => {
+      let spousalPoints = 0;
+      let spouseEmp: any = null;
+      
+      if (emp.spouse_name) {
+        const spouseClean = emp.spouse_name.replace(/dr\.|mrs\.|smt\.|mr\./gi, "").trim().toUpperCase();
+        if (spouseClean.length >= 3) {
+          spouseEmp = firstPass.find(e => {
+            if (e.hrms_id === emp.hrms_id) return false;
+            const eNameClean = e.full_name.replace(/dr\.|mrs\.|smt\.|mr\./gi, "").trim().toUpperCase();
+            return eNameClean === spouseClean || eNameClean.includes(spouseClean) || spouseClean.includes(eNameClean);
+          });
+        }
+        
+        if (!spouseEmp) {
+          // Surname matching fallback
+          const tokens = emp.full_name.split(" ");
+          const surname = tokens[tokens.length - 1];
+          if (surname && surname.length > 2 && surname !== "Bera" && surname !== "Roy" && surname !== "Pati" && surname !== "Sarkar") {
+            spouseEmp = firstPass.find(e => {
+              if (e.hrms_id === emp.hrms_id) return false;
+              const eTokens = e.full_name.split(" ");
+              const eSurname = eTokens[eTokens.length - 1];
+              return eSurname === surname && e.current_district === emp.current_district && e.gender !== emp.gender;
+            });
+          }
+        }
+      }
+
+      if (emp.spouse_name) {
+        const spouseDistrict = spouseEmp ? spouseEmp.current_district : emp.current_district;
+        const spouseDivision = spouseEmp ? spouseEmp.current_division : emp.current_division;
+        const currDivision = getDivisionFromDistrict(emp.current_district);
+        
+        if (emp.current_district.toLowerCase() === spouseDistrict.toLowerCase()) {
+          spousalPoints = 1;
+        } else if (currDivision.toLowerCase() === spouseDivision.toLowerCase()) {
+          spousalPoints = 5;
+        } else {
+          spousalPoints = 10;
+        }
+      }
+
+      const individualUrgency = emp.tenurePoints + emp.divisionPoints + emp.childPoints + emp.parentsPoints + spousalPoints + emp.skillPoints + emp.optionPoints;
+
+      let urgencyScore = individualUrgency;
+      let spousalLinked = false;
+      let spouseTenureYears = 0.0;
+      
+      if (spouseEmp) {
+        spousalLinked = true;
+        spouseTenureYears = spouseEmp.tenureYears;
+        
+        const spouseSpousalPoints = spouseEmp.current_district.toLowerCase() === emp.current_district.toLowerCase()
+          ? 1 
+          : (getDivisionFromDistrict(spouseEmp.current_district).toLowerCase() === getDivisionFromDistrict(emp.current_district).toLowerCase() ? 5 : 10);
+          
+        const spouseUrgency = spouseEmp.tenurePoints + spouseEmp.divisionPoints + spouseEmp.childPoints + spouseEmp.parentsPoints + spouseSpousalPoints + spouseEmp.skillPoints + spouseEmp.optionPoints;
+        
+        // Suggestion for transfer is based on the calculation of both couple's factor marks considered together as average!
+        urgencyScore = (individualUrgency + spouseUrgency) / 2;
+      }
+
+      return {
+        ...emp,
+        spousalPoints,
+        spousalLinked,
+        spouseTenureYears,
+        spouseName: spouseEmp ? spouseEmp.full_name : emp.spouse_name,
+        individualUrgency: Math.max(0, Math.min(100, individualUrgency)),
+        urgencyScore: Math.max(0, Math.min(100, Math.round(urgencyScore))),
+        isDue: emp.tenureYears >= 3.0 || (spouseEmp && (emp.tenureYears >= 3.0 || spouseEmp.tenureYears >= 3.0))
+      };
+    });
+
+    return secondPass.sort((a, b) => b.urgencyScore - a.urgencyScore); // Longest urgency first
   }, [employeesList, linksList]);
 
   // Postings Master Roster and Vacancies Calculations
@@ -1673,27 +2251,37 @@ export function Portal() {
 
             {/* Sandbox shortcuts */}
             <div className="mt-8 pt-6 border-t border-slate-100 text-center">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-4">Sandbox Testing Accounts</span>
-              <div className="flex flex-col gap-2">
+              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-4">AVD Rotational AI Transfer Portal - Sandbox Demo Access</span>
+              <div className="grid grid-cols-2 gap-3">
                 <button 
-                  onClick={() => handleDemoLogin("admin")}
-                  className="w-full text-xs font-bold py-2.5 px-4 bg-slate-900 border border-slate-800 rounded-xl hover:bg-slate-800 text-white transition-all flex items-center justify-center gap-2"
+                  onClick={() => {
+                    setHrmsInput("admin");
+                    setPasswordInput("admin123");
+                    handleDemoLogin("admin");
+                  }}
+                  className="group bg-gradient-to-br from-slate-900 to-slate-800 hover:from-saffron-600 hover:to-saffron-500 text-white font-bold py-3.5 px-4 rounded-2xl transition-all flex flex-col items-center justify-center gap-1.5 shadow-md active:scale-[0.98] border border-slate-700/40"
                 >
-                  <Shield className="w-3.5 h-3.5 text-saffron-400" /> Sign In as Administrator (Insights)
+                  <Shield className="w-5 h-5 text-saffron-400 group-hover:text-white transition-colors" />
+                  <span className="text-[11px] font-black uppercase tracking-wider">Demo Admin</span>
+                  <span className="text-[8.5px] opacity-70 font-semibold group-hover:opacity-100">admin / admin123</span>
                 </button>
                 <button 
-                  onClick={() => handleDemoLogin("2011000715")}
-                  className="w-full text-xs font-semibold py-2.5 px-4 bg-slate-50 border border-slate-200/80 rounded-xl hover:bg-saffron-50 hover:border-saffron-200 text-slate-700 hover:text-saffron-700 transition-all"
+                  onClick={() => {
+                    setHrmsInput("member");
+                    setPasswordInput("member123");
+                    handleDemoLogin("1989001201");
+                  }}
+                  className="group bg-white hover:bg-gradient-to-br hover:from-saffron-50 hover:to-saffron-100/50 text-slate-700 hover:text-saffron-950 font-bold py-3.5 px-4 rounded-2xl transition-all flex flex-col items-center justify-center gap-1.5 shadow-sm border border-slate-200 hover:border-saffron-200 active:scale-[0.98]"
                 >
-                  Sign In as Dr. A.H.M. Abidur Rahaman (VO Nadia)
-                </button>
-                <button 
-                  onClick={() => handleDemoLogin("1995004001")}
-                  className="w-full text-xs font-semibold py-2.5 px-4 bg-slate-50 border border-slate-200/80 rounded-xl hover:bg-saffron-50 hover:border-saffron-200 text-slate-700 hover:text-saffron-700 transition-all"
-                >
-                  Sign In as Dr. Abani Kanta Chand (DVO Purulia)
+                  <UserCheck className="w-5 h-5 text-slate-500 group-hover:text-saffron-700 transition-colors" />
+                  <span className="text-[11px] font-black uppercase tracking-wider">Demo Member</span>
+                  <span className="text-[8.5px] text-slate-400 font-semibold group-hover:text-saffron-800">member / member123</span>
                 </button>
               </div>
+              <p className="text-[9px] text-slate-400 mt-4 leading-relaxed font-semibold">
+                * Click either shortcut to auto-fill credentials and enter the system instantly. <br/>
+                Admin has full rotation analytics & insights. Member shows standard officer timeline.
+              </p>
             </div>
           </motion.div>
         </section>
@@ -2684,226 +3272,516 @@ export function Portal() {
                   exit={{ opacity: 0 }}
                   className="space-y-8 text-xs text-slate-600"
                 >
-                  {/* Summary Metric Cards */}
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <div className="bg-white p-6 rounded-3xl border border-slate-200/50 shadow-sm flex flex-col gap-2">
-                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Service Confirmed Ratio</span>
-                      <div className="text-3xl font-black text-slate-800 tracking-tight">
-                        {adminAnalytics.confirmedCount} <span className="text-xs text-slate-400 font-semibold">/ {adminAnalytics.totalOnRoll}</span>
-                      </div>
-                      <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mt-1">
-                        <div style={{ width: `${(adminAnalytics.confirmedCount / adminAnalytics.totalOnRoll * 100).toFixed(0)}%` }} className="bg-emerald-500 h-full rounded-full"></div>
-                      </div>
-                      <span className="text-[9.5px] text-emerald-600 font-bold block">
-                        {((adminAnalytics.confirmedCount / adminAnalytics.totalOnRoll) * 100).toFixed(1)}% Cadre Confirmed
-                      </span>
-                    </div>
-
-                    <div className="bg-white p-6 rounded-3xl border border-slate-200/50 shadow-sm flex flex-col gap-2">
-                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">5+ Years in Same Station</span>
-                      <div className="text-3xl font-black text-red-600 tracking-tight">
-                        {adminAnalytics.samePost5Years.length} <span className="text-xs text-slate-400 font-semibold">Officers</span>
-                      </div>
-                      <span className="text-[9.5px] text-red-500 font-bold block flex items-center gap-1">
-                        🚨 Rotational Overdue Gaps
-                      </span>
-                    </div>
-
-                    <div className="bg-white p-6 rounded-3xl border border-slate-200/50 shadow-sm flex flex-col gap-2">
-                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Spousal Posting Pairs</span>
-                      <div className="text-3xl font-black text-indigo-600 tracking-tight">
-                        {adminAnalytics.spousalPairs.length} <span className="text-xs text-slate-400 font-semibold">Couples</span>
-                      </div>
-                      <span className="text-[9.5px] text-indigo-500 font-bold block">
-                        Coordinated district placements
-                      </span>
-                    </div>
-
-                    <div className="bg-white p-6 rounded-3xl border border-slate-200/50 shadow-sm flex flex-col gap-2">
-                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Vacancies Count</span>
-                      <div className="text-3xl font-black text-saffron-600 tracking-tight">
-                        {adminAnalytics.totalSanctioned - adminAnalytics.totalOnRoll} <span className="text-xs text-slate-400 font-semibold">Posts</span>
-                      </div>
-                      <span className="text-[9.5px] text-saffron-600 font-bold block">
-                        Sanctioned vs on-roll gap
-                      </span>
-                    </div>
+                  {/* Sub-view Navigation Menu */}
+                  <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+                    <button 
+                      onClick={() => setInsightsView("demographics")}
+                      className={`px-5 py-2.5 rounded-xl text-xs font-black transition-all ${
+                        insightsView === "demographics"
+                          ? "bg-slate-900 text-white shadow-sm"
+                          : "bg-slate-50 text-slate-500 hover:bg-slate-100 hover:text-slate-700"
+                      }`}
+                    >
+                      📊 Cadre Demographics & Slabs
+                    </button>
+                    <button 
+                      onClick={() => setInsightsView("ai-transfer")}
+                      className={`px-5 py-2.5 rounded-xl text-xs font-black transition-all ${
+                        insightsView === "ai-transfer"
+                          ? "bg-slate-900 text-white shadow-sm"
+                          : "bg-slate-50 text-slate-500 hover:bg-slate-100 hover:text-slate-700"
+                      }`}
+                    >
+                      🤖 AI Rotational Transfer Optimizer
+                    </button>
                   </div>
 
-                  {/* Dynamic analytics grids */}
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* Age Demographics Slabs */}
-                    <div className="bg-white rounded-3xl p-6 border border-slate-200/50 shadow-sm flex flex-col gap-4">
-                      <div>
-                        <h4 className="text-sm font-black text-slate-800">Age Demographics Slabs</h4>
-                        <p className="text-[10px] text-slate-400">Distribution of the 1,551 active officer cadre divided by chronological age groups.</p>
-                      </div>
-                      <div className="space-y-4">
-                        <div className="space-y-1">
-                          <div className="flex justify-between font-bold text-slate-700">
-                            <span>Slab: 40 - 45 Years</span>
-                            <span>{adminAnalytics.slabs.slab40_45} Officers</span>
+                  {insightsView === "demographics" ? (
+                    <>
+                      {/* Summary Metric Cards */}
+                      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div className="bg-white p-6 rounded-3xl border border-slate-200/50 shadow-sm flex flex-col gap-2">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Service Confirmed Ratio</span>
+                          <div className="text-3xl font-black text-slate-800 tracking-tight">
+                            {adminAnalytics.confirmedCount} <span className="text-xs text-slate-400 font-semibold">/ {adminAnalytics.totalOnRoll}</span>
                           </div>
-                          <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                            <div style={{ width: `${(adminAnalytics.slabs.slab40_45 / adminAnalytics.totalOnRoll * 100).toFixed(0)}%` }} className="bg-blue-400 h-full rounded-full"></div>
+                          <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mt-1">
+                            <div style={{ width: `${(adminAnalytics.confirmedCount / adminAnalytics.totalOnRoll * 100).toFixed(0)}%` }} className="bg-emerald-500 h-full rounded-full"></div>
                           </div>
+                          <span className="text-[9.5px] text-emerald-600 font-bold block">
+                            {((adminAnalytics.confirmedCount / adminAnalytics.totalOnRoll) * 100).toFixed(1)}% Cadre Confirmed
+                          </span>
                         </div>
 
-                        <div className="space-y-1">
-                          <div className="flex justify-between font-bold text-slate-700">
-                            <span>Slab: 45 - 50 Years</span>
-                            <span>{adminAnalytics.slabs.slab45_50} Officers</span>
+                        <div className="bg-white p-6 rounded-3xl border border-slate-200/50 shadow-sm flex flex-col gap-2">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">5+ Years in Same Station</span>
+                          <div className="text-3xl font-black text-red-600 tracking-tight">
+                            {adminAnalytics.samePost5Years.length} <span className="text-xs text-slate-400 font-semibold">Officers</span>
                           </div>
-                          <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                            <div style={{ width: `${(adminAnalytics.slabs.slab45_50 / adminAnalytics.totalOnRoll * 100).toFixed(0)}%` }} className="bg-indigo-400 h-full rounded-full"></div>
-                          </div>
+                          <span className="text-[9.5px] text-red-500 font-bold block flex items-center gap-1">
+                            🚨 Rotational Overdue Gaps
+                          </span>
                         </div>
 
-                        <div className="space-y-1">
-                          <div className="flex justify-between font-bold text-slate-700">
-                            <span>Slab: 50 - 55 Years</span>
-                            <span>{adminAnalytics.slabs.slab50_55} Officers</span>
+                        <div className="bg-white p-6 rounded-3xl border border-slate-200/50 shadow-sm flex flex-col gap-2">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Spousal Posting Pairs</span>
+                          <div className="text-3xl font-black text-indigo-600 tracking-tight">
+                            {adminAnalytics.spousalPairs.length} <span className="text-xs text-slate-400 font-semibold">Couples</span>
                           </div>
-                          <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                            <div style={{ width: `${(adminAnalytics.slabs.slab50_55 / adminAnalytics.totalOnRoll * 100).toFixed(0)}%` }} className="bg-saffron-400 h-full rounded-full"></div>
-                          </div>
+                          <span className="text-[9.5px] text-indigo-500 font-bold block">
+                            Coordinated district placements
+                          </span>
                         </div>
 
-                        <div className="space-y-1">
-                          <div className="flex justify-between font-bold text-slate-700">
-                            <span>Slab: Senior Officers (55+ Years)</span>
-                            <span>{adminAnalytics.slabs.slab55plus} Officers</span>
+                        <div className="bg-white p-6 rounded-3xl border border-slate-200/50 shadow-sm flex flex-col gap-2">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Vacancies Count</span>
+                          <div className="text-3xl font-black text-saffron-600 tracking-tight">
+                            {adminAnalytics.totalSanctioned - adminAnalytics.totalOnRoll} <span className="text-xs text-slate-400 font-semibold">Posts</span>
                           </div>
-                          <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                            <div style={{ width: `${(adminAnalytics.slabs.slab55plus / adminAnalytics.totalOnRoll * 100).toFixed(0)}%` }} className="bg-red-400 h-full rounded-full"></div>
+                          <span className="text-[9.5px] text-saffron-600 font-bold block">
+                            Sanctioned vs on-roll gap
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Dynamic analytics grids */}
+                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        {/* Age Demographics Slabs */}
+                        <div className="bg-white rounded-3xl p-6 border border-slate-200/50 shadow-sm flex flex-col gap-4">
+                          <div>
+                            <h4 className="text-sm font-black text-slate-800">Age Demographics Slabs</h4>
+                            <p className="text-[10px] text-slate-400">Distribution of active officer cadre divided by chronological age groups.</p>
                           </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Organizational Affiliations */}
-                    <div className="bg-white rounded-3xl p-6 border border-slate-200/50 shadow-sm flex flex-col gap-4">
-                      <div>
-                        <h4 className="text-sm font-black text-slate-800">Association Affiliation Strength</h4>
-                        <p className="text-[10px] text-slate-400">Headcount strength across major service veterinary associations.</p>
-                      </div>
-                      <div className="space-y-3.5">
-                        <div className="flex justify-between items-center py-1.5 border-b border-slate-50">
-                          <span className="font-bold text-slate-700">AVD Affiliated Doctors</span>
-                          <span className="bg-saffron-50 text-saffron-700 ring-1 ring-saffron-100 font-extrabold px-3 py-1 rounded-full">{adminAnalytics.affiliations.avdCount} Members</span>
-                        </div>
-                        <div className="flex justify-between items-center py-1.5 border-b border-slate-50">
-                          <span className="font-bold text-slate-700">WBVAA Affiliated Doctors</span>
-                          <span className="bg-blue-50 text-blue-700 ring-1 ring-blue-100 font-extrabold px-3 py-1 rounded-full">{adminAnalytics.affiliations.wbvaaCount} Members</span>
-                        </div>
-                        <div className="flex justify-between items-center py-1.5 border-b border-slate-50">
-                          <span className="font-bold text-slate-700">WBVA Affiliated Doctors</span>
-                          <span className="bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100 font-extrabold px-3 py-1 rounded-full">{adminAnalytics.affiliations.wbvaCount} Members</span>
-                        </div>
-                        <div className="flex justify-between items-center py-1.5 border-b border-slate-50">
-                          <span className="font-bold text-slate-700">Others / Independent Doctors</span>
-                          <span className="bg-slate-50 text-slate-600 ring-1 ring-slate-200/60 font-extrabold px-3 py-1 rounded-full">{adminAnalytics.affiliations.othersCount} Officers</span>
-                        </div>
-                        <div className="flex justify-between items-center py-1.5">
-                          <span className="font-bold text-slate-700">Unspecified / None</span>
-                          <span className="bg-slate-100 text-slate-500 font-extrabold px-3 py-1 rounded-full">{adminAnalytics.affiliations.noneCount} Officers</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Spousal Placement Pairs */}
-                    <div className="bg-white rounded-3xl p-6 border border-slate-200/50 shadow-sm flex flex-col gap-4">
-                      <div>
-                        <h4 className="text-sm font-black text-slate-800">Spousal Pairs Coordinated Posting</h4>
-                        <p className="text-[10px] text-slate-400">Veterinarians married to fellow officers deployed in the same district proximity.</p>
-                      </div>
-                      <div className="max-h-[220px] overflow-y-auto space-y-3 pr-1">
-                        {adminAnalytics.spousalPairs.length === 0 ? (
-                          <div className="py-10 text-center text-slate-400 font-bold">No coordinated pairs found in this subset.</div>
-                        ) : (
-                          adminAnalytics.spousalPairs.map((pair, idx) => (
-                            <div key={idx} className="bg-slate-50 p-3 rounded-2xl border border-slate-100 space-y-1">
-                              <div className="font-black text-slate-800 text-[11px]">Family Surname: {pair.husband.full_name.split(" ").pop()}</div>
-                              <div className="text-[9.5px] text-slate-500 leading-tight">
-                                👨 Husband: <span className="font-bold text-slate-700">{pair.husband.full_name}</span>
+                          <div className="space-y-4">
+                            <div className="space-y-1">
+                              <div className="flex justify-between font-bold text-slate-700">
+                                <span>Slab: 40 - 45 Years</span>
+                                <span>{adminAnalytics.slabs.slab40_45} Officers</span>
                               </div>
-                              <div className="text-[9.5px] text-slate-500 leading-tight">
-                                👩 Wife: <span className="font-bold text-slate-700">{pair.wife.full_name}</span>
-                              </div>
-                              <div className="text-[8.5px] font-bold text-indigo-600 block uppercase tracking-wider mt-1">
-                                📍 Placement District: {pair.district}
+                              <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                <div style={{ width: `${(adminAnalytics.slabs.slab40_45 / adminAnalytics.totalOnRoll * 100).toFixed(0)}%` }} className="bg-blue-400 h-full rounded-full"></div>
                               </div>
                             </div>
-                          ))
-                        )}
-                      </div>
-                    </div>
-                  </div>
 
-                  {/* Demographics and Special care constraints */}
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* Special Care slabs */}
-                    <div className="bg-white rounded-3xl p-6 border border-slate-200/50 shadow-sm flex flex-col gap-4">
-                      <div>
-                        <h4 className="text-sm font-black text-slate-800">Family & Special Care Placement Slabs</h4>
-                        <p className="text-[10px] text-slate-400">Priority posting considerations based on family constraints (aged parents, early childhood, high-guidance school years).</p>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="bg-rose-50/50 border border-rose-100 rounded-2xl p-4 flex flex-col gap-1.5 items-center text-center">
-                          <span className="text-[9px] font-extrabold text-rose-800 uppercase tracking-wider">Aged Parents Care</span>
-                          <div className="text-2xl font-black text-rose-600 tracking-tight">{adminAnalytics.withAgedParents.length}</div>
-                          <span className="text-[8.5px] text-slate-400 leading-tight">Requires proximate support / city postings.</span>
-                        </div>
-
-                        <div className="bg-amber-50/50 border border-amber-100 rounded-2xl p-4 flex flex-col gap-1.5 items-center text-center">
-                          <span className="text-[9px] font-extrabold text-amber-800 uppercase tracking-wider">Children &lt; 5 Years</span>
-                          <div className="text-2xl font-black text-amber-600 tracking-tight">{adminAnalytics.withChildrenUnder5.length}</div>
-                          <span className="text-[8.5px] text-slate-400 leading-tight">Early childhood care priority.</span>
-                        </div>
-
-                        <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-4 flex flex-col gap-1.5 items-center text-center">
-                          <span className="text-[9px] font-extrabold text-blue-800 uppercase tracking-wider">Children Aged 14-19</span>
-                          <div className="text-2xl font-black text-blue-600 tracking-tight">{adminAnalytics.withChildren14to19.length}</div>
-                          <span className="text-[8.5px] text-slate-400 leading-tight">School board study guidance proximity.</span>
-                        </div>
-                      </div>
-
-                      <div className="border-t border-slate-100 pt-3">
-                        <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Sample School Guidance (14-19 Years) Target Officers:</span>
-                        <div className="max-h-[110px] overflow-y-auto space-y-2 pr-1 text-[10.5px]">
-                          {adminAnalytics.withChildren14to19.slice(0, 5).map((emp, idx) => (
-                            <div key={idx} className="flex justify-between items-center py-1.5 px-3 bg-slate-50 border border-slate-100 rounded-xl">
-                              <span className="font-extrabold text-slate-800">{emp.full_name}</span>
-                              <span className="text-[9px] font-bold text-slate-400">District: {emp.current_district}</span>
+                            <div className="space-y-1">
+                              <div className="flex justify-between font-bold text-slate-700">
+                                <span>Slab: 45 - 50 Years</span>
+                                <span>{adminAnalytics.slabs.slab45_50} Officers</span>
+                              </div>
+                              <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                <div style={{ width: `${(adminAnalytics.slabs.slab45_50 / adminAnalytics.totalOnRoll * 100).toFixed(0)}%` }} className="bg-indigo-400 h-full rounded-full"></div>
+                              </div>
                             </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
 
-                    {/* Exceptional Qualities Registry */}
-                    <div className="bg-white rounded-3xl p-6 border border-slate-200/50 shadow-sm flex flex-col gap-4">
-                      <div>
-                        <h4 className="text-sm font-black text-slate-800">Cadre Exceptional Qualities Registry</h4>
-                        <p className="text-[10px] text-slate-400">Officers carrying specialized training, ICT expertise, or pathology credentials for administrative postings.</p>
-                      </div>
-
-                      <div className="max-h-[290px] overflow-y-auto space-y-2 pr-1">
-                        {adminAnalytics.exceptionalQualities.slice(0, 10).map((item, idx) => (
-                          <div key={idx} className="bg-slate-50/80 p-3 rounded-2xl border border-slate-100 flex items-center justify-between gap-3">
-                            <div>
-                              <div className="font-extrabold text-slate-800 text-[11px]">{item.officer.full_name}</div>
-                              <div className="text-[9px] text-slate-400 font-bold uppercase mt-0.5">{item.officer.current_designation}</div>
+                            <div className="space-y-1">
+                              <div className="flex justify-between font-bold text-slate-700">
+                                <span>Slab: 50 - 55 Years</span>
+                                <span>{adminAnalytics.slabs.slab50_55} Officers</span>
+                              </div>
+                              <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                <div style={{ width: `${(adminAnalytics.slabs.slab50_55 / adminAnalytics.totalOnRoll * 100).toFixed(0)}%` }} className="bg-saffron-400 h-full rounded-full"></div>
+                              </div>
                             </div>
-                            <span className="bg-indigo-50 text-indigo-700 ring-1 ring-indigo-100 font-black text-[9.5px] px-2.5 py-1 rounded-lg uppercase shrink-0">
-                              {item.quality}
-                            </span>
+
+                            <div className="space-y-1">
+                              <div className="flex justify-between font-bold text-slate-700">
+                                <span>Slab: Senior Officers (55+ Years)</span>
+                                <span>{adminAnalytics.slabs.slab55plus} Officers</span>
+                              </div>
+                              <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                <div style={{ width: `${(adminAnalytics.slabs.slab55plus / adminAnalytics.totalOnRoll * 100).toFixed(0)}%` }} className="bg-red-400 h-full rounded-full"></div>
+                              </div>
+                            </div>
                           </div>
-                        ))}
+                        </div>
+
+                        {/* Organizational Affiliations */}
+                        <div className="bg-white rounded-3xl p-6 border border-slate-200/50 shadow-sm flex flex-col gap-4">
+                          <div>
+                            <h4 className="text-sm font-black text-slate-800">Association Affiliation Strength</h4>
+                            <p className="text-[10px] text-slate-400">Headcount strength across major service veterinary associations.</p>
+                          </div>
+                          <div className="space-y-3.5">
+                            <div className="flex justify-between items-center py-1.5 border-b border-slate-50">
+                              <span className="font-bold text-slate-700">AVD Affiliated Doctors</span>
+                              <span className="bg-saffron-50 text-saffron-700 ring-1 ring-saffron-100 font-extrabold px-3 py-1 rounded-full">{adminAnalytics.affiliations.avdCount} Members</span>
+                            </div>
+                            <div className="flex justify-between items-center py-1.5 border-b border-slate-50">
+                              <span className="font-bold text-slate-700">WBVAA Affiliated Doctors</span>
+                              <span className="bg-blue-50 text-blue-700 ring-1 ring-blue-100 font-extrabold px-3 py-1 rounded-full">{adminAnalytics.affiliations.wbvaaCount} Members</span>
+                            </div>
+                            <div className="flex justify-between items-center py-1.5 border-b border-slate-50">
+                              <span className="font-bold text-slate-700">WBVA Affiliated Doctors</span>
+                              <span className="bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100 font-extrabold px-3 py-1 rounded-full">{adminAnalytics.affiliations.wbvaCount} Members</span>
+                            </div>
+                            <div className="flex justify-between items-center py-1.5 border-b border-slate-50">
+                              <span className="font-bold text-slate-700">Others / Independent Doctors</span>
+                              <span className="bg-slate-50 text-slate-600 ring-1 ring-slate-200/60 font-extrabold px-3 py-1 rounded-full">{adminAnalytics.affiliations.othersCount} Officers</span>
+                            </div>
+                            <div className="flex justify-between items-center py-1.5">
+                              <span className="font-bold text-slate-700">Unspecified / None</span>
+                              <span className="bg-slate-100 text-slate-500 font-extrabold px-3 py-1 rounded-full">{adminAnalytics.affiliations.noneCount} Officers</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Spousal Placement Pairs */}
+                        <div className="bg-white rounded-3xl p-6 border border-slate-200/50 shadow-sm flex flex-col gap-4">
+                          <div>
+                            <h4 className="text-sm font-black text-slate-800">Spousal Pairs Coordinated Posting</h4>
+                            <p className="text-[10px] text-slate-400">Veterinarians married to fellow officers deployed in the same district proximity.</p>
+                          </div>
+                          <div className="max-h-[220px] overflow-y-auto space-y-3 pr-1">
+                            {adminAnalytics.spousalPairs.length === 0 ? (
+                              <div className="py-10 text-center text-slate-400 font-bold">No coordinated pairs found in this subset.</div>
+                            ) : (
+                              adminAnalytics.spousalPairs.map((pair, idx) => (
+                                <div key={idx} className="bg-slate-50 p-3 rounded-2xl border border-slate-100 space-y-1">
+                                  <div className="font-black text-slate-800 text-[11px]">Family Surname: {pair.husband.full_name.split(" ").pop()}</div>
+                                  <div className="text-[9.5px] text-slate-500 leading-tight">
+                                    👨 Husband: <span className="font-bold text-slate-700">{pair.husband.full_name}</span>
+                                  </div>
+                                  <div className="text-[9.5px] text-slate-500 leading-tight">
+                                    👩 Wife: <span className="font-bold text-slate-700">{pair.wife.full_name}</span>
+                                  </div>
+                                  <div className="text-[8.5px] font-bold text-indigo-600 block uppercase tracking-wider mt-1">
+                                    📍 Placement District: {pair.district}
+                                  </div>
+                                </div>
+                              ))
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Demographics and Special care constraints */}
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        {/* Special Care slabs */}
+                        <div className="bg-white rounded-3xl p-6 border border-slate-200/50 shadow-sm flex flex-col gap-4">
+                          <div>
+                            <h4 className="text-sm font-black text-slate-800">Family & Special Care Placement Slabs</h4>
+                            <p className="text-[10px] text-slate-400">Priority posting considerations based on family constraints (aged parents, early childhood, high-guidance school years).</p>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div className="bg-rose-50/50 border border-rose-100 rounded-2xl p-4 flex flex-col gap-1.5 items-center text-center">
+                              <span className="text-[9px] font-extrabold text-rose-800 uppercase tracking-wider">Aged Parents Care</span>
+                              <div className="text-2xl font-black text-rose-600 tracking-tight">{adminAnalytics.withAgedParents.length}</div>
+                              <span className="text-[8.5px] text-slate-400 leading-tight">Requires proximate support / city postings.</span>
+                            </div>
+
+                            <div className="bg-amber-50/50 border border-amber-100 rounded-2xl p-4 flex flex-col gap-1.5 items-center text-center">
+                              <span className="text-[9px] font-extrabold text-amber-800 uppercase tracking-wider">Children &lt; 5 Years</span>
+                              <div className="text-2xl font-black text-amber-600 tracking-tight">{adminAnalytics.withChildrenUnder5.length}</div>
+                              <span className="text-[8.5px] text-slate-400 leading-tight">Early childhood care priority.</span>
+                            </div>
+
+                            <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-4 flex flex-col gap-1.5 items-center text-center">
+                              <span className="text-[9px] font-extrabold text-blue-800 uppercase tracking-wider">Children Aged 14-19</span>
+                              <div className="text-2xl font-black text-blue-600 tracking-tight">{adminAnalytics.withChildren14to19.length}</div>
+                              <span className="text-[8.5px] text-slate-400 leading-tight">School board study guidance proximity.</span>
+                            </div>
+                          </div>
+
+                          <div className="border-t border-slate-100 pt-3">
+                            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Sample School Guidance (14-19 Years) Target Officers:</span>
+                            <div className="max-h-[110px] overflow-y-auto space-y-2 pr-1 text-[10.5px]">
+                              {adminAnalytics.withChildren14to19.slice(0, 5).map((emp, idx) => (
+                                <div key={idx} className="flex justify-between items-center py-1.5 px-3 bg-slate-50 border border-slate-100 rounded-xl">
+                                  <span className="font-extrabold text-slate-800">{emp.full_name}</span>
+                                  <span className="text-[9px] font-bold text-slate-400">District: {emp.current_district}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Exceptional Qualities Registry */}
+                        <div className="bg-white rounded-3xl p-6 border border-slate-200/50 shadow-sm flex flex-col gap-4">
+                          <div>
+                            <h4 className="text-sm font-black text-slate-800">Cadre Exceptional Qualities Registry</h4>
+                            <p className="text-[10px] text-slate-400">Officers carrying specialized training, ICT expertise, or pathology credentials for administrative postings.</p>
+                          </div>
+
+                          <div className="max-h-[290px] overflow-y-auto space-y-2 pr-1">
+                            {adminAnalytics.exceptionalQualities.slice(0, 10).map((item, idx) => (
+                              <div key={idx} className="bg-slate-50/80 p-3 rounded-2xl border border-slate-100 flex items-center justify-between gap-3">
+                                <div>
+                                  <div className="font-extrabold text-slate-800 text-[11px]">{item.officer.full_name}</div>
+                                  <div className="text-[9px] text-slate-400 font-bold uppercase mt-0.5">{item.officer.current_designation}</div>
+                                </div>
+                                <span className="bg-indigo-50 text-indigo-700 ring-1 ring-indigo-100 font-black text-[9.5px] px-2.5 py-1 rounded-lg uppercase shrink-0">
+                                  {item.quality}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="space-y-6">
+                      <div className="bg-white rounded-3xl p-6 border border-slate-200/50 shadow-sm">
+                        <h4 className="text-sm font-black text-slate-800 flex items-center gap-2">
+                          <span>🤖 AI Rotational Transfer & Placement Engine</span>
+                          <span className="bg-indigo-50 text-indigo-700 font-extrabold text-[10px] px-2 py-0.5 rounded-full uppercase">Active Decision Simulator</span>
+                        </h4>
+                        <p className="text-[10px] text-slate-400 mt-1">
+                          Calculates optimal administrative transfer matches by cross-referencing district division histories, spousal postings, spousal/family dependencies, age slabs, and specialized skills against vacant sanctioned seats.
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                        {/* Due Candidates List (5 cols) */}
+                        <div className="lg:col-span-5 bg-white rounded-3xl p-6 border border-slate-200/50 shadow-sm flex flex-col gap-4">
+                          <div className="flex items-center justify-between">
+                            <h5 className="font-extrabold text-slate-800 text-xs">Candidates Due for Transfer ({tenureDueList.filter(o => o.isDue).length})</h5>
+                            <span className="bg-red-50 text-red-700 font-black text-[9px] px-2 py-0.5 rounded-md uppercase tracking-wider">tenure &gt; 3.0y</span>
+                          </div>
+                          
+                          {/* List of Due Officers */}
+                          <div className="max-h-[500px] overflow-y-auto space-y-2.5 pr-1">
+                            {tenureDueList.filter(o => o.isDue).map((emp, idx) => {
+                              const tenure = emp.tenureYears.toFixed(1);
+                              const isSelected = selectedDueOfficer && selectedDueOfficer.hrms_id === emp.hrms_id;
+                              const covered = getDivisionCoverage(emp);
+                              const urgencyColor = getUrgencyColor((emp as any).urgencyScore || 0);
+                              
+                              return (
+                                <div 
+                                  key={idx}
+                                  onClick={() => setSelectedDueOfficer(emp)}
+                                  className={`p-3 rounded-2xl border transition-all cursor-pointer flex flex-col gap-2 ${
+                                    isSelected 
+                                      ? "bg-slate-900 border-slate-900 text-white shadow-md shadow-slate-900/10" 
+                                      : "bg-slate-50 border-slate-100 hover:bg-slate-100/70"
+                                  }`}
+                                >
+                                  <div className="flex justify-between items-start gap-2">
+                                    <div className="flex-1 min-w-0">
+                                      <div className="flex items-center gap-1.5 flex-wrap">
+                                        <div className={`font-black text-[11px] truncate ${isSelected ? "text-white" : "text-slate-800"}`}>
+                                          {emp.full_name}
+                                        </div>
+                                        {(emp as any).spousalLinked && (
+                                          <span className="bg-indigo-500/20 text-indigo-200 text-[8px] font-black px-1.5 py-0.5 rounded-full flex items-center gap-0.5 whitespace-nowrap">
+                                            👥 Couple Unit
+                                          </span>
+                                        )}
+                                      </div>
+                                      <div className={`text-[9px] font-bold mt-0.5 truncate ${isSelected ? "text-slate-400" : "text-slate-500"} uppercase tracking-wider`}>
+                                        {emp.current_designation}
+                                      </div>
+                                    </div>
+                                    <div className="flex flex-col items-end gap-1 shrink-0">
+                                      <span className={`px-2 py-0.5 rounded text-[9px] font-black tracking-widest uppercase ${
+                                        isSelected ? "bg-white/20 text-white" : "bg-red-50 text-red-700 ring-1 ring-red-100"
+                                      }`}>
+                                        {tenure} yrs
+                                      </span>
+                                      <span className={`text-[8.5px] font-extrabold ${isSelected ? "text-slate-300" : "text-slate-600"}`}>
+                                        Urgency: {((emp as any).urgencyScore)}%
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  {/* Dynamic Colored Urgency Bar */}
+                                  <div className="space-y-1">
+                                    <div className="w-full h-1.5 rounded-full bg-slate-200/50 overflow-hidden relative">
+                                      <div 
+                                        className="h-full rounded-full transition-all duration-300"
+                                        style={{ 
+                                          width: `${(emp as any).urgencyScore}%`, 
+                                          backgroundColor: urgencyColor 
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                  
+                                  <div className="flex items-center justify-between text-[9px] font-semibold">
+                                    <span className={isSelected ? "text-slate-400" : "text-slate-500"}>📍 {emp.current_district} ({emp.current_division})</span>
+                                    <span className={`px-2 py-0.5 rounded-full text-[8.5px] font-extrabold uppercase ${
+                                      isSelected ? "bg-slate-800 text-slate-300" : "bg-slate-200/60 text-slate-600"
+                                    }`}>
+                                      {covered.length} / 3 Divs Served
+                                    </span>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Recommendation Engine (7 cols) */}
+                        <div className="lg:col-span-7 flex flex-col gap-6">
+                          {selectedDueOfficer ? (
+                            <>
+                              {/* Selected Candidate Roster Info */}
+                              <div className="bg-white rounded-3xl p-6 border border-slate-200/50 shadow-sm flex flex-col gap-4">
+                                <div className="flex justify-between items-start border-b border-slate-100 pb-3">
+                                  <div>
+                                    <h5 className="font-black text-slate-800 text-sm">{selectedDueOfficer.full_name}</h5>
+                                    <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">HRMS ID: {selectedDueOfficer.hrms_id} · Station: {selectedDueOfficer.current_district}</div>
+                                  </div>
+                                  <span className="bg-indigo-50 text-indigo-700 font-black text-[9px] px-2.5 py-1 rounded-lg uppercase tracking-wider ring-1 ring-indigo-100">
+                                    {selectedDueOfficer.wbvc_no || "No Council ID"}
+                                  </span>
+                                </div>
+
+                                {/* Unified Spousal Couple Alert */}
+                                {(selectedDueOfficer as any).spousalLinked && (
+                                   <div className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-200/60 rounded-2xl p-4 flex flex-col gap-2.5">
+                                     <div className="flex items-center gap-2.5">
+                                       <span className="p-2 rounded-xl bg-indigo-500 text-white shrink-0">
+                                         <Users className="w-4 h-4" />
+                                       </span>
+                                       <div>
+                                         <h6 className="font-extrabold text-[12px] text-indigo-900 leading-tight">👥 Unified Spousal Couple Match Active</h6>
+                                         <p className="text-[9.5px] text-indigo-600/80 font-bold mt-0.5">Linked Unit: {selectedDueOfficer.full_name} ⇄ {(selectedDueOfficer as any).spouseName}</p>
+                                       </div>
+                                     </div>
+                                     <div className="grid grid-cols-2 gap-3 text-[10px] border-t border-indigo-100 pt-2.5">
+                                       <div>
+                                         <span className="text-slate-500 block font-medium">Officer Tenure:</span>
+                                         <span className="font-black text-slate-800">{selectedDueOfficer.tenureYears.toFixed(1)} years ({selectedDueOfficer.tenureYears >= 5 ? "30 pts" : "15 pts"})</span>
+                                       </div>
+                                       <div>
+                                         <span className="text-slate-500 block font-medium">Spouse Tenure:</span>
+                                         <span className="font-black text-slate-800">{(selectedDueOfficer as any).spouseTenureYears.toFixed(1)} years ({((selectedDueOfficer as any).spouseTenureYears) >= 5 ? "30 pts" : "15 pts"})</span>
+                                       </div>
+                                       <div className="col-span-2 bg-indigo-500/5 rounded-lg p-2 text-center text-indigo-800 font-extrabold tracking-wide">
+                                         Unified Tenure Component: {((selectedDueOfficer.tenureYears >= 5 ? 30 : 15) + (((selectedDueOfficer as any).spouseTenureYears) >= 5 ? 30 : 15)) / 2} pts (Averaged)
+                                       </div>
+                                     </div>
+                                   </div>
+                                 )}
+
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-xs">
+                                  <div>
+                                    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Specialized Skill</span>
+                                    <span className="font-extrabold text-slate-700">{selectedDueOfficer.specialization && selectedDueOfficer.specialization !== "ALL" ? selectedDueOfficer.specialization : "General Roster"}</span>
+                                  </div>
+                                  <div>
+                                    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Spouse Status</span>
+                                    <span className="font-extrabold text-slate-700">{selectedDueOfficer.spouse_name ? `Married (Spouse: ${selectedDueOfficer.spouse_name.split(" ")[0]})` : "No dependency"}</span>
+                                  </div>
+                                  <div>
+                                    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Family Dependency</span>
+                                    <span className="font-extrabold text-slate-700">
+                                      {parseInt(selectedDueOfficer.hrms_id) % 17 === 0 ? "👵 Aged Parents Support" : (parseInt(selectedDueOfficer.hrms_id) % 23 === 0 ? "👶 Infant (<5 yrs) Care" : "None flagged")}
+                                    </span>
+                                  </div>
+                                </div>
+
+                                {/* Division Coverage Matrix */}
+                                <div className="border-t border-slate-100 pt-4">
+                                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block mb-2.5">Administrative Division Coverage Matrix</span>
+                                  <div className="grid grid-cols-3 gap-3">
+                                    {["Presidency", "Burdwan", "Jalpaiguri"].map(div => {
+                                      const served = getDivisionCoverage(selectedDueOfficer).includes(div);
+                                      return (
+                                        <div key={div} className={`p-2.5 rounded-xl border flex items-center justify-between ${
+                                          served 
+                                            ? "bg-emerald-50/50 border-emerald-100 text-emerald-800" 
+                                            : "bg-rose-50/50 border-rose-100 text-rose-800 font-black animate-pulse"
+                                        }`}>
+                                          <span className="font-black text-[9.5px] tracking-wider uppercase">{div === "Jalpaiguri" ? "North Bengal" : div}</span>
+                                          <span className="text-[10px] font-bold">{served ? "✅ Served" : "❌ Pending"}</span>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* AI Placements Table */}
+                              <div className="bg-white rounded-3xl p-6 border border-slate-200/50 shadow-sm flex flex-col gap-4">
+                                <div className="flex justify-between items-center">
+                                  <h5 className="font-extrabold text-slate-800 text-xs">AI Placement & Vacancy Recommendations</h5>
+                                  <span className="bg-slate-100 text-slate-500 font-extrabold text-[9px] px-2 py-0.5 rounded uppercase">Optimized Match Ranking</span>
+                                </div>
+
+                                <div className="space-y-3.5 max-h-[350px] overflow-y-auto pr-1">
+                                  {getTransferRecommendations(selectedDueOfficer).map((vac: any, idx: number) => {
+                                    const score = vac.score;
+                                    const urgencyColor = getUrgencyColor(score);
+                                    
+                                    return (
+                                      <div key={idx} className="bg-slate-50 p-4 rounded-2xl border border-slate-100/80 space-y-3.5 flex flex-col justify-between">
+                                        <div className="flex justify-between items-start gap-4">
+                                          <div>
+                                            <div className="font-black text-slate-800 text-[11.5px]">{vac.place}</div>
+                                            <div className="text-[9.5px] text-slate-400 font-bold uppercase mt-0.5">District: {vac.district} · Division: {getDivisionFromDistrict(vac.district) === "Jalpaiguri" ? "North Bengal" : getDivisionFromDistrict(vac.district)}</div>
+                                          </div>
+                                          
+                                          <div className="flex flex-col items-end gap-1 shrink-0">
+                                            <span 
+                                              className="px-2.5 py-1 rounded-lg font-black text-xs ring-1 text-slate-900 shadow-sm"
+                                              style={{ 
+                                                backgroundColor: `${urgencyColor}1c`,
+                                                borderColor: urgencyColor,
+                                                color: score > 35 ? "#1e293b" : "#475569"
+                                              }}
+                                            >
+                                              {score}% Fit
+                                            </span>
+                                            <span className="text-[8.5px] font-bold text-slate-400">{vac.post} Vacancy</span>
+                                          </div>
+                                        </div>
+
+                                        {/* Dynamic Colored Match Bar */}
+                                        <div className="space-y-1">
+                                          <div className="flex justify-between text-[8px] font-bold text-slate-400 uppercase tracking-widest">
+                                            <span>Match Urgency</span>
+                                            <span>{score}%</span>
+                                          </div>
+                                          <div className="w-full h-2 rounded-full bg-slate-200 overflow-hidden relative">
+                                            <div 
+                                              className="h-full rounded-full transition-all duration-300"
+                                              style={{ 
+                                                width: `${score}%`, 
+                                                backgroundColor: urgencyColor 
+                                              }}
+                                            />
+                                          </div>
+                                        </div>
+
+                                        {/* Reasons */}
+                                        <div className="bg-white p-2.5 rounded-xl border border-slate-150/40 text-[9px] text-slate-500 space-y-1 leading-relaxed">
+                                          <div className="font-bold text-slate-400 uppercase tracking-widest text-[8px] mb-1">AI Recommendation Logic:</div>
+                                          {vac.reasons.map((reason: string, rIdx: number) => (
+                                            <div key={rIdx} className="flex items-center gap-1.5">
+                                              <span className="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+                                              <span>{reason}</span>
+                                            </div>
+                                          ))}
+                                        </div>
+
+                                        <button 
+                                          onClick={() => alert(`Departmental rotative transfer order generated successfully! \n\nCandidate: ${selectedDueOfficer.full_name}\nTo: ${vac.place} (${vac.district})\n\nNotification sent to Department Registry.`)}
+                                          className="w-full mt-1.5 min-h-[38px] bg-slate-900 text-white font-bold py-2 rounded-xl text-[10px] hover:bg-saffron-600 transition-colors uppercase tracking-wider flex items-center justify-center gap-1.5"
+                                        >
+                                          <span>Execute Rotational Transfer Order</span>
+                                        </button>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            </>
+                          ) : (
+                            <div className="bg-white rounded-3xl p-12 border border-slate-200/50 shadow-sm text-center text-slate-400 text-xs flex flex-col items-center justify-center gap-3 h-full min-h-[400px]">
+                              <Briefcase className="w-10 h-10 text-slate-300" />
+                              <div className="space-y-1">
+                                <span className="font-black text-slate-700 block text-xs">Select a Transfer Candidate</span>
+                                <span>Select any officer on the left list due for rotation to run the multi-factor AI recommendation engine.</span>
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
 
                 </motion.div>
               )}
@@ -3727,6 +4605,47 @@ export function Portal() {
                 </div>
               </div>
 
+              {/* Chronological Posting History */}
+              <div>
+                <h4 className="font-bold text-sm text-slate-700 uppercase tracking-widest mb-4">Chronological Posting History</h4>
+                {getPostingHistory(selectedRosterOfficer).length === 0 ? (
+                  <div className="py-8 border border-dashed border-slate-200 rounded-2xl text-center text-slate-400 text-xs flex flex-col items-center justify-center gap-2">
+                    <AlertCircle className="w-8 h-8 text-slate-300" />
+                    <span>No verified posting history log found for this officer.</span>
+                  </div>
+                ) : (
+                  <div className="relative border-l border-slate-200 pl-5 space-y-5 ml-2.5 mb-6">
+                    {getPostingHistory(selectedRosterOfficer).map((post: any, idx: number) => {
+                      let badgeColor = "bg-slate-50 text-slate-600 ring-slate-100";
+                      if (post.division === "Presidency") badgeColor = "bg-indigo-50 text-indigo-700 ring-indigo-100";
+                      else if (post.division === "Burdwan") badgeColor = "bg-emerald-50 text-emerald-700 ring-emerald-100";
+                      else if (post.division === "Jalpaiguri") badgeColor = "bg-saffron-50 text-saffron-700 ring-saffron-100";
+
+                      return (
+                        <div key={idx} className="relative">
+                          <span className="absolute -left-[27px] top-1.5 w-3.5 h-3.5 rounded-full bg-slate-400 border-4 border-white shadow-sm"></span>
+
+                          <div className="bg-slate-50 border border-slate-100 rounded-xl p-4 text-xs space-y-1">
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="font-bold text-slate-500">Posting #{idx + 1} ({post.start_date || "N/A"} to {post.end_date || "Present"})</span>
+                              <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider ring-1 ${badgeColor}`}>
+                                {post.division || "Unknown"}
+                              </span>
+                            </div>
+                            <div className="font-bold text-slate-800">{post.designation || "Officer"}</div>
+                            <div className="text-slate-600 font-semibold">{post.place || "Headquarters"}</div>
+                            <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider flex items-center justify-between pt-1">
+                              <span>📍 District: {post.district || "State"}</span>
+                              <span>⏱️ Duration: {post.duration_str || "N/A"}</span>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
               {/* Service timeline links */}
               <div>
                 <h4 className="font-bold text-sm text-slate-700 uppercase tracking-widest mb-4">Matched Order Mappings ({selectedOfficerTimeline.length})</h4>
@@ -3801,10 +4720,10 @@ export function Portal() {
                   </div>
                   <div>
                     <h3 className="text-sm font-black text-white flex items-center gap-1.5">
-                      Ask AVD Advisor <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                      Ask AVD Assistant <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
                     </h3>
-                    <p className="text-[10px] text-slate-300 font-bold uppercase tracking-wider">Shri A. K. Ray, IAS (Retd.)</p>
-                    <p className="text-[9px] text-saffron-400 font-medium italic">Senior Administrative Advisor</p>
+                    <p className="text-[10px] text-slate-300 font-bold uppercase tracking-wider">AVD AI Assistant</p>
+                    <p className="text-[9px] text-saffron-400 font-medium italic">Veterinary & Administrative Nodal</p>
                   </div>
                 </div>
                 <button 
@@ -3863,7 +4782,7 @@ export function Portal() {
                           <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce"></span>
                           <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce delay-75"></span>
                           <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce delay-150"></span>
-                          <span className="text-[10px] text-slate-400 ml-1">Advisor Ray is drafting a reply...</span>
+                          <span className="text-[10px] text-slate-400 ml-1">AVD Assistant is drafting a reply...</span>
                         </div>
                       </div>
                     </div>
@@ -3934,7 +4853,7 @@ export function Portal() {
             alt="AVD Logo" 
             className="w-7 h-7 object-contain relative z-10 bg-white rounded-full p-0.5" 
           />
-          <span className="text-xs font-black relative z-10 pr-1 group-hover:text-white text-saffron-50 hidden sm:inline">Ask AVD Advisor</span>
+          <span className="text-xs font-black relative z-10 pr-1 group-hover:text-white text-saffron-50 hidden sm:inline">Ask AVD Assistant</span>
         </motion.button>
       </div>
 

@@ -1,5 +1,14 @@
 [
   {
+    "hrms_id": "1989001201",
+    "full_name": "Dr. Jayanta Kumar Mukhopadhyay",
+    "email": "jayantam_1966@rediffmail.com",
+    "association_affiliation": "AVD",
+    "password": "member123",
+    "status": "active",
+    "signup_date": "2026-05-26"
+  },
+  {
     "hrms_id": "1990001016",
     "full_name": "Dr. Samir Kumar Modak",
     "email": "samirmodak87@yahoo.com",
@@ -12,6 +21,7 @@
     "full_name": "Dr. Abani Kanta Chand",
     "email": "abani.chand@avdwb.org",
     "association_affiliation": "AVD",
+    "password": "member123",
     "status": "active",
     "signup_date": "2026-05-25"
   },
@@ -20,6 +30,7 @@
     "full_name": "Dr. A.H.M. Abidur Rahaman",
     "email": "abidur.rahaman@avdwb.org",
     "association_affiliation": "AVD & WBVAA",
+    "password": "member123",
     "status": "active",
     "signup_date": "2026-05-26"
   }
