@@ -6,6 +6,7 @@ import { Helmet } from "react-helmet-async";
 import { BackgroundCarousel } from "../components/BackgroundCarousel";
 import { AppointmentsMarquee } from "../components/AppointmentsMarquee";
 import { AppointmentsSection } from "../components/AppointmentsSection";
+import { OrdersSection } from "../components/OrdersSection";
 import { allPhotos, heroPhotos } from "../data/photos";
 import { noticesData } from "../data/notices";
 import { AnimatePresence, motion } from "motion/react";
@@ -249,6 +250,7 @@ export function Home() {
       {/* Appointments & Transfers Section */}
       <section className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 mb-16">
         <AppointmentsSection />
+        <OrdersSection />
       </section>
       
       {/* FAQ Section */}

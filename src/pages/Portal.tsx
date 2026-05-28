@@ -2287,41 +2287,6 @@ export function Portal() {
                 </button>
               </form>
             )}
-
-            {/* Sandbox shortcuts */}
-            <div className="mt-8 pt-6 border-t border-slate-100 text-center">
-              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-4">AVD Rotational AI Transfer Portal - Sandbox Demo Access</span>
-              <div className="grid grid-cols-2 gap-3">
-                <button 
-                  onClick={() => {
-                    setHrmsInput("admin");
-                    setPasswordInput("admin123");
-                    handleDemoLogin("admin");
-                  }}
-                  className="group bg-gradient-to-br from-slate-900 to-slate-800 hover:from-saffron-600 hover:to-saffron-500 text-white font-bold py-3.5 px-4 rounded-2xl transition-all flex flex-col items-center justify-center gap-1.5 shadow-md active:scale-[0.98] border border-slate-700/40"
-                >
-                  <Shield className="w-5 h-5 text-saffron-400 group-hover:text-white transition-colors" />
-                  <span className="text-[11px] font-black uppercase tracking-wider">Demo Admin</span>
-                  <span className="text-[8.5px] opacity-70 font-semibold group-hover:opacity-100">admin / admin123</span>
-                </button>
-                <button 
-                  onClick={() => {
-                    setHrmsInput("member");
-                    setPasswordInput("member123");
-                    handleDemoLogin("1989001201");
-                  }}
-                  className="group bg-white hover:bg-gradient-to-br hover:from-saffron-50 hover:to-saffron-100/50 text-slate-700 hover:text-saffron-950 font-bold py-3.5 px-4 rounded-2xl transition-all flex flex-col items-center justify-center gap-1.5 shadow-sm border border-slate-200 hover:border-saffron-200 active:scale-[0.98]"
-                >
-                  <UserCheck className="w-5 h-5 text-slate-500 group-hover:text-saffron-700 transition-colors" />
-                  <span className="text-[11px] font-black uppercase tracking-wider">Demo Member</span>
-                  <span className="text-[8.5px] text-slate-400 font-semibold group-hover:text-saffron-800">member / member123</span>
-                </button>
-              </div>
-              <p className="text-[9px] text-slate-400 mt-4 leading-relaxed font-semibold">
-                * Click either shortcut to auto-fill credentials and enter the system instantly. <br/>
-                Admin has full rotation analytics & insights. Member shows standard officer timeline.
-              </p>
-            </div>
           </motion.div>
         </section>
       ) : (
