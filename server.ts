@@ -1,9 +1,41 @@
 import express from "express";
-import path from "path";
+import * as originalPath from "path";
 import NodeCache from "node-cache";
 import https from "https";
 import crypto from "crypto";
 import fs from "fs";
+
+// Custom path resolver to handle Vercel's read-only filesystem
+const path = {
+  ...originalPath,
+  resolve: function(...args: string[]) {
+    const resolved = originalPath.resolve.apply(originalPath, args);
+    if (process.env.VERCEL && resolved.endsWith(".json") && resolved.includes("src/data")) {
+      const filename = originalPath.basename(resolved);
+      const tmpPath = originalPath.join("/tmp", filename);
+      if (fs.existsSync(tmpPath)) {
+        return tmpPath;
+      }
+      if (fs.existsSync(resolved)) {
+        try {
+          fs.writeFileSync(tmpPath, fs.readFileSync(resolved));
+          return tmpPath;
+        } catch (e: any) {
+          console.error(`[PATH-OVERRIDE] Failed to copy seed to /tmp: ${filename}`, e.message);
+        }
+      }
+      try {
+        const isArray = filename.includes("profile_requests") || filename.includes("registered_users");
+        fs.writeFileSync(tmpPath, isArray ? "[]" : "{}", "utf8");
+        return tmpPath;
+      } catch (e: any) {
+        console.error(`[PATH-OVERRIDE] Failed to init blank in /tmp: ${filename}`, e.message);
+      }
+    }
+    return resolved;
+  }
+};
+
 let firebaseConfig: any = {};
 try {
   const configPath = path.resolve("firebase-applet-config.json");
