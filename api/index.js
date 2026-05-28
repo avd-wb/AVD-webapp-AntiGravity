@@ -1,14 +1,31 @@
+let app = null;
+let initError = null;
+
 export default async function handler(req, res) {
-  try {
-    res.status(200).json({
-      status: "pure-js-ok",
-      timestamp: new Date().toISOString(),
-      env: {
-        VERCEL: process.env.VERCEL || "not-set",
-        NODE_ENV: process.env.NODE_ENV || "not-set"
-      }
+  if (initError) {
+    return res.status(500).json({
+      success: false,
+      error: "Initialization error cached from previous load",
+      message: initError.message,
+      stack: initError.stack
     });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
   }
+
+  if (!app) {
+    try {
+      // Dynamically import server.ts
+      const serverModule = await import("../server");
+      app = serverModule.app;
+    } catch (err) {
+      initError = err;
+      return res.status(500).json({
+        success: false,
+        error: "Failed to dynamically import server.ts at runtime",
+        message: err.message,
+        stack: err.stack
+      });
+    }
+  }
+
+  return app(req, res);
 }
