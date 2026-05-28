@@ -54,6 +54,41 @@ export const app = express();
     res.json({ status: "ok" });
   });
 
+  app.get("/api/diagnose", (req, res) => {
+    try {
+      const scanDir = (dir: string, results: string[] = []) => {
+        try {
+          const list = fs.readdirSync(dir);
+          list.forEach((file: string) => {
+            const fullPath = path.join(dir, file);
+            const stat = fs.statSync(fullPath);
+            if (stat && stat.isDirectory()) {
+              if (!file.startsWith(".") && file !== "node_modules") {
+                scanDir(fullPath, results);
+              }
+            } else {
+              results.push(fullPath);
+            }
+          });
+        } catch (e: any) {
+          results.push(`Error scanning ${dir}: ${e.message}`);
+        }
+        return results;
+      };
+
+      const files = scanDir("/var/task");
+      res.json({
+        success: true,
+        cwd: process.cwd(),
+        dirname: __dirname,
+        files: files
+      });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: err.message });
+    }
+  });
+
+
   app.get("/api/transfers", async (req, res) => {
     try {
       const cachedData = cache.get("transfers");
