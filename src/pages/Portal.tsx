@@ -666,17 +666,17 @@ export function Portal() {
       setIsAdmin(true);
       setCurrentUser({
         hrms_id: "admin",
-        full_name: "Dr. Nirmalya Ranjan Sarkar (Admin)",
-        current_designation: "Additional Director / Administrator",
+        full_name: "AVD IT Unit (Admin)",
+        current_designation: "Additional Director / IT Administrator",
         current_district: "Kolkata (HQ)",
-        dob: "1975-05-12",
-        doj: "1997-12-22",
-        doc: "1999-12-22",
-        gender: "M",
+        dob: "1980-01-01",
+        doj: "2005-01-01",
+        doc: "2007-01-01",
+        gender: "Male",
         caste: "GEN",
         mobile: "+91-9830098300",
-        email: "administrator@avdwb.org",
-        wbvc_no: "WBVC 3499"
+        email: "avd.it.unit@gmail.com",
+        wbvc_no: "WBVC 9999"
       });
       setActiveSubTab("roster");
     } else {
@@ -4948,22 +4948,12 @@ export function Portal() {
                       <span className="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-[8.5px] font-bold uppercase tracking-wider">Admin</span>
                     </button>
                     <button 
-                      onClick={() => handleGoogleLoginSimulate("roysukanta10@gmail.com")}
+                      onClick={() => handleGoogleLoginSimulate("avd.it.unit@gmail.com")}
                       className="w-full text-left p-3 rounded-xl border border-slate-200/80 hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-between"
                     >
                       <div>
-                        <div className="font-extrabold text-slate-800 text-[11px]">Dr. Sukanta Roy</div>
-                        <div className="text-[9px] text-slate-400">roysukanta10@gmail.com (Initial Admin)</div>
-                      </div>
-                      <span className="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-[8.5px] font-bold uppercase tracking-wider">Admin</span>
-                    </button>
-                    <button 
-                      onClick={() => handleGoogleLoginSimulate("drpradippati@rediffmail.com")}
-                      className="w-full text-left p-3 rounded-xl border border-slate-200/80 hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-between"
-                    >
-                      <div>
-                        <div className="font-extrabold text-slate-800 text-[11px]">Dr. Pradip Pati</div>
-                        <div className="text-[9px] text-slate-400">drpradippati@rediffmail.com (Initial Admin)</div>
+                        <div className="font-extrabold text-slate-800 text-[11px]">AVD IT Unit</div>
+                        <div className="text-[9px] text-slate-400">avd.it.unit@gmail.com (IT Admin)</div>
                       </div>
                       <span className="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-[8.5px] font-bold uppercase tracking-wider">Admin</span>
                     </button>

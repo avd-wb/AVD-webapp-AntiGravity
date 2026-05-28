@@ -472,7 +472,7 @@ export const app = express();
       
       if (match) {
         // Enforce restriction of ONLY authorized initial emails
-        const allowedAdmins = ["beraprasanta1973@gmail.com", "roysukanta10@gmail.com", "drpradippati@rediffmail.com", "administrator@avdwb.org"];
+        const allowedAdmins = ["beraprasanta1973@gmail.com", "avd.it.unit@gmail.com"];
         if (!allowedAdmins.includes(match.email.trim().toLowerCase())) {
           return res.status(403).json({ success: false, error: "Access Denied: This administrator account is not verified in the AVD Master directory." });
         }
@@ -516,7 +516,7 @@ export const app = express();
 
       console.log(`[AUTH] Google Authentication requested for: ${name} (${email})`);
 
-      const allowedAdminEmails = ["beraprasanta1973@gmail.com", "roysukanta10@gmail.com", "drpradippati@rediffmail.com", "administrator@avdwb.org"];
+      const allowedAdminEmails = ["beraprasanta1973@gmail.com", "avd.it.unit@gmail.com"];
       
       // 1. Check if email belongs to initial admins
       if (allowedAdminEmails.includes(email.trim().toLowerCase())) {
@@ -814,11 +814,11 @@ export const app = express();
       }
 
       // Restrict new admin additions to authorized list
-      const allowedAdminEmails = ["beraprasanta1973@gmail.com", "roysukanta10@gmail.com", "drpradippati@rediffmail.com", "administrator@avdwb.org"];
+      const allowedAdminEmails = ["beraprasanta1973@gmail.com", "avd.it.unit@gmail.com"];
       if (!allowedAdminEmails.includes(email.trim().toLowerCase())) {
         return res.status(403).json({ 
           success: false, 
-          error: "Permission Denied: Administrator signups are restricted strictly to Dr. Prasanta Bera, Dr. Sukanta Roy, and Dr. Pradip Pati." 
+          error: "Permission Denied: Administrator signups are restricted strictly to Dr. Prasanta Bera and AVD IT Unit." 
         });
       }
 

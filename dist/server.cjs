@@ -410,7 +410,7 @@ app.post("/api/admin-login", (req, res) => {
       (a) => (a.username.trim().toLowerCase() === username.trim().toLowerCase() || a.email.trim().toLowerCase() === username.trim().toLowerCase()) && a.password === password
     );
     if (match) {
-      const allowedAdmins = ["beraprasanta1973@gmail.com", "roysukanta10@gmail.com", "drpradippati@rediffmail.com", "administrator@avdwb.org"];
+      const allowedAdmins = ["beraprasanta1973@gmail.com", "avd.it.unit@gmail.com"];
       if (!allowedAdmins.includes(match.email.trim().toLowerCase())) {
         return res.status(403).json({ success: false, error: "Access Denied: This administrator account is not verified in the AVD Master directory." });
       }
@@ -445,7 +445,7 @@ app.post("/api/google-login", (req, res) => {
       return res.status(400).json({ success: false, error: "Missing Google email payload." });
     }
     console.log(`[AUTH] Google Authentication requested for: ${name} (${email})`);
-    const allowedAdminEmails = ["beraprasanta1973@gmail.com", "roysukanta10@gmail.com", "drpradippati@rediffmail.com", "administrator@avdwb.org"];
+    const allowedAdminEmails = ["beraprasanta1973@gmail.com", "avd.it.unit@gmail.com"];
     if (allowedAdminEmails.includes(email.trim().toLowerCase())) {
       const credPath = resolvePath("src/data/admin_credentials.json");
       const admins = JSON.parse(import_fs.default.readFileSync(credPath, "utf8"));
@@ -663,11 +663,11 @@ app.post("/api/add-admin", (req, res) => {
     if (!username || !password || !fullName || !email) {
       return res.status(400).json({ success: false, error: "Missing required admin fields." });
     }
-    const allowedAdminEmails = ["beraprasanta1973@gmail.com", "roysukanta10@gmail.com", "drpradippati@rediffmail.com", "administrator@avdwb.org"];
+    const allowedAdminEmails = ["beraprasanta1973@gmail.com", "avd.it.unit@gmail.com"];
     if (!allowedAdminEmails.includes(email.trim().toLowerCase())) {
       return res.status(403).json({
         success: false,
-        error: "Permission Denied: Administrator signups are restricted strictly to Dr. Prasanta Bera, Dr. Sukanta Roy, and Dr. Pradip Pati."
+        error: "Permission Denied: Administrator signups are restricted strictly to Dr. Prasanta Bera and AVD IT Unit."
       });
     }
     const credPath = resolvePath("src/data/admin_credentials.json");
