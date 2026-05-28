@@ -10,7 +10,7 @@
     }
   ],
   "functions": {
-    "api/index.js": {
+    "api/*.js": {
       "includeFiles": [
         "src/data/*.json",
         "firebase-applet-config.json",
