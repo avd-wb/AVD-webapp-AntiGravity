@@ -4,24 +4,13 @@ import NodeCache from "node-cache";
 import https from "https";
 import crypto from "crypto";
 import fs from "fs";
-import { fileURLToPath } from "url";
-
-const dirname = typeof __dirname !== "undefined"
-  ? __dirname
-  : path.dirname(fileURLToPath((import.meta as any).url));
-
 let firebaseConfig: any = {};
 try {
   const configPath = path.resolve("firebase-applet-config.json");
   if (fs.existsSync(configPath)) {
     firebaseConfig = JSON.parse(fs.readFileSync(configPath, "utf8"));
   } else {
-    const fallbackPath = path.join(dirname, "firebase-applet-config.json");
-    if (fs.existsSync(fallbackPath)) {
-      firebaseConfig = JSON.parse(fs.readFileSync(fallbackPath, "utf8"));
-    } else {
-      console.warn("[FIREBASE] Config file not found in process.cwd() or dirname");
-    }
+    console.warn("[FIREBASE] Config file not found in process.cwd()");
   }
 } catch (err: any) {
   console.error("[FIREBASE] Error reading config file:", err.message);
