@@ -13,7 +13,8 @@
     "api/index.js": {
       "includeFiles": [
         "src/data/*.json",
-        "firebase-applet-config.json"
+        "firebase-applet-config.json",
+        "dist/server.cjs"
       ]
     }
   }
