@@ -1,9 +1,40 @@
+import fs from "fs";
+import path from "path";
+
 let app = null;
 
+function scanDir(dir, results = []) {
+  try {
+    const list = fs.readdirSync(dir);
+    list.forEach(file => {
+      const fullPath = path.join(dir, file);
+      const stat = fs.statSync(fullPath);
+      if (stat && stat.isDirectory()) {
+        if (!file.startsWith(".") && file !== "node_modules") {
+          scanDir(fullPath, results);
+        }
+      } else {
+        results.push(fullPath);
+      }
+    });
+  } catch (e) {
+    results.push(`Error scanning ${dir}: ${e.message}`);
+  }
+  return results;
+}
+
 export default async function handler(req, res) {
+  if (req.url.endsWith("/diagnose")) {
+    const files = scanDir("/var/task");
+    return res.status(200).json({
+      cwd: process.cwd(),
+      __dirname: typeof __dirname !== "undefined" ? __dirname : "undefined",
+      files: files
+    });
+  }
+
   if (!app) {
     try {
-      // Dynamically import the pre-compiled production build of server.ts
       const serverModule = await import("../dist/server.cjs");
       app = serverModule.app;
     } catch (err) {
