@@ -33,43 +33,40 @@ __export(server_exports, {
 });
 module.exports = __toCommonJS(server_exports);
 var import_express = __toESM(require("express"), 1);
-var originalPath = __toESM(require("path"), 1);
+var import_path = __toESM(require("path"), 1);
 var import_node_cache = __toESM(require("node-cache"), 1);
 var import_https = __toESM(require("https"), 1);
 var import_crypto = __toESM(require("crypto"), 1);
 var import_fs = __toESM(require("fs"), 1);
-var path = {
-  ...originalPath,
-  resolve: function(...args) {
-    const resolved = originalPath.resolve.apply(originalPath, args);
-    if (process.env.VERCEL && resolved.endsWith(".json") && resolved.includes("src/data")) {
-      const filename = originalPath.basename(resolved);
-      const tmpPath = originalPath.join("/tmp", filename);
-      if (import_fs.default.existsSync(tmpPath)) {
-        return tmpPath;
-      }
-      if (import_fs.default.existsSync(resolved)) {
-        try {
-          import_fs.default.writeFileSync(tmpPath, import_fs.default.readFileSync(resolved));
-          return tmpPath;
-        } catch (e) {
-          console.error(`[PATH-OVERRIDE] Failed to copy seed to /tmp: ${filename}`, e.message);
-        }
-      }
+function resolvePath(relativePath) {
+  const resolved = import_path.default.resolve(relativePath);
+  if (process.env.VERCEL && resolved.endsWith(".json") && resolved.includes("src/data")) {
+    const filename = import_path.default.basename(resolved);
+    const tmpPath = import_path.default.join("/tmp", filename);
+    if (import_fs.default.existsSync(tmpPath)) {
+      return tmpPath;
+    }
+    if (import_fs.default.existsSync(resolved)) {
       try {
-        const isArray = filename.includes("profile_requests") || filename.includes("registered_users");
-        import_fs.default.writeFileSync(tmpPath, isArray ? "[]" : "{}", "utf8");
+        import_fs.default.writeFileSync(tmpPath, import_fs.default.readFileSync(resolved));
         return tmpPath;
       } catch (e) {
-        console.error(`[PATH-OVERRIDE] Failed to init blank in /tmp: ${filename}`, e.message);
+        console.error(`[PATH-OVERRIDE] Failed to copy seed to /tmp: ${filename}`, e.message);
       }
     }
-    return resolved;
+    try {
+      const isArray = filename.includes("profile_requests") || filename.includes("registered_users");
+      import_fs.default.writeFileSync(tmpPath, isArray ? "[]" : "{}", "utf8");
+      return tmpPath;
+    } catch (e) {
+      console.error(`[PATH-OVERRIDE] Failed to init blank in /tmp: ${filename}`, e.message);
+    }
   }
-};
+  return resolved;
+}
 var firebaseConfig = {};
 try {
-  const configPath = path.resolve("firebase-applet-config.json");
+  const configPath = import_path.default.resolve("firebase-applet-config.json");
   if (import_fs.default.existsSync(configPath)) {
     firebaseConfig = JSON.parse(import_fs.default.readFileSync(configPath, "utf8"));
   } else {
@@ -109,7 +106,7 @@ app.get("/api/diagnose", (req, res) => {
       try {
         const list = import_fs.default.readdirSync(dir);
         list.forEach((file) => {
-          const fullPath = path.join(dir, file);
+          const fullPath = import_path.default.join(dir, file);
           const stat = import_fs.default.statSync(fullPath);
           if (stat && stat.isDirectory()) {
             if (!file.startsWith(".") && file !== "node_modules") {
@@ -282,7 +279,7 @@ app.post("/api/upload-order", async (req, res) => {
     }
     const extracted = JSON.parse(response.text);
     console.log(`[INGEST] AI Extraction Complete: Category: ${extracted.order_type} | Mentioned Vets: ${extracted.officers?.length}`);
-    const employeesPath = path.resolve("src/data/employees_master.json");
+    const employeesPath = resolvePath("src/data/employees_master.json");
     const employees = JSON.parse(import_fs.default.readFileSync(employeesPath, "utf8"));
     const matchedLogs = [];
     const matchedOfficers = [];
@@ -321,9 +318,9 @@ app.post("/api/upload-order", async (req, res) => {
       }
     }
     const orderId = `order_${Date.now()}`;
-    const ordersPath = path.resolve("src/data/orders_master_index.json");
+    const ordersPath = resolvePath("src/data/orders_master_index.json");
     const ordersIndex = JSON.parse(import_fs.default.readFileSync(ordersPath, "utf8"));
-    const linksPath = path.resolve("src/data/employee_order_links.json");
+    const linksPath = resolvePath("src/data/employee_order_links.json");
     const linksIndex = JSON.parse(import_fs.default.readFileSync(linksPath, "utf8"));
     ordersIndex.push({
       id: orderId,
@@ -377,7 +374,7 @@ app.post("/api/upload-order", async (req, res) => {
 });
 app.get("/api/registered-users", (req, res) => {
   try {
-    const regPath = path.resolve("src/data/registered_users.json");
+    const regPath = resolvePath("src/data/registered_users.json");
     if (!import_fs.default.existsSync(regPath)) {
       import_fs.default.writeFileSync(regPath, JSON.stringify([], null, 2), "utf8");
     }
@@ -389,7 +386,7 @@ app.get("/api/registered-users", (req, res) => {
 });
 app.get("/api/admin-credentials", (req, res) => {
   try {
-    const credPath = path.resolve("src/data/admin_credentials.json");
+    const credPath = resolvePath("src/data/admin_credentials.json");
     if (!import_fs.default.existsSync(credPath)) {
       res.json({ success: true, data: [] });
       return;
@@ -404,7 +401,7 @@ app.get("/api/admin-credentials", (req, res) => {
 app.post("/api/admin-login", (req, res) => {
   try {
     const { username, password } = req.body;
-    const credPath = path.resolve("src/data/admin_credentials.json");
+    const credPath = resolvePath("src/data/admin_credentials.json");
     if (!import_fs.default.existsSync(credPath)) {
       return res.status(500).json({ success: false, error: "Administrators credentials database is currently offline." });
     }
@@ -450,7 +447,7 @@ app.post("/api/google-login", (req, res) => {
     console.log(`[AUTH] Google Authentication requested for: ${name} (${email})`);
     const allowedAdminEmails = ["beraprasanta1973@gmail.com", "roysukanta10@gmail.com", "drpradippati@rediffmail.com", "administrator@avdwb.org"];
     if (allowedAdminEmails.includes(email.trim().toLowerCase())) {
-      const credPath = path.resolve("src/data/admin_credentials.json");
+      const credPath = resolvePath("src/data/admin_credentials.json");
       const admins = JSON.parse(import_fs.default.readFileSync(credPath, "utf8"));
       const match = admins.find((a) => a.email.trim().toLowerCase() === email.trim().toLowerCase());
       if (match) {
@@ -470,7 +467,7 @@ app.post("/api/google-login", (req, res) => {
         });
       }
     }
-    const regPath = path.resolve("src/data/registered_users.json");
+    const regPath = resolvePath("src/data/registered_users.json");
     const registered = JSON.parse(import_fs.default.readFileSync(regPath, "utf8"));
     const regMatch = registered.find((r) => r.email.trim().toLowerCase() === email.trim().toLowerCase());
     if (regMatch) {
@@ -480,7 +477,7 @@ app.post("/api/google-login", (req, res) => {
       if (regMatch.status === "revoked") {
         return res.status(403).json({ success: false, error: "Access Deactivated: Your portal account has been suspended by AVD administrators." });
       }
-      const employeesPath2 = path.resolve("src/data/employees_master.json");
+      const employeesPath2 = resolvePath("src/data/employees_master.json");
       const employees2 = JSON.parse(import_fs.default.readFileSync(employeesPath2, "utf8"));
       const empProfile = employees2.find((emp) => emp.hrms_id.trim() === regMatch.hrms_id.trim());
       console.log(`[AUTH] Google Member Approved: Dr. ${regMatch.full_name}`);
@@ -490,7 +487,7 @@ app.post("/api/google-login", (req, res) => {
         user: empProfile || regMatch
       });
     }
-    const employeesPath = path.resolve("src/data/employees_master.json");
+    const employeesPath = resolvePath("src/data/employees_master.json");
     const employees = JSON.parse(import_fs.default.readFileSync(employeesPath, "utf8"));
     const masterMatch = employees.find((emp) => emp.email.trim().toLowerCase() === email.trim().toLowerCase());
     if (masterMatch) {
@@ -513,7 +510,7 @@ app.post("/api/forgot-password", (req, res) => {
     if (!hrmsId || !email) {
       return res.status(400).json({ success: false, error: "HRMS ID and Email address are required." });
     }
-    const regPath = path.resolve("src/data/registered_users.json");
+    const regPath = resolvePath("src/data/registered_users.json");
     const registered = JSON.parse(import_fs.default.readFileSync(regPath, "utf8"));
     const match = registered.find(
       (r) => r.hrms_id.trim() === hrmsId.trim() && r.email.trim().toLowerCase() === email.trim().toLowerCase()
@@ -550,13 +547,13 @@ app.post("/api/register", (req, res) => {
     if (!hrmsId || !email || !password || !affiliation) {
       return res.status(400).json({ success: false, error: "Missing required fields." });
     }
-    const employeesPath = path.resolve("src/data/employees_master.json");
+    const employeesPath = resolvePath("src/data/employees_master.json");
     const employees = JSON.parse(import_fs.default.readFileSync(employeesPath, "utf8"));
     const employee = employees.find((emp) => emp.hrms_id.trim() === hrmsId.trim());
     if (!employee) {
       return res.status(404).json({ success: false, error: "HRMS ID not found in the verified roster. Please check the ID or contact support." });
     }
-    const regPath = path.resolve("src/data/registered_users.json");
+    const regPath = resolvePath("src/data/registered_users.json");
     if (!import_fs.default.existsSync(regPath)) {
       import_fs.default.writeFileSync(regPath, JSON.stringify([], null, 2), "utf8");
     }
@@ -598,7 +595,7 @@ app.post("/api/register", (req, res) => {
 app.post("/api/approve-user", (req, res) => {
   try {
     const { hrmsId } = req.body;
-    const regPath = path.resolve("src/data/registered_users.json");
+    const regPath = resolvePath("src/data/registered_users.json");
     const registered = JSON.parse(import_fs.default.readFileSync(regPath, "utf8"));
     const user = registered.find((r) => r.hrms_id === hrmsId);
     if (!user) {
@@ -617,7 +614,7 @@ app.post("/api/approve-user", (req, res) => {
 app.post("/api/revoke-user", (req, res) => {
   try {
     const { hrmsId } = req.body;
-    const regPath = path.resolve("src/data/registered_users.json");
+    const regPath = resolvePath("src/data/registered_users.json");
     const registered = JSON.parse(import_fs.default.readFileSync(regPath, "utf8"));
     const user = registered.find((r) => r.hrms_id === hrmsId);
     if (!user) {
@@ -634,13 +631,13 @@ app.post("/api/revoke-user", (req, res) => {
 app.post("/api/add-user", (req, res) => {
   try {
     const { hrmsId, email, password, affiliation } = req.body;
-    const employeesPath = path.resolve("src/data/employees_master.json");
+    const employeesPath = resolvePath("src/data/employees_master.json");
     const employees = JSON.parse(import_fs.default.readFileSync(employeesPath, "utf8"));
     const employee = employees.find((emp) => emp.hrms_id.trim() === hrmsId.trim());
     if (!employee) {
       return res.status(404).json({ success: false, error: "HRMS ID not found in the verified roster." });
     }
-    const regPath = path.resolve("src/data/registered_users.json");
+    const regPath = resolvePath("src/data/registered_users.json");
     const registered = JSON.parse(import_fs.default.readFileSync(regPath, "utf8"));
     const filtered = registered.filter((r) => r.hrms_id !== hrmsId);
     const newUser = {
@@ -673,7 +670,7 @@ app.post("/api/add-admin", (req, res) => {
         error: "Permission Denied: Administrator signups are restricted strictly to Dr. Prasanta Bera, Dr. Sukanta Roy, and Dr. Pradip Pati."
       });
     }
-    const credPath = path.resolve("src/data/admin_credentials.json");
+    const credPath = resolvePath("src/data/admin_credentials.json");
     let admins = [];
     if (import_fs.default.existsSync(credPath)) {
       admins = JSON.parse(import_fs.default.readFileSync(credPath, "utf8"));
@@ -706,7 +703,7 @@ app.post("/api/add-admin", (req, res) => {
 });
 app.get("/api/profile-requests", (req, res) => {
   try {
-    const pathRequests = path.resolve("src/data/profile_requests.json");
+    const pathRequests = resolvePath("src/data/profile_requests.json");
     if (!import_fs.default.existsSync(pathRequests)) {
       import_fs.default.writeFileSync(pathRequests, JSON.stringify([], null, 2), "utf8");
     }
@@ -722,7 +719,7 @@ app.post("/api/submit-profile-request", (req, res) => {
     if (!hrmsId || !fullName) {
       return res.status(400).json({ success: false, error: "Missing required fields (HRMS ID, name)." });
     }
-    const pathRequests = path.resolve("src/data/profile_requests.json");
+    const pathRequests = resolvePath("src/data/profile_requests.json");
     if (!import_fs.default.existsSync(pathRequests)) {
       import_fs.default.writeFileSync(pathRequests, JSON.stringify([], null, 2), "utf8");
     }
@@ -779,7 +776,7 @@ app.post("/api/submit-profile-request", (req, res) => {
 });
 app.get("/api/employees-master", (req, res) => {
   try {
-    const employeesPath = path.resolve("src/data/employees_master.json");
+    const employeesPath = resolvePath("src/data/employees_master.json");
     if (!import_fs.default.existsSync(employeesPath)) {
       return res.status(500).json({ success: false, error: "Master database offline." });
     }
@@ -795,7 +792,7 @@ app.post("/api/action-profile-request", (req, res) => {
     if (!requestId || !action) {
       return res.status(400).json({ success: false, error: "Missing required fields." });
     }
-    const pathRequests = path.resolve("src/data/profile_requests.json");
+    const pathRequests = resolvePath("src/data/profile_requests.json");
     if (!import_fs.default.existsSync(pathRequests)) {
       return res.status(404).json({ success: false, error: "No profile update requests database found." });
     }
@@ -806,7 +803,7 @@ app.post("/api/action-profile-request", (req, res) => {
     }
     const request = requests[requestIndex];
     if (action === "approve") {
-      const employeesPath = path.resolve("src/data/employees_master.json");
+      const employeesPath = resolvePath("src/data/employees_master.json");
       if (import_fs.default.existsSync(employeesPath)) {
         const employees = JSON.parse(import_fs.default.readFileSync(employeesPath, "utf8"));
         const employee = employees.find((emp) => emp.hrms_id.trim() === request.hrms_id.trim());
@@ -917,11 +914,11 @@ app.post("/api/seed-firestore", async (req, res) => {
   try {
     const logs = [];
     logs.push(`[SEED] Starting Firestore seeding run...`);
-    const employeesPath = path.resolve("src/data/employees_master.json");
+    const employeesPath = resolvePath("src/data/employees_master.json");
     const employees = JSON.parse(import_fs.default.readFileSync(employeesPath, "utf8"));
-    const ordersPath = path.resolve("src/data/orders_master_index.json");
+    const ordersPath = resolvePath("src/data/orders_master_index.json");
     const ordersIndex = JSON.parse(import_fs.default.readFileSync(ordersPath, "utf8"));
-    const linksPath = path.resolve("src/data/employee_order_links.json");
+    const linksPath = resolvePath("src/data/employee_order_links.json");
     const linksIndex = JSON.parse(import_fs.default.readFileSync(linksPath, "utf8"));
     logs.push(`[SEED] Read local seed data: ${employees.length} employees, ${ordersIndex.length} orders, ${linksIndex.length} links.`);
     const seedCollectionInBatches = async (colName, items, idKey) => {
@@ -942,7 +939,7 @@ app.post("/api/seed-firestore", async (req, res) => {
           logs.push(`[SEED] Committed batch of ${count} documents for '${colName}' (Total: ${batchCount})`);
           batch = writeBatch(db);
           count = 0;
-          await new Promise((resolve2) => setTimeout(resolve2, 100));
+          await new Promise((resolve) => setTimeout(resolve, 100));
         }
       }
       if (count > 0) {
@@ -1026,11 +1023,11 @@ app.post("/api/sync-sheet", async (req, res) => {
         subject: "MCAS 8-year scale upliftment benefits confirmation for Dr. Prasanta Kumar Bera"
       }
     ];
-    const employeesPath = path.resolve("src/data/employees_master.json");
+    const employeesPath = resolvePath("src/data/employees_master.json");
     const employees = JSON.parse(import_fs.default.readFileSync(employeesPath, "utf8"));
-    const ordersPath = path.resolve("src/data/orders_master_index.json");
+    const ordersPath = resolvePath("src/data/orders_master_index.json");
     const ordersIndex = JSON.parse(import_fs.default.readFileSync(ordersPath, "utf8"));
-    const linksPath = path.resolve("src/data/employee_order_links.json");
+    const linksPath = resolvePath("src/data/employee_order_links.json");
     const linksIndex = JSON.parse(import_fs.default.readFileSync(linksPath, "utf8"));
     let syncedCount = 0;
     const db = await getDb();
@@ -1137,7 +1134,7 @@ if (!process.env.VERCEL) {
   } else {
     app.use(import_express.default.static("dist"));
     app.get("*", (req, res) => {
-      res.sendFile(path.resolve("dist", "index.html"));
+      res.sendFile(import_path.default.resolve("dist", "index.html"));
     });
     app.listen(PORT, "0.0.0.0", () => {
       console.log(`Server running on http://localhost:${PORT}`);

@@ -1,40 +1,38 @@
 import express from "express";
-import * as originalPath from "path";
+import path from "path";
 import NodeCache from "node-cache";
 import https from "https";
 import crypto from "crypto";
 import fs from "fs";
 
 // Custom path resolver to handle Vercel's read-only filesystem
-const path = {
-  ...originalPath,
-  resolve: function(...args: string[]) {
-    const resolved = originalPath.resolve.apply(originalPath, args);
-    if (process.env.VERCEL && resolved.endsWith(".json") && resolved.includes("src/data")) {
-      const filename = originalPath.basename(resolved);
-      const tmpPath = originalPath.join("/tmp", filename);
-      if (fs.existsSync(tmpPath)) {
-        return tmpPath;
-      }
-      if (fs.existsSync(resolved)) {
-        try {
-          fs.writeFileSync(tmpPath, fs.readFileSync(resolved));
-          return tmpPath;
-        } catch (e: any) {
-          console.error(`[PATH-OVERRIDE] Failed to copy seed to /tmp: ${filename}`, e.message);
-        }
-      }
+function resolvePath(relativePath: string): string {
+  const resolved = path.resolve(relativePath);
+  if (process.env.VERCEL && resolved.endsWith(".json") && resolved.includes("src/data")) {
+    const filename = path.basename(resolved);
+    const tmpPath = path.join("/tmp", filename);
+    if (fs.existsSync(tmpPath)) {
+      return tmpPath;
+    }
+    if (fs.existsSync(resolved)) {
       try {
-        const isArray = filename.includes("profile_requests") || filename.includes("registered_users");
-        fs.writeFileSync(tmpPath, isArray ? "[]" : "{}", "utf8");
+        fs.writeFileSync(tmpPath, fs.readFileSync(resolved));
         return tmpPath;
       } catch (e: any) {
-        console.error(`[PATH-OVERRIDE] Failed to init blank in /tmp: ${filename}`, e.message);
+        console.error(`[PATH-OVERRIDE] Failed to copy seed to /tmp: ${filename}`, e.message);
       }
     }
-    return resolved;
+    try {
+      const isArray = filename.includes("profile_requests") || filename.includes("registered_users");
+      fs.writeFileSync(tmpPath, isArray ? "[]" : "{}", "utf8");
+      return tmpPath;
+    } catch (e: any) {
+      console.error(`[PATH-OVERRIDE] Failed to init blank in /tmp: ${filename}`, e.message);
+    }
   }
-};
+  return resolved;
+}
+
 
 let firebaseConfig: any = {};
 try {
@@ -298,7 +296,7 @@ export const app = express();
       console.log(`[INGEST] AI Extraction Complete: Category: ${extracted.order_type} | Mentioned Vets: ${extracted.officers?.length}`);
 
       // Read employees list for roster mapping
-      const employeesPath = path.resolve("src/data/employees_master.json");
+      const employeesPath = resolvePath("src/data/employees_master.json");
       const employees = JSON.parse(fs.readFileSync(employeesPath, "utf8"));
       
       const matchedLogs: string[] = [];
@@ -350,10 +348,10 @@ export const app = express();
       // Persist results locally by updating json files
       const orderId = `order_${Date.now()}`;
       
-      const ordersPath = path.resolve("src/data/orders_master_index.json");
+      const ordersPath = resolvePath("src/data/orders_master_index.json");
       const ordersIndex = JSON.parse(fs.readFileSync(ordersPath, "utf8"));
       
-      const linksPath = path.resolve("src/data/employee_order_links.json");
+      const linksPath = resolvePath("src/data/employee_order_links.json");
       const linksIndex = JSON.parse(fs.readFileSync(linksPath, "utf8"));
 
       // Update orders index
@@ -421,7 +419,7 @@ export const app = express();
   // =========================================================================
   app.get("/api/registered-users", (req, res) => {
     try {
-      const regPath = path.resolve("src/data/registered_users.json");
+      const regPath = resolvePath("src/data/registered_users.json");
       if (!fs.existsSync(regPath)) {
         fs.writeFileSync(regPath, JSON.stringify([], null, 2), "utf8");
       }
@@ -437,7 +435,7 @@ export const app = express();
   // Returns list of admin usernames for sync checks
   app.get("/api/admin-credentials", (req, res) => {
     try {
-      const credPath = path.resolve("src/data/admin_credentials.json");
+      const credPath = resolvePath("src/data/admin_credentials.json");
       if (!fs.existsSync(credPath)) {
         res.json({ success: true, data: [] });
         return;
@@ -458,7 +456,7 @@ export const app = express();
   app.post("/api/admin-login", (req, res) => {
     try {
       const { username, password } = req.body;
-      const credPath = path.resolve("src/data/admin_credentials.json");
+      const credPath = resolvePath("src/data/admin_credentials.json");
       
       if (!fs.existsSync(credPath)) {
         return res.status(500).json({ success: false, error: "Administrators credentials database is currently offline." });
@@ -522,7 +520,7 @@ export const app = express();
       
       // 1. Check if email belongs to initial admins
       if (allowedAdminEmails.includes(email.trim().toLowerCase())) {
-        const credPath = path.resolve("src/data/admin_credentials.json");
+        const credPath = resolvePath("src/data/admin_credentials.json");
         const admins = JSON.parse(fs.readFileSync(credPath, "utf8"));
         const match = admins.find((a: any) => a.email.trim().toLowerCase() === email.trim().toLowerCase());
         
@@ -545,7 +543,7 @@ export const app = express();
       }
 
       // 2. Otherwise search standard registered employee directory
-      const regPath = path.resolve("src/data/registered_users.json");
+      const regPath = resolvePath("src/data/registered_users.json");
       const registered = JSON.parse(fs.readFileSync(regPath, "utf8"));
       const regMatch = registered.find((r: any) => r.email.trim().toLowerCase() === email.trim().toLowerCase());
 
@@ -558,7 +556,7 @@ export const app = express();
         }
 
         // Retrieve full profile from master
-        const employeesPath = path.resolve("src/data/employees_master.json");
+        const employeesPath = resolvePath("src/data/employees_master.json");
         const employees = JSON.parse(fs.readFileSync(employeesPath, "utf8"));
         const empProfile = employees.find((emp: any) => emp.hrms_id.trim() === regMatch.hrms_id.trim());
 
@@ -571,7 +569,7 @@ export const app = express();
       }
 
       // 3. Fallback: Check if email is associated with a vet in employees_master who hasn't registered yet
-      const employeesPath = path.resolve("src/data/employees_master.json");
+      const employeesPath = resolvePath("src/data/employees_master.json");
       const employees = JSON.parse(fs.readFileSync(employeesPath, "utf8"));
       const masterMatch = employees.find((emp: any) => emp.email.trim().toLowerCase() === email.trim().toLowerCase());
 
@@ -603,7 +601,7 @@ export const app = express();
         return res.status(400).json({ success: false, error: "HRMS ID and Email address are required." });
       }
 
-      const regPath = path.resolve("src/data/registered_users.json");
+      const regPath = resolvePath("src/data/registered_users.json");
       const registered = JSON.parse(fs.readFileSync(regPath, "utf8"));
       const match = registered.find(
         (r: any) => r.hrms_id.trim() === hrmsId.trim() && r.email.trim().toLowerCase() === email.trim().toLowerCase()
@@ -651,7 +649,7 @@ export const app = express();
       }
 
       // Check if HRMS ID exists in employees_master
-      const employeesPath = path.resolve("src/data/employees_master.json");
+      const employeesPath = resolvePath("src/data/employees_master.json");
       const employees = JSON.parse(fs.readFileSync(employeesPath, "utf8"));
       const employee = employees.find((emp: any) => emp.hrms_id.trim() === hrmsId.trim());
 
@@ -660,7 +658,7 @@ export const app = express();
       }
 
       // Check if already registered
-      const regPath = path.resolve("src/data/registered_users.json");
+      const regPath = resolvePath("src/data/registered_users.json");
       if (!fs.existsSync(regPath)) {
         fs.writeFileSync(regPath, JSON.stringify([], null, 2), "utf8");
       }
@@ -714,7 +712,7 @@ export const app = express();
   app.post("/api/approve-user", (req, res) => {
     try {
       const { hrmsId } = req.body;
-      const regPath = path.resolve("src/data/registered_users.json");
+      const regPath = resolvePath("src/data/registered_users.json");
       const registered = JSON.parse(fs.readFileSync(regPath, "utf8"));
       const user = registered.find((r: any) => r.hrms_id === hrmsId);
 
@@ -742,7 +740,7 @@ export const app = express();
   app.post("/api/revoke-user", (req, res) => {
     try {
       const { hrmsId } = req.body;
-      const regPath = path.resolve("src/data/registered_users.json");
+      const regPath = resolvePath("src/data/registered_users.json");
       const registered = JSON.parse(fs.readFileSync(regPath, "utf8"));
       const user = registered.find((r: any) => r.hrms_id === hrmsId);
 
@@ -768,7 +766,7 @@ export const app = express();
   app.post("/api/add-user", (req, res) => {
     try {
       const { hrmsId, email, password, affiliation } = req.body;
-      const employeesPath = path.resolve("src/data/employees_master.json");
+      const employeesPath = resolvePath("src/data/employees_master.json");
       const employees = JSON.parse(fs.readFileSync(employeesPath, "utf8"));
       const employee = employees.find((emp: any) => emp.hrms_id.trim() === hrmsId.trim());
 
@@ -776,7 +774,7 @@ export const app = express();
         return res.status(404).json({ success: false, error: "HRMS ID not found in the verified roster." });
       }
 
-      const regPath = path.resolve("src/data/registered_users.json");
+      const regPath = resolvePath("src/data/registered_users.json");
       const registered = JSON.parse(fs.readFileSync(regPath, "utf8"));
       
       // Remove existing registration if any to overwrite
@@ -824,7 +822,7 @@ export const app = express();
         });
       }
 
-      const credPath = path.resolve("src/data/admin_credentials.json");
+      const credPath = resolvePath("src/data/admin_credentials.json");
       let admins = [];
       if (fs.existsSync(credPath)) {
         admins = JSON.parse(fs.readFileSync(credPath, "utf8"));
@@ -868,7 +866,7 @@ export const app = express();
   // =========================================================================
   app.get("/api/profile-requests", (req, res) => {
     try {
-      const pathRequests = path.resolve("src/data/profile_requests.json");
+      const pathRequests = resolvePath("src/data/profile_requests.json");
       if (!fs.existsSync(pathRequests)) {
         fs.writeFileSync(pathRequests, JSON.stringify([], null, 2), "utf8");
       }
@@ -891,7 +889,7 @@ export const app = express();
         return res.status(400).json({ success: false, error: "Missing required fields (HRMS ID, name)." });
       }
 
-      const pathRequests = path.resolve("src/data/profile_requests.json");
+      const pathRequests = resolvePath("src/data/profile_requests.json");
       if (!fs.existsSync(pathRequests)) {
         fs.writeFileSync(pathRequests, JSON.stringify([], null, 2), "utf8");
       }
@@ -957,7 +955,7 @@ export const app = express();
   // =========================================================================
   app.get("/api/employees-master", (req, res) => {
     try {
-      const employeesPath = path.resolve("src/data/employees_master.json");
+      const employeesPath = resolvePath("src/data/employees_master.json");
       if (!fs.existsSync(employeesPath)) {
         return res.status(500).json({ success: false, error: "Master database offline." });
       }
@@ -979,7 +977,7 @@ export const app = express();
         return res.status(400).json({ success: false, error: "Missing required fields." });
       }
 
-      const pathRequests = path.resolve("src/data/profile_requests.json");
+      const pathRequests = resolvePath("src/data/profile_requests.json");
       if (!fs.existsSync(pathRequests)) {
         return res.status(404).json({ success: false, error: "No profile update requests database found." });
       }
@@ -995,7 +993,7 @@ export const app = express();
 
       if (action === "approve") {
         // Apply changes to employees_master.json
-        const employeesPath = path.resolve("src/data/employees_master.json");
+        const employeesPath = resolvePath("src/data/employees_master.json");
         if (fs.existsSync(employeesPath)) {
           const employees = JSON.parse(fs.readFileSync(employeesPath, "utf8"));
           const employee = employees.find((emp: any) => emp.hrms_id.trim() === request.hrms_id.trim());
@@ -1139,13 +1137,13 @@ export const app = express();
       const logs: string[] = [];
       logs.push(`[SEED] Starting Firestore seeding run...`);
       
-      const employeesPath = path.resolve("src/data/employees_master.json");
+      const employeesPath = resolvePath("src/data/employees_master.json");
       const employees = JSON.parse(fs.readFileSync(employeesPath, "utf8"));
       
-      const ordersPath = path.resolve("src/data/orders_master_index.json");
+      const ordersPath = resolvePath("src/data/orders_master_index.json");
       const ordersIndex = JSON.parse(fs.readFileSync(ordersPath, "utf8"));
       
-      const linksPath = path.resolve("src/data/employee_order_links.json");
+      const linksPath = resolvePath("src/data/employee_order_links.json");
       const linksIndex = JSON.parse(fs.readFileSync(linksPath, "utf8"));
 
       logs.push(`[SEED] Read local seed data: ${employees.length} employees, ${ordersIndex.length} orders, ${linksIndex.length} links.`);
@@ -1280,13 +1278,13 @@ export const app = express();
       ];
 
       // Read files
-      const employeesPath = path.resolve("src/data/employees_master.json");
+      const employeesPath = resolvePath("src/data/employees_master.json");
       const employees = JSON.parse(fs.readFileSync(employeesPath, "utf8"));
 
-      const ordersPath = path.resolve("src/data/orders_master_index.json");
+      const ordersPath = resolvePath("src/data/orders_master_index.json");
       const ordersIndex = JSON.parse(fs.readFileSync(ordersPath, "utf8"));
 
-      const linksPath = path.resolve("src/data/employee_order_links.json");
+      const linksPath = resolvePath("src/data/employee_order_links.json");
       const linksIndex = JSON.parse(fs.readFileSync(linksPath, "utf8"));
 
       let syncedCount = 0;
