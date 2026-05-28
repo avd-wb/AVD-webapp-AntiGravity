@@ -1,7 +1,7 @@
-let app = null;
-let initError = null;
+let app: any = null;
+let initError: any = null;
 
-export default async function handler(req, res) {
+export default async function handler(req: any, res: any) {
   if (initError) {
     return res.status(500).json({
       success: false,
@@ -13,10 +13,9 @@ export default async function handler(req, res) {
 
   if (!app) {
     try {
-      // Dynamically import server.ts
       const serverModule = await import("../server");
       app = serverModule.app;
-    } catch (err) {
+    } catch (err: any) {
       initError = err;
       return res.status(500).json({
         success: false,
