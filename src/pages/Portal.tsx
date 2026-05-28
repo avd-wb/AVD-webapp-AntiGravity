@@ -6,7 +6,8 @@ import {
   TrendingUp, LogOut, Key, FileText, CheckCircle2, Award, 
   Phone, Mail, FileCheck, AlertCircle, HelpCircle, Briefcase, MapPin,
   Upload, ChevronRight, BarChart3, Clock, Users, X,
-  MessageSquare, Send, Check, Trash2, RefreshCw, Globe, Database, AlertTriangle
+  MessageSquare, Send, Check, Trash2, RefreshCw, Globe, Database, AlertTriangle,
+  UserCheck
 } from "lucide-react";
 
 // Import real consolidated seed data
