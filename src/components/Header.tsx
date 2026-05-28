@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from "motion/react";
 const navigation = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
-  { name: "Orders & Notifications", href: "/orders" },
   { name: "Membership", href: "/membership" },
   { name: "Districts", href: "/districts" },
   { name: "Notices", href: "/notices" },

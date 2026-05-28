@@ -18,7 +18,6 @@ import { Contact } from "./pages/Contact";
 import { Privacy } from "./pages/Privacy";
 import { Terms } from "./pages/Terms";
 import { Portal } from "./pages/Portal";
-import { Orders } from "./pages/Orders";
 
 export default function App() {
   useEffect(() => {
@@ -50,7 +49,6 @@ export default function App() {
             <Route path="privacy" element={<Privacy />} />
             <Route path="terms" element={<Terms />} />
             <Route path="portal" element={<Portal />} />
-            <Route path="orders" element={<Orders />} />
           </Route>
         </Routes>
       </BrowserRouter>
