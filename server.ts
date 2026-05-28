@@ -11,9 +11,23 @@ const dirname = typeof __dirname !== "undefined"
   ? __dirname
   : path.dirname(fileURLToPath((import.meta as any).url));
 
-const firebaseConfig = JSON.parse(
-  fs.readFileSync(path.join(dirname, "firebase-applet-config.json"), "utf8")
-);
+let firebaseConfig: any = {};
+try {
+  const configPath = path.resolve("firebase-applet-config.json");
+  if (fs.existsSync(configPath)) {
+    firebaseConfig = JSON.parse(fs.readFileSync(configPath, "utf8"));
+  } else {
+    const fallbackPath = path.join(dirname, "firebase-applet-config.json");
+    if (fs.existsSync(fallbackPath)) {
+      firebaseConfig = JSON.parse(fs.readFileSync(fallbackPath, "utf8"));
+    } else {
+      console.warn("[FIREBASE] Config file not found in process.cwd() or dirname");
+    }
+  }
+} catch (err: any) {
+  console.error("[FIREBASE] Error reading config file:", err.message);
+}
+
 
 let dbInstance: any = null;
 async function getDb() {
