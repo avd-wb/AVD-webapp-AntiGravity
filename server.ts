@@ -4,7 +4,6 @@ import NodeCache from "node-cache";
 import https from "https";
 import crypto from "crypto";
 import fs from "fs";
-import { GoogleGenAI } from "@google/genai";
 import { fileURLToPath } from "url";
 
 const dirname = typeof __dirname !== "undefined"
@@ -172,6 +171,7 @@ async function startServer() {
       console.log(`[INGEST] Uploaded file received: ${fileName}. Parsing with Gemini...`);
 
       // Initialize the official new GoogleGenAI SDK client
+      const { GoogleGenAI } = await import("@google/genai");
       const ai = new GoogleGenAI({ apiKey });
       
       // Define the target structured response schema
@@ -1012,6 +1012,7 @@ async function startServer() {
 
       if (apiKey) {
         // Use Gemini API with GoogleGenAI SDK
+        const { GoogleGenAI } = await import("@google/genai");
         const ai = new GoogleGenAI({ apiKey });
         
         // Structure the contents array including historical turns for coherent chat
