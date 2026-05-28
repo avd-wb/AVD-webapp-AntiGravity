@@ -24,7 +24,7 @@ function scanDir(dir, results = []) {
 }
 
 export default async function handler(req, res) {
-  if (req.url.endsWith("/diagnose")) {
+  if (req.url.includes("/diagnose")) {
     const files = scanDir("/var/task");
     return res.status(200).json({
       cwd: process.cwd(),
