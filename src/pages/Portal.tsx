@@ -1090,14 +1090,52 @@ export function Portal() {
   // Helper to parse stringified posting history log
   const getPostingHistory = (officer: Employee | null) => {
     if (!officer) return [];
+    
     const log = officer["Posting History Log"];
-    if (!log) return [];
-    try {
-      return typeof log === "string" ? JSON.parse(log) : log;
-    } catch (e) {
-      console.error("Failed to parse posting history log:", e);
-      return [];
+    if (Array.isArray(log)) return log;
+    
+    if (typeof log === "string") {
+      try {
+        const parsed = JSON.parse(log);
+        if (Array.isArray(parsed)) return parsed;
+      } catch (e) {
+        // Not a JSON array, continue to dynamic reconstruction
+      }
     }
+    
+    const history: any[] = [];
+    const count = typeof log === "number" ? log : parseInt(log) || 0;
+    
+    const getOrdinal = (n: number) => {
+      if (n === 1) return "1st";
+      if (n === 2) return "2nd";
+      if (n === 3) return "3rd";
+      return `${n}th`;
+    };
+    
+    const maxPostings = Math.max(10, count);
+    for (let i = 1; i <= maxPostings; i++) {
+      const ordinal = getOrdinal(i);
+      const designation = officer[`${ordinal} Posting Designation`] || officer[`${ordinal}_posting_designation`];
+      const place = officer[`${ordinal} Posting Place`] || officer[`${ordinal}_posting_place`];
+      const district = officer[`${ordinal} Posting District`] || officer[`${ordinal}_posting_district`];
+      const division = officer[`${ordinal} Posting Division`] || officer[`${ordinal}_posting_division`];
+      const duration = officer[`${ordinal} Posting Duration`] || officer[`${ordinal}_posting_duration`];
+      
+      if (designation || place || district) {
+        history.push({
+          designation: designation || "",
+          place: place || "",
+          district: district || "",
+          division: division || "",
+          duration_str: duration || "",
+          start_date: i === 1 ? officer.first_posting_date || officer.doj || "" : "",
+          end_date: ""
+        });
+      }
+    }
+    
+    return history;
   };
 
   // Helper to get division coverage
