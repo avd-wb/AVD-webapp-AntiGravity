@@ -56,10 +56,7 @@ const httpsAgent = new https.Agent({
 
 export const app = express();
 
-async function startServer() {
-  const PORT = 3002;
-
-  // Increase payload size limits for base64 file uploads
+// Increase payload size limits for base64 file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
@@ -1352,27 +1349,30 @@ async function startServer() {
     }
   });
 
-  // Vite middleware for development
+// Serving logic when running locally
+if (!process.env.VERCEL) {
+  const PORT = 3002;
   if (process.env.NODE_ENV !== "production") {
     const vitePkg = "vite";
-    const { createServer: createViteServer } = await import(vitePkg);
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
+    import(vitePkg).then(async ({ createServer }) => {
+      const vite = await createServer({
+        server: { middlewareMode: true },
+        appType: "spa",
+      });
+      app.use(vite.middlewares);
+      app.listen(PORT, "0.0.0.0", () => {
+        console.log(`Server running on http://localhost:${PORT}`);
+      });
+    }).catch(err => {
+      console.error("Failed to start Vite dev server:", err);
     });
-    app.use(vite.middlewares);
   } else {
     app.use(express.static("dist"));
     app.get("*", (req, res) => {
       res.sendFile(path.resolve("dist", "index.html"));
     });
-  }
-
-  if (!process.env.VERCEL) {
     app.listen(PORT, "0.0.0.0", () => {
       console.log(`Server running on http://localhost:${PORT}`);
     });
   }
 }
-
-startServer();
