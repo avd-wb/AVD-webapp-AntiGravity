@@ -66,7 +66,7 @@ function resolvePath(relativePath) {
 }
 var firebaseConfig = {};
 try {
-  const configPath = import_path.default.resolve("firebase-applet-config.json");
+  const configPath = resolvePath("src/data/firebase-applet-config.json");
   if (import_fs.default.existsSync(configPath)) {
     firebaseConfig = JSON.parse(import_fs.default.readFileSync(configPath, "utf8"));
   } else {

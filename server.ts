@@ -36,7 +36,7 @@ function resolvePath(relativePath: string): string {
 
 let firebaseConfig: any = {};
 try {
-  const configPath = path.resolve("firebase-applet-config.json");
+  const configPath = resolvePath("src/data/firebase-applet-config.json");
   if (fs.existsSync(configPath)) {
     firebaseConfig = JSON.parse(fs.readFileSync(configPath, "utf8"));
   } else {
