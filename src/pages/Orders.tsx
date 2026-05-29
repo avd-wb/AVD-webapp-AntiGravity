@@ -38,7 +38,7 @@ interface Order {
   order_date: string;
   mimeType: string;
   fileExtension: string;
-  fileSize: string;
+  fileSize: number | string;
   full_path: string;
   parent_folder_title: string;
   viewUrl: string;
@@ -297,8 +297,8 @@ export function Orders() {
     return "bg-slate-50 text-slate-600 ring-1 ring-slate-600/10";
   };
 
-  const getFileSizeStr = (bytesStr: string) => {
-    const bytes = parseInt(bytesStr, 10);
+  const getFileSizeStr = (bytesInput: number | string) => {
+    const bytes = typeof bytesInput === "number" ? bytesInput : parseInt(bytesInput, 10);
     if (isNaN(bytes) || bytes === 0) return "N/A";
     const k = 1024;
     const sizes = ["Bytes", "KB", "MB"];

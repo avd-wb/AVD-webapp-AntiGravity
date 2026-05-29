@@ -1,4 +1,5 @@
 export const allPhotos = [
+  "https://ik.imagekit.io/avdwb/pic2.webp",
   "https://ik.imagekit.io/avdwb/ttgl9lzpzlokfotpx4kd.webp?updatedAt=1779211452815",
   "https://ik.imagekit.io/avdwb/20260519%20AVD%20Photos%20(4).webp",
   "https://ik.imagekit.io/avdwb/20260519%20AVD%20Photos%20(1).webp",

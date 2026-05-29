@@ -159,7 +159,7 @@ def main():
     
     # Helper to calculate individual tenure years
     def get_officer_tenure(emp):
-        start_str = emp.get("first_seen_in_orders") or emp.get("last_order_date") or emp.get("doj")
+        start_str = emp.get("last_order_date") or emp.get("first_seen_in_orders") or emp.get("doj")
         tenure_years = 0.0
         if start_str:
             try:
