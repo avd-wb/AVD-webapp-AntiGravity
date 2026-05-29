@@ -1053,7 +1053,12 @@ export function Portal() {
 
   // Filter & Search the entire cataloged Orders list
   const filteredOrders = useMemo(() => {
-    const inScopeOrders = ordersIndexList.filter(o => o.in_scope === "Y");
+    const formatRegex = /^\[[^\]]+\] \d{8} \d{2}-\d{2}-\d{4} .* \d+(\.\d+)?\s*[kK][bB]\.[a-zA-Z0-9]+$/;
+    const inScopeOrders = ordersIndexList.filter(o => {
+      if (o.in_scope !== "Y") return false;
+      if (!o.title || !formatRegex.test(o.title)) return false;
+      return true;
+    });
     
     return inScopeOrders.filter(order => {
       const matchSearch = searchQuery === "" ||

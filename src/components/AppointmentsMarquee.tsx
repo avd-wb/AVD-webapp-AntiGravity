@@ -20,51 +20,31 @@ export function AppointmentsMarquee() {
 
         // Fetch Transfers
         try {
-          const resT = await fetch("https://ard.wb.gov.in/api/v1/appointments");
-          if (resT.ok) {
-            const apiData = await resT.json();
-            if (apiData && Array.isArray(apiData)) {
-              transfersData = apiData.map((item: any) => ({
-                title: item.title_english,
-                link: item.file_path_english ? `https://ard.wb.gov.in/${item.file_path_english}` : 'https://ard.wb.gov.in',
-                date: new Date(item.created).toLocaleDateString(),
-                timestamp: new Date(item.created).getTime()
-              }));
-            }
-          } else { throw new Error('API failed'); }
-        } catch (e) {
-          try {
-            const resTProxy = await fetch("/api/transfers");
-            const dataT = await resTProxy.json();
-            if (dataT.success && dataT.data) {
-              transfersData = dataT.data.map((o: any) => ({ ...o, timestamp: new Date(o.date).getTime() }));
-            }
-          } catch (inner) { console.error("Transfers fetch error", inner); }
-        }
+          const resTProxy = await fetch("/api/transfers");
+          const dataT = await resTProxy.json();
+          if (dataT.success && dataT.data) {
+            transfersData = dataT.data.map((o: any) => ({
+              title: o.title,
+              link: o.link,
+              date: o.date,
+              timestamp: new Date(o.order_date || o.date).getTime()
+            }));
+          }
+        } catch (inner) { console.error("Transfers fetch error", inner); }
 
         // Fetch Orders
         try {
-          const resO = await fetch("https://ard.wb.gov.in/api/v1/orders");
-          if (resO.ok) {
-            const apiData = await resO.json();
-            if (apiData && Array.isArray(apiData)) {
-              ordersData = apiData.map((item: any) => ({
-                title: item.title_english,
-                link: item.file_path ? `https://ard.wb.gov.in/${item.file_path}` : 'https://ard.wb.gov.in',
-                date: new Date(item.created).toLocaleDateString(),
-                timestamp: new Date(item.created).getTime()
-              }));
-            }
-          } else { throw new Error('API failed'); }
-        } catch (e) {
-          try {
-            const resOProxy = await fetch("/api/orders");
-            const dataO = await resOProxy.json();
-            if (dataO.success && dataO.data) {
-              ordersData = dataO.data.map((o: any) => ({ ...o, timestamp: new Date(o.date).getTime() }));
-            }
-          } catch (inner) { console.error("Orders fetch error", inner); }
-        }
+          const resOProxy = await fetch("/api/orders");
+          const dataO = await resOProxy.json();
+          if (dataO.success && dataO.data) {
+            ordersData = dataO.data.map((o: any) => ({
+              title: o.title,
+              link: o.link,
+              date: o.date,
+              timestamp: new Date(o.order_date || o.date).getTime()
+            }));
+          }
+        } catch (inner) { console.error("Orders fetch error", inner); }
 
         const combined = [...transfersData, ...ordersData].sort((a: any, b: any) => b.timestamp - a.timestamp);
         setItems(combined.slice(0, 6));
