@@ -47,12 +47,12 @@ interface Order {
 export function Orders() {
   const allOrders = useMemo(() => {
     const todayStr = "2026-05-28";
+    const formatRegex = /^\[[^\]]+\] \d{8} \d{2}-\d{2}-\d{4} .* \d+(\.\d+)?\s*[kK][bB]\.[a-zA-Z0-9]+$/;
     return (ordersData as Order[]).filter(o => {
       if (o.in_scope === "N") return false;
       if (o.parent_folder_title === "Service Books" || (o.full_path && o.full_path.includes("Service Books"))) return false;
-      if (o.title.includes("00000000") || o.title.includes("00-00-0000")) return false;
-      if (o.title.toLowerCase().startsWith("[other]") || o.parent_folder_title === "other" || (o.full_path && o.full_path.includes("/other/"))) return false;
       if (o.order_date && o.order_date > todayStr) return false;
+      if (!o.title || !formatRegex.test(o.title)) return false;
       return true;
     });
   }, []);

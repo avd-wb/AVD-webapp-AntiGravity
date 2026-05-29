@@ -2326,6 +2326,14 @@ export function Portal() {
                       👥 Roster ({totalStats.onroll})
                     </button>
                     <button 
+                      onClick={() => setActiveSubTab("repository")}
+                      className={`px-4 py-2.5 rounded-full text-xs font-bold transition-all ${
+                        activeSubTab === "repository" ? "bg-slate-900 text-white" : "bg-white text-slate-600 border border-slate-200"
+                      }`}
+                    >
+                      📁 Orders Repository
+                    </button>
+                    <button 
                       onClick={() => setActiveSubTab("approvals")}
                       className={`px-4 py-2.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 ${
                         activeSubTab === "approvals" ? "bg-slate-900 text-white" : "bg-white text-slate-600 border border-slate-200"
