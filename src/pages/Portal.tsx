@@ -1036,6 +1036,7 @@ export function Portal() {
     if (t.includes("transfer")) return "bg-indigo-50 text-indigo-700 ring-1 ring-indigo-600/10";
     if (t.includes("confirmation")) return "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/10";
     if (t.includes("cas") || t.includes("mcas")) return "bg-amber-50 text-amber-700 ring-1 ring-amber-600/10";
+    if (t.includes("pbgsbs")) return "bg-purple-50 text-purple-700 ring-1 ring-purple-600/10";
     return "bg-slate-50 text-slate-700 ring-1 ring-slate-600/10";
   };
 
@@ -4404,6 +4405,7 @@ export function Portal() {
                       <option value="Service Confirmation">Service Confirmation</option>
                       <option value="CAS / MCAS">MCAS / Career Advancement</option>
                       <option value="Appointment / Recruitment">Appointment / Recruitment</option>
+                      <option value="PBGSBS">PBGSBS</option>
                       <option value="Notification">Notifications</option>
                       <option value="Circular">Circulars</option>
                       <option value="Memo">Memos</option>

@@ -245,7 +245,7 @@ export const app = express();
           order_date: { type: "STRING", description: "The date of issuance in YYYY-MM-DD format" },
           order_type: { 
             type: "STRING", 
-            description: "Must be exactly one of: 'Transfer / Posting', 'CAS / MCAS', 'Service Confirmation', 'Promotion / Seniority', 'Retirement', 'Deputation', 'Disciplinary / Charge', 'Pay / Increment', 'Cadre / Restructuring', 'Election Duty', 'Notification', 'Circular', 'Memo', 'General Order', 'MVC / MVU', 'other'" 
+            description: "Must be exactly one of: 'Transfer / Posting', 'CAS / MCAS', 'Service Confirmation', 'Promotion / Seniority', 'Retirement', 'Deputation', 'Disciplinary / Charge', 'Pay / Increment', 'Cadre / Restructuring', 'Election Duty', 'Notification', 'Circular', 'Memo', 'General Order', 'MVC / MVU', 'PBGSBS', 'other'" 
           },
           subject: { type: "STRING", description: "Subject line of the government order" },
           issuing_authority: { type: "STRING", description: "The authority/officer signature on the order" },
@@ -1349,8 +1349,11 @@ export const app = express();
           logs.push(`[FIRESTORE-SYNC] [WARNING] Firestore write bypassed or offline: ${dbErr.message}`);
         }
 
-        // Add row in Sheet tab 'Transfer Orders' or 'Service Confirmations'
-        const targetTab = file.order_type === "Transfer / Posting" ? "Transfer Orders" : "Service Confirmations";
+        // Add row in Sheet tab based on order type
+        let targetTab = "Service Confirmations";
+        if (file.order_type === "Transfer / Posting") targetTab = "Transfer Orders";
+        else if (file.order_type === "Rules & Acts") targetTab = "Rules & Acts";
+        else if (file.order_type === "PBGSBS") targetTab = "PBGSBS Orders";
         logs.push(`[DATABASE-SYNC] Appending row to Master Sheet tab '${targetTab}' on Google Drive with link: ${publicDriveLink}`);
 
         if (match) {
