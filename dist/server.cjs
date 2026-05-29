@@ -138,24 +138,30 @@ app.get("/api/transfers", async (req, res) => {
     if (cachedData) {
       return res.json(cachedData);
     }
-    const axios = (await import("axios")).default;
-    const response = await axios.get("https://ard.wb.gov.in/api/v1/appointments", {
-      httpsAgent,
-      headers: {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-      }
-    });
-    const apiData = response.data || [];
-    const orders = apiData.map((item) => ({
-      title: item.title_english,
-      link: item.file_path_english ? `https://ard.wb.gov.in/${item.file_path_english}` : "https://ard.wb.gov.in",
-      date: new Date(item.created).toLocaleDateString()
-    }));
-    const result = { success: true, data: orders };
-    cache.set("transfers", result);
-    res.json(result);
+    const ordersPath = resolvePath("src/data/orders_master_index.json");
+    if (import_fs.default.existsSync(ordersPath)) {
+      const rawData = JSON.parse(import_fs.default.readFileSync(ordersPath, "utf8"));
+      const formatRegex = /^\[[^\]]+\] \d{8} \d{2}-\d{2}-\d{4} .* \d+(\.\d+)?\s*[kK][bB]\.[a-zA-Z0-9]+$/;
+      const todayStr = "2026-05-28";
+      const transfers = rawData.filter((item) => {
+        if (item.in_scope === "N") return false;
+        if (item.parent_folder_title === "Service Books" || item.full_path && item.full_path.includes("Service Books")) return false;
+        if (item.order_date && item.order_date > todayStr) return false;
+        if (!item.title || !formatRegex.test(item.title)) return false;
+        if (item.order_type !== "Transfer / Posting") return false;
+        return true;
+      }).map((item) => ({
+        ...item,
+        link: item.viewUrl || item.link || "https://drive.google.com",
+        date: item.order_date || item.date || "2026-05-28"
+      }));
+      const result = { success: true, data: transfers };
+      cache.set("transfers", result);
+      return res.json(result);
+    }
+    res.json({ success: true, data: [] });
   } catch (error) {
-    console.error("API error:", error);
+    console.error("API error (transfers):", error);
     res.status(500).json({ success: false, error: "Failed to fetch transfers" });
   }
 });
@@ -165,22 +171,27 @@ app.get("/api/orders", async (req, res) => {
     if (cachedData) {
       return res.json(cachedData);
     }
-    const axios = (await import("axios")).default;
-    const response = await axios.get("https://ard.wb.gov.in/api/v1/orders", {
-      httpsAgent,
-      headers: {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-      }
-    });
-    const apiData = response.data || [];
-    const orders = apiData.map((item) => ({
-      title: item.title_english,
-      link: item.file_path ? `https://ard.wb.gov.in/${item.file_path}` : "https://ard.wb.gov.in",
-      date: new Date(item.created).toLocaleDateString()
-    }));
-    const result = { success: true, data: orders };
-    cache.set("orders", result);
-    res.json(result);
+    const ordersPath = resolvePath("src/data/orders_master_index.json");
+    if (import_fs.default.existsSync(ordersPath)) {
+      const rawData = JSON.parse(import_fs.default.readFileSync(ordersPath, "utf8"));
+      const formatRegex = /^\[[^\]]+\] \d{8} \d{2}-\d{2}-\d{4} .* \d+(\.\d+)?\s*[kK][bB]\.[a-zA-Z0-9]+$/;
+      const todayStr = "2026-05-28";
+      const orders = rawData.filter((item) => {
+        if (item.in_scope === "N") return false;
+        if (item.parent_folder_title === "Service Books" || item.full_path && item.full_path.includes("Service Books")) return false;
+        if (item.order_date && item.order_date > todayStr) return false;
+        if (!item.title || !formatRegex.test(item.title)) return false;
+        return true;
+      }).map((item) => ({
+        ...item,
+        link: item.viewUrl || item.link || "https://drive.google.com",
+        date: item.order_date || item.date || "2026-05-28"
+      }));
+      const result = { success: true, data: orders };
+      cache.set("orders", result);
+      return res.json(result);
+    }
+    res.json({ success: true, data: [] });
   } catch (error) {
     console.error("API error (orders):", error);
     res.status(500).json({ success: false, error: "Failed to fetch orders" });
