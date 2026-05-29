@@ -27,8 +27,8 @@ export const noticesData = [
     "id": 447,
     "date": "May 08, 2026",
     "type": "Official",
-    "title": "[Departmental Exam] 20260508 08-05-2026 Confirmation of services for five Veterinary Officers in West Bengal Animal Husbandry & Veterinary S 392kb",
-    "description": "Official document: [Departmental Exam] 20260508 08-05-2026 Confirmation of services for five Veterinary Officers in West Bengal Animal Husbandry & Veterinary S 392kb. Click download to view.",
+    "title": "[Service Confirmation] 20260508 08-05-2026 Confirmation of services for five Veterinary Officers in West Bengal Animal Husbandry & Veterinary S 392kb",
+    "description": "Official document: [Service Confirmation] 20260508 08-05-2026 Confirmation of services for five Veterinary Officers in West Bengal Animal Husbandry & Veterinary S 392kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1YI1pp4f3DuEqXbmlWc-ln4XyQw0sMcuq/view?usp=drivesdk"
   },
   {
@@ -171,8 +171,8 @@ export const noticesData = [
     "id": 429,
     "date": "February 05, 2026",
     "type": "Official",
-    "title": "[ARD Orders] 20260205 05-02-2026 Appointment of Dr. Prabir Kumar Pathak as Nodal Officer for online Self Appraisal Report. 229kb",
-    "description": "Official document: [ARD Orders] 20260205 05-02-2026 Appointment of Dr. Prabir Kumar Pathak as Nodal Officer for online Self Appraisal Report. 229kb. Click download to view.",
+    "title": "[Appointment] 20260205 05-02-2026 Appointment of Dr. Prabir Kumar Pathak as Nodal Officer for online Self Appraisal Report. 229kb",
+    "description": "Official document: [Appointment] 20260205 05-02-2026 Appointment of Dr. Prabir Kumar Pathak as Nodal Officer for online Self Appraisal Report. 229kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/17Ss-jqVqPLmWezKlnvNEiZHqc7Y16KIn/view?usp=drivesdk"
   },
   {
@@ -187,24 +187,24 @@ export const noticesData = [
     "id": 427,
     "date": "February 03, 2026",
     "type": "Official",
-    "title": "[Departmental Exam] 20260203 03-02-2026 Confirmation of service for two veterinary officers in WBAH&VS cadre. 276kb",
-    "description": "Official document: [Departmental Exam] 20260203 03-02-2026 Confirmation of service for two veterinary officers in WBAH&VS cadre. 276kb. Click download to view.",
+    "title": "[Service Confirmation] 20260203 03-02-2026 Confirmation of service for two veterinary officers in WBAH&VS cadre. 276kb",
+    "description": "Official document: [Service Confirmation] 20260203 03-02-2026 Confirmation of service for two veterinary officers in WBAH&VS cadre. 276kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1NqbCGlTqs_DMJBG-sfE3ncwAdupQgJWg/view?usp=drivesdk"
   },
   {
     "id": 426,
     "date": "January 20, 2026",
     "type": "Official",
-    "title": "[ARD Orders] 20260120 20-01-2026 Publication of the Final Gradation List of Agriculture Expert officers under WBAH&VS as of November  463kb",
-    "description": "Official document: [ARD Orders] 20260120 20-01-2026 Publication of the Final Gradation List of Agriculture Expert officers under WBAH&VS as of November  463kb. Click download to view.",
+    "title": "[Promotion] 20260120 20-01-2026 Publication of the Final Gradation List of Agriculture Expert officers under WBAH&VS as of November  463kb",
+    "description": "Official document: [Promotion] 20260120 20-01-2026 Publication of the Final Gradation List of Agriculture Expert officers under WBAH&VS as of November  463kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1sg-0701pKyDHEyFZoR6UStNs2LfEq61J/view?usp=drivesdk"
   },
   {
     "id": 425,
     "date": "January 20, 2026",
     "type": "Official",
-    "title": "[ARD Orders] 20260120 20-01-2026 Publication of Final Gradation List of Agricultural Engineers under West Bengal General Service 365kb",
-    "description": "Official document: [ARD Orders] 20260120 20-01-2026 Publication of Final Gradation List of Agricultural Engineers under West Bengal General Service 365kb. Click download to view.",
+    "title": "[Promotion] 20260120 20-01-2026 Publication of Final Gradation List of Agricultural Engineers under West Bengal General Service 365kb",
+    "description": "Official document: [Promotion] 20260120 20-01-2026 Publication of Final Gradation List of Agricultural Engineers under West Bengal General Service 365kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/16DhNgzX0xB15ELl2_1KlrUT3RyOsgNo5/view?usp=drivesdk"
   },
   {
@@ -267,8 +267,8 @@ export const noticesData = [
     "id": 417,
     "date": "December 29, 2025",
     "type": "Official",
-    "title": "[Promotion] 20251229 29-12-2025 Appointment of Dr. Nikhil Kumar Shit as Director of Animal Resources and Veterinary Services. 305kb",
-    "description": "Official document: [Promotion] 20251229 29-12-2025 Appointment of Dr. Nikhil Kumar Shit as Director of Animal Resources and Veterinary Services. 305kb. Click download to view.",
+    "title": "[Appointment] 20251229 29-12-2025 Appointment of Dr. Nikhil Kumar Shit as Director of Animal Resources and Veterinary Services. 305kb",
+    "description": "Official document: [Appointment] 20251229 29-12-2025 Appointment of Dr. Nikhil Kumar Shit as Director of Animal Resources and Veterinary Services. 305kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/17-2-ej3HqnZS2cyL1XXkdYhfNTIhv3vt/view?usp=drivesdk"
   },
   {
@@ -283,24 +283,24 @@ export const noticesData = [
     "id": 415,
     "date": "December 24, 2025",
     "type": "Official",
-    "title": "[Promotion] 20251224 24-12-2025 Promotion and appointment of Dr. Prabir Kumar Pathak as Additional Director, ARD. 341kb",
-    "description": "Official document: [Promotion] 20251224 24-12-2025 Promotion and appointment of Dr. Prabir Kumar Pathak as Additional Director, ARD. 341kb. Click download to view.",
+    "title": "[Appointment] 20251224 24-12-2025 Promotion and appointment of Dr. Prabir Kumar Pathak as Additional Director, ARD. 341kb",
+    "description": "Official document: [Appointment] 20251224 24-12-2025 Promotion and appointment of Dr. Prabir Kumar Pathak as Additional Director, ARD. 341kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1rERNTGqVQskV4cu3L71ZU9pyjwYzo4hK/view?usp=drivesdk"
   },
   {
     "id": 414,
     "date": "December 24, 2025",
     "type": "Official",
-    "title": "[Promotion] 20251224 24-12-2025 Promotion and appointment of Dr. Animesh Sikder to the post of Additional Director. 371kb",
-    "description": "Official document: [Promotion] 20251224 24-12-2025 Promotion and appointment of Dr. Animesh Sikder to the post of Additional Director. 371kb. Click download to view.",
+    "title": "[Appointment] 20251224 24-12-2025 Promotion and appointment of Dr. Animesh Sikder to the post of Additional Director. 371kb",
+    "description": "Official document: [Appointment] 20251224 24-12-2025 Promotion and appointment of Dr. Animesh Sikder to the post of Additional Director. 371kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1iHMMag0pniK9-WdAbD1sONoHmcTCi8I8/view?usp=drivesdk"
   },
   {
     "id": 413,
     "date": "December 08, 2025",
     "type": "Official",
-    "title": "[Service Confirmation] 20251208 08-12-2025 Regarding Publication of Provisional Gradation List of the Agricultural Engineer borne under West Be 394kb",
-    "description": "Official document: [Service Confirmation] 20251208 08-12-2025 Regarding Publication of Provisional Gradation List of the Agricultural Engineer borne under West Be 394kb. Click download to view.",
+    "title": "[Promotion] 20251208 08-12-2025 Regarding Publication of Provisional Gradation List of the Agricultural Engineer borne under West Be 394kb",
+    "description": "Official document: [Promotion] 20251208 08-12-2025 Regarding Publication of Provisional Gradation List of the Agricultural Engineer borne under West Be 394kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1lq0Ja2aechp_tQdAFt4COZxE022ChOcH/view?usp=drivesdk"
   },
   {
@@ -315,8 +315,8 @@ export const noticesData = [
     "id": 411,
     "date": "November 18, 2025",
     "type": "Official",
-    "title": "[ARD Orders] 20251118 18-11-2025 Publication of the provisional gradation list for Agriculture Expert officers as of 01.11.2025. 536kb",
-    "description": "Official document: [ARD Orders] 20251118 18-11-2025 Publication of the provisional gradation list for Agriculture Expert officers as of 01.11.2025. 536kb. Click download to view.",
+    "title": "[Promotion] 20251118 18-11-2025 Publication of the provisional gradation list for Agriculture Expert officers as of 01.11.2025. 536kb",
+    "description": "Official document: [Promotion] 20251118 18-11-2025 Publication of the provisional gradation list for Agriculture Expert officers as of 01.11.2025. 536kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1ZkiRjb786p7PlevdrOA-qjmDOAAOT2UY/view?usp=drivesdk"
   },
   {
@@ -443,8 +443,8 @@ export const noticesData = [
     "id": 395,
     "date": "August 18, 2025",
     "type": "Official",
-    "title": "[Promotion] 20250818 18-08-2025 Promotion and appointment of Dr. Yograj Tamang as Director of Animal Husbandry and Veterinary Servic 238kb",
-    "description": "Official document: [Promotion] 20250818 18-08-2025 Promotion and appointment of Dr. Yograj Tamang as Director of Animal Husbandry and Veterinary Servic 238kb. Click download to view.",
+    "title": "[Appointment] 20250818 18-08-2025 Promotion and appointment of Dr. Yograj Tamang as Director of Animal Husbandry and Veterinary Servic 238kb",
+    "description": "Official document: [Appointment] 20250818 18-08-2025 Promotion and appointment of Dr. Yograj Tamang as Director of Animal Husbandry and Veterinary Servic 238kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1Ji-uzkHMwzqN9_YT-exTioSoyI05DZ1D/view?usp=drivesdk"
   },
   {
@@ -595,8 +595,8 @@ export const noticesData = [
     "id": 376,
     "date": "May 26, 2025",
     "type": "Official",
-    "title": "[Departmental Exam] 20250526 26-05-2025 Confirmation of service for two Veterinary Officers in the WBAH&VS Cadre. 594kb",
-    "description": "Official document: [Departmental Exam] 20250526 26-05-2025 Confirmation of service for two Veterinary Officers in the WBAH&VS Cadre. 594kb. Click download to view.",
+    "title": "[Service Confirmation] 20250526 26-05-2025 Confirmation of service for two Veterinary Officers in the WBAH&VS Cadre. 594kb",
+    "description": "Official document: [Service Confirmation] 20250526 26-05-2025 Confirmation of service for two Veterinary Officers in the WBAH&VS Cadre. 594kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/14P6Cgds9KjGgnQpKy2FqG40cV3QUnBhj/view?usp=drivesdk"
   },
   {
@@ -779,8 +779,8 @@ export const noticesData = [
     "id": 353,
     "date": "February 12, 2025",
     "type": "Official",
-    "title": "[Departmental Exam] 20250212 12-02-2025 Appointment of Dr. Triptendu Har as Veterinary Officer in West Bengal Animal Husbandry & Veterinary  466kb",
-    "description": "Official document: [Departmental Exam] 20250212 12-02-2025 Appointment of Dr. Triptendu Har as Veterinary Officer in West Bengal Animal Husbandry & Veterinary  466kb. Click download to view.",
+    "title": "[Appointment] 20250212 12-02-2025 Appointment of Dr. Triptendu Har as Veterinary Officer in West Bengal Animal Husbandry & Veterinary  466kb",
+    "description": "Official document: [Appointment] 20250212 12-02-2025 Appointment of Dr. Triptendu Har as Veterinary Officer in West Bengal Animal Husbandry & Veterinary  466kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/11upjYBkBfyhHuL5DkKDeFnXlmtc4qoQk/view?usp=drivesdk"
   },
   {
@@ -883,8 +883,8 @@ export const noticesData = [
     "id": 340,
     "date": "December 09, 2024",
     "type": "Official",
-    "title": "[Departmental Exam] 20241209 09-12-2024 Confirmation of services of four Veterinary Officers in West Bengal Animal Husbandry & Veterinary Se 635kb",
-    "description": "Official document: [Departmental Exam] 20241209 09-12-2024 Confirmation of services of four Veterinary Officers in West Bengal Animal Husbandry & Veterinary Se 635kb. Click download to view.",
+    "title": "[Service Confirmation] 20241209 09-12-2024 Confirmation of services of four Veterinary Officers in West Bengal Animal Husbandry & Veterinary Se 635kb",
+    "description": "Official document: [Service Confirmation] 20241209 09-12-2024 Confirmation of services of four Veterinary Officers in West Bengal Animal Husbandry & Veterinary Se 635kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1wQxqQTB7D3egGfcNhjqI2uLsAHVRUuFl/view?usp=drivesdk"
   },
   {
@@ -963,8 +963,8 @@ export const noticesData = [
     "id": 330,
     "date": "September 25, 2024",
     "type": "Official",
-    "title": "[ARD Orders] 20240925 25-09-2024 Corrigendum regarding the nomenclature of West Bengal Junior Veterinary Service rank elevation. 203kb",
-    "description": "Official document: [ARD Orders] 20240925 25-09-2024 Corrigendum regarding the nomenclature of West Bengal Junior Veterinary Service rank elevation. 203kb. Click download to view.",
+    "title": "[Promotion] 20240925 25-09-2024 Corrigendum regarding the nomenclature of West Bengal Junior Veterinary Service rank elevation. 203kb",
+    "description": "Official document: [Promotion] 20240925 25-09-2024 Corrigendum regarding the nomenclature of West Bengal Junior Veterinary Service rank elevation. 203kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1A_pSfpTbdc-m18d6uwSYhJHD_fHoHk3v/view?usp=drivesdk"
   },
   {
@@ -1003,8 +1003,8 @@ export const noticesData = [
     "id": 325,
     "date": "September 05, 2024",
     "type": "Official",
-    "title": "[ARD Orders] 20240905 05-09-2024 Forwarding of notification for information and necessary action to concerned departmental authoritie 457kb",
-    "description": "Official document: [ARD Orders] 20240905 05-09-2024 Forwarding of notification for information and necessary action to concerned departmental authoritie 457kb. Click download to view.",
+    "title": "[Act] 20240905 05-09-2024 Forwarding of notification for information and necessary action to concerned departmental authoritie 457kb",
+    "description": "Official document: [Act] 20240905 05-09-2024 Forwarding of notification for information and necessary action to concerned departmental authoritie 457kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1GvXjyafgsCJIqK3psJ-Q15nYk2UO6LeX/view?usp=drivesdk"
   },
   {
@@ -1027,16 +1027,16 @@ export const noticesData = [
     "id": 322,
     "date": "August 30, 2024",
     "type": "Official",
-    "title": "[Departmental Exam] 20240830 30-08-2024 Confirmation of services for eight Veterinary Officers under WBAH&VS cadre 414kb",
-    "description": "Official document: [Departmental Exam] 20240830 30-08-2024 Confirmation of services for eight Veterinary Officers under WBAH&VS cadre 414kb. Click download to view.",
+    "title": "[Service Confirmation] 20240830 30-08-2024 Confirmation of services for eight Veterinary Officers under WBAH&VS cadre 414kb",
+    "description": "Official document: [Service Confirmation] 20240830 30-08-2024 Confirmation of services for eight Veterinary Officers under WBAH&VS cadre 414kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1_JMb3355tKyKVdO91TxxWZdyJJsS-sdS/view?usp=drivesdk"
   },
   {
     "id": 321,
     "date": "August 29, 2024",
     "type": "Official",
-    "title": "[Departmental Exam] 20240829 29-08-2024 Confirmation of services for Veterinary Officers in West Bengal Animal Husbandry & Veterinary Servic 403kb",
-    "description": "Official document: [Departmental Exam] 20240829 29-08-2024 Confirmation of services for Veterinary Officers in West Bengal Animal Husbandry & Veterinary Servic 403kb. Click download to view.",
+    "title": "[Service Confirmation] 20240829 29-08-2024 Confirmation of services for Veterinary Officers in West Bengal Animal Husbandry & Veterinary Servic 403kb",
+    "description": "Official document: [Service Confirmation] 20240829 29-08-2024 Confirmation of services for Veterinary Officers in West Bengal Animal Husbandry & Veterinary Servic 403kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1qVNJJXMBTvxqEubKXxKWdEgk-C0_mlTs/view?usp=drivesdk"
   },
   {
@@ -1099,16 +1099,16 @@ export const noticesData = [
     "id": 313,
     "date": "July 10, 2024",
     "type": "Official",
-    "title": "[Departmental Exam] 20240710 10-07-2024 Appointment of Dr. Richa Sarkar as Veterinary Officer in West Bengal Animal Husbandry Service 405kb",
-    "description": "Official document: [Departmental Exam] 20240710 10-07-2024 Appointment of Dr. Richa Sarkar as Veterinary Officer in West Bengal Animal Husbandry Service 405kb. Click download to view.",
+    "title": "[Appointment] 20240710 10-07-2024 Appointment of Dr. Richa Sarkar as Veterinary Officer in West Bengal Animal Husbandry Service 405kb",
+    "description": "Official document: [Appointment] 20240710 10-07-2024 Appointment of Dr. Richa Sarkar as Veterinary Officer in West Bengal Animal Husbandry Service 405kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1XNBnjp1nGt8Wyp-lfOi1vFfW_vaeuQme/view?usp=drivesdk"
   },
   {
     "id": 312,
     "date": "June 26, 2024",
     "type": "Official",
-    "title": "[ARD Orders] 20240626 26-06-2024 Notification of the West Bengal Goat Breeding Policy, 2023 to enhance goat rearing. 1295kb",
-    "description": "Official document: [ARD Orders] 20240626 26-06-2024 Notification of the West Bengal Goat Breeding Policy, 2023 to enhance goat rearing. 1295kb. Click download to view.",
+    "title": "[Rules] 20240626 26-06-2024 Notification of the West Bengal Goat Breeding Policy, 2023 to enhance goat rearing. 1295kb",
+    "description": "Official document: [Rules] 20240626 26-06-2024 Notification of the West Bengal Goat Breeding Policy, 2023 to enhance goat rearing. 1295kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/18SAc6CapIOSMbX_6LH6vxSDniOL83eDb/view?usp=drivesdk"
   },
   {
@@ -1171,8 +1171,8 @@ export const noticesData = [
     "id": 304,
     "date": "April 16, 2024",
     "type": "Official",
-    "title": "[Departmental Exam] 20240416 16-04-2024 Reconstitution of the Departmental Promotion Committee for officers in the Directorate of AR&AH. 210kb",
-    "description": "Official document: [Departmental Exam] 20240416 16-04-2024 Reconstitution of the Departmental Promotion Committee for officers in the Directorate of AR&AH. 210kb. Click download to view.",
+    "title": "[Promotion] 20240416 16-04-2024 Reconstitution of the Departmental Promotion Committee for officers in the Directorate of AR&AH. 210kb",
+    "description": "Official document: [Promotion] 20240416 16-04-2024 Reconstitution of the Departmental Promotion Committee for officers in the Directorate of AR&AH. 210kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1afuMyWIvjqItbG8VqVC2DBXIascayh5E/view?usp=drivesdk"
   },
   {
@@ -1387,16 +1387,16 @@ export const noticesData = [
     "id": 277,
     "date": "December 28, 2023",
     "type": "Official",
-    "title": "[ARD Orders] 20231228 28-12-2023 Transfer and utilization of services of two West Bengal Junior Animal Husbandry Service officers 385kb",
-    "description": "Official document: [ARD Orders] 20231228 28-12-2023 Transfer and utilization of services of two West Bengal Junior Animal Husbandry Service officers 385kb. Click download to view.",
+    "title": "[Transfer] 20231228 28-12-2023 Transfer and utilization of services of two West Bengal Junior Animal Husbandry Service officers 385kb",
+    "description": "Official document: [Transfer] 20231228 28-12-2023 Transfer and utilization of services of two West Bengal Junior Animal Husbandry Service officers 385kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1EsThXh7XmOdpb2W-JQl7fNHfQhts45_I/view?usp=drivesdk"
   },
   {
     "id": 276,
     "date": "December 28, 2023",
     "type": "Official",
-    "title": "[ARD Orders] 20231228 28-12-2023 Transfer and utilization of services of five West Bengal Animal Husbandry and Veterinary officers 253kb",
-    "description": "Official document: [ARD Orders] 20231228 28-12-2023 Transfer and utilization of services of five West Bengal Animal Husbandry and Veterinary officers 253kb. Click download to view.",
+    "title": "[Transfer] 20231228 28-12-2023 Transfer and utilization of services of five West Bengal Animal Husbandry and Veterinary officers 253kb",
+    "description": "Official document: [Transfer] 20231228 28-12-2023 Transfer and utilization of services of five West Bengal Animal Husbandry and Veterinary officers 253kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1-kosumei6G7bog_Njl_gbhVKzs8OMnuM/view?usp=drivesdk"
   },
   {
@@ -1451,8 +1451,8 @@ export const noticesData = [
     "id": 269,
     "date": "October 04, 2023",
     "type": "Official",
-    "title": "[ARD Orders] 20231004 04-10-2023 Transfer and utilization of service for Dr. Santanu Jana, BLDO, to WBLDCL (HQ). 360kb",
-    "description": "Official document: [ARD Orders] 20231004 04-10-2023 Transfer and utilization of service for Dr. Santanu Jana, BLDO, to WBLDCL (HQ). 360kb. Click download to view.",
+    "title": "[Transfer] 20231004 04-10-2023 Transfer and utilization of service for Dr. Santanu Jana, BLDO, to WBLDCL (HQ). 360kb",
+    "description": "Official document: [Transfer] 20231004 04-10-2023 Transfer and utilization of service for Dr. Santanu Jana, BLDO, to WBLDCL (HQ). 360kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1E3VyoUH1_Nbv0w5nWxdbnNQMvw3dcQ6a/view?usp=drivesdk"
   },
   {
@@ -1483,16 +1483,16 @@ export const noticesData = [
     "id": 265,
     "date": "August 18, 2023",
     "type": "Official",
-    "title": "[ARD Orders] 20230818 18-08-2023 Transfer and assignment of additional charge for West Bengal Animal Husbandry and Veterinary Service 5974kb",
-    "description": "Official document: [ARD Orders] 20230818 18-08-2023 Transfer and assignment of additional charge for West Bengal Animal Husbandry and Veterinary Service 5974kb. Click download to view.",
+    "title": "[Transfer] 20230818 18-08-2023 Transfer and assignment of additional charge for West Bengal Animal Husbandry and Veterinary Service 5974kb",
+    "description": "Official document: [Transfer] 20230818 18-08-2023 Transfer and assignment of additional charge for West Bengal Animal Husbandry and Veterinary Service 5974kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1wX1W6hQ9PQlyvtUR77RgdmsrravXKhFb/view?usp=drivesdk"
   },
   {
     "id": 264,
     "date": "August 10, 2023",
     "type": "Official",
-    "title": "[Departmental Exam] 20230810 10-08-2023 Confirmation of service for two Veterinary Officers in WBAH&VS Cadre 232kb",
-    "description": "Official document: [Departmental Exam] 20230810 10-08-2023 Confirmation of service for two Veterinary Officers in WBAH&VS Cadre 232kb. Click download to view.",
+    "title": "[Service Confirmation] 20230810 10-08-2023 Confirmation of service for two Veterinary Officers in WBAH&VS Cadre 232kb",
+    "description": "Official document: [Service Confirmation] 20230810 10-08-2023 Confirmation of service for two Veterinary Officers in WBAH&VS Cadre 232kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1YFQl4QDu5pRq1nudXcgh-kbiQ9ELjsXU/view?usp=drivesdk"
   },
   {
@@ -1611,16 +1611,16 @@ export const noticesData = [
     "id": 249,
     "date": "May 23, 2023",
     "type": "Official",
-    "title": "[ARD Orders] 20230523 23-05-2023 Transfer and utilization of services of nine Veterinary Officers across West Bengal districts 438kb",
-    "description": "Official document: [ARD Orders] 20230523 23-05-2023 Transfer and utilization of services of nine Veterinary Officers across West Bengal districts 438kb. Click download to view.",
+    "title": "[Transfer] 20230523 23-05-2023 Transfer and utilization of services of nine Veterinary Officers across West Bengal districts 438kb",
+    "description": "Official document: [Transfer] 20230523 23-05-2023 Transfer and utilization of services of nine Veterinary Officers across West Bengal districts 438kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1n-3GqmOwUoWio7JJ4tICtEls8LAupGci/view?usp=drivesdk"
   },
   {
     "id": 248,
     "date": "April 28, 2023",
     "type": "Official",
-    "title": "[ARD Orders] 20230428 28-04-2023 Transfer and withdrawal of service utilization for four West Bengal Veterinary Services officers 261kb",
-    "description": "Official document: [ARD Orders] 20230428 28-04-2023 Transfer and withdrawal of service utilization for four West Bengal Veterinary Services officers 261kb. Click download to view.",
+    "title": "[Transfer] 20230428 28-04-2023 Transfer and withdrawal of service utilization for four West Bengal Veterinary Services officers 261kb",
+    "description": "Official document: [Transfer] 20230428 28-04-2023 Transfer and withdrawal of service utilization for four West Bengal Veterinary Services officers 261kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1p1BAltpqb9mICn7cdcjOOF6pcFnjjZrg/view?usp=drivesdk"
   },
   {
@@ -1643,8 +1643,8 @@ export const noticesData = [
     "id": 245,
     "date": "February 27, 2023",
     "type": "Official",
-    "title": "[State Animal Welfare Board] 20230227 27-02-2023 Notification of the Prevention of Cruelty to Animals (Egg Laying Hens) Rules, 2023. 1673kb",
-    "description": "Official document: [State Animal Welfare Board] 20230227 27-02-2023 Notification of the Prevention of Cruelty to Animals (Egg Laying Hens) Rules, 2023. 1673kb. Click download to view.",
+    "title": "[Rules] 20230227 27-02-2023 Notification of the Prevention of Cruelty to Animals (Egg Laying Hens) Rules, 2023. 1673kb",
+    "description": "Official document: [Rules] 20230227 27-02-2023 Notification of the Prevention of Cruelty to Animals (Egg Laying Hens) Rules, 2023. 1673kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1AldirZSYf83cpqePJWDMZpaPvyGkgtIu/view?usp=drivesdk"
   },
   {
@@ -1659,8 +1659,8 @@ export const noticesData = [
     "id": 243,
     "date": "February 16, 2023",
     "type": "Official",
-    "title": "[Departmental Exam] 20230216 16-02-2023 Confirmation of services of seven Veterinary Officers in the WBAH&VS Cadre. 350kb",
-    "description": "Official document: [Departmental Exam] 20230216 16-02-2023 Confirmation of services of seven Veterinary Officers in the WBAH&VS Cadre. 350kb. Click download to view.",
+    "title": "[Service Confirmation] 20230216 16-02-2023 Confirmation of services of seven Veterinary Officers in the WBAH&VS Cadre. 350kb",
+    "description": "Official document: [Service Confirmation] 20230216 16-02-2023 Confirmation of services of seven Veterinary Officers in the WBAH&VS Cadre. 350kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1LDLbaqSG1RqL3pXyMvu2suSj8t2nmKEE/view?usp=drivesdk"
   },
   {
@@ -1699,8 +1699,8 @@ export const noticesData = [
     "id": 238,
     "date": "October 13, 2022",
     "type": "Official",
-    "title": "[Departmental Exam] 20221013 13-10-2022 Appointment of Dr. Abhijit Das to the post of Veterinary Officer in West Bengal. 265kb",
-    "description": "Official document: [Departmental Exam] 20221013 13-10-2022 Appointment of Dr. Abhijit Das to the post of Veterinary Officer in West Bengal. 265kb. Click download to view.",
+    "title": "[Appointment] 20221013 13-10-2022 Appointment of Dr. Abhijit Das to the post of Veterinary Officer in West Bengal. 265kb",
+    "description": "Official document: [Appointment] 20221013 13-10-2022 Appointment of Dr. Abhijit Das to the post of Veterinary Officer in West Bengal. 265kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/10rdN3seChMbxSmrel7yGNlli0KV4bstA/view?usp=drivesdk"
   },
   {
@@ -1923,8 +1923,8 @@ export const noticesData = [
     "id": 210,
     "date": "December 15, 2021",
     "type": "Official",
-    "title": "[ARD Orders] 20211215 15-12-2021 Request to publish notification regarding engagement of senior consultants and consultants in govern 7024kb",
-    "description": "Official document: [ARD Orders] 20211215 15-12-2021 Request to publish notification regarding engagement of senior consultants and consultants in govern 7024kb. Click download to view.",
+    "title": "[Appointment] 20211215 15-12-2021 Request to publish notification regarding engagement of senior consultants and consultants in govern 7024kb",
+    "description": "Official document: [Appointment] 20211215 15-12-2021 Request to publish notification regarding engagement of senior consultants and consultants in govern 7024kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1O9AiBFIDFIDOEmK3LDZ1WY97IhwLpY25/view?usp=drivesdk"
   },
   {
@@ -2027,8 +2027,8 @@ export const noticesData = [
     "id": 197,
     "date": "March 31, 2021",
     "type": "Official",
-    "title": "[ARD Orders] 20210331 31-03-2021 Transfer and posting of seven veterinary officers to various new departmental assignments 427kb",
-    "description": "Official document: [ARD Orders] 20210331 31-03-2021 Transfer and posting of seven veterinary officers to various new departmental assignments 427kb. Click download to view.",
+    "title": "[Transfer] 20210331 31-03-2021 Transfer and posting of seven veterinary officers to various new departmental assignments 427kb",
+    "description": "Official document: [Transfer] 20210331 31-03-2021 Transfer and posting of seven veterinary officers to various new departmental assignments 427kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1CnhiWKykSzSolWVKM-FMIYRNlKULMXQr/view?usp=drivesdk"
   },
   {
@@ -2051,8 +2051,8 @@ export const noticesData = [
     "id": 194,
     "date": "February 19, 2021",
     "type": "Official",
-    "title": "[ARD Orders] 20210219 19-02-2021 Transfer of Dr. Subodh Pal from Dalkhola to Jalpaiguri as Assistant Director ARD 248kb",
-    "description": "Official document: [ARD Orders] 20210219 19-02-2021 Transfer of Dr. Subodh Pal from Dalkhola to Jalpaiguri as Assistant Director ARD 248kb. Click download to view.",
+    "title": "[Transfer] 20210219 19-02-2021 Transfer of Dr. Subodh Pal from Dalkhola to Jalpaiguri as Assistant Director ARD 248kb",
+    "description": "Official document: [Transfer] 20210219 19-02-2021 Transfer of Dr. Subodh Pal from Dalkhola to Jalpaiguri as Assistant Director ARD 248kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1CHsfAyF2pOMI5S5OdTIXEHddOH9NWP3N/view?usp=drivesdk"
   },
   {
@@ -2171,16 +2171,16 @@ export const noticesData = [
     "id": 179,
     "date": "January 18, 2021",
     "type": "Official",
-    "title": "[Promotion] 20210118 18-01-2021 Promotion and appointment of three Deputy Directors to the post of Joint Director, ARD. 321kb",
-    "description": "Official document: [Promotion] 20210118 18-01-2021 Promotion and appointment of three Deputy Directors to the post of Joint Director, ARD. 321kb. Click download to view.",
+    "title": "[Appointment] 20210118 18-01-2021 Promotion and appointment of three Deputy Directors to the post of Joint Director, ARD. 321kb",
+    "description": "Official document: [Appointment] 20210118 18-01-2021 Promotion and appointment of three Deputy Directors to the post of Joint Director, ARD. 321kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1bXipmvKB8Ay9pgiehduPRcYnlMgra8Qy/view?usp=drivesdk"
   },
   {
     "id": 178,
     "date": "December 21, 2020",
     "type": "Official",
-    "title": "[Promotion] 20201221 21-12-2020 Promotion and appointment of Sri Prabir Kumar Sarkar as Personal Assistant to the Director. 230kb",
-    "description": "Official document: [Promotion] 20201221 21-12-2020 Promotion and appointment of Sri Prabir Kumar Sarkar as Personal Assistant to the Director. 230kb. Click download to view.",
+    "title": "[Appointment] 20201221 21-12-2020 Promotion and appointment of Sri Prabir Kumar Sarkar as Personal Assistant to the Director. 230kb",
+    "description": "Official document: [Appointment] 20201221 21-12-2020 Promotion and appointment of Sri Prabir Kumar Sarkar as Personal Assistant to the Director. 230kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1WS-4AYsTYYJqe8FYqGzEAhePv-fglRNW/view?usp=drivesdk"
   },
   {
@@ -2195,8 +2195,8 @@ export const noticesData = [
     "id": 176,
     "date": "December 04, 2020",
     "type": "Official",
-    "title": "[ARD Orders] 20201204 04-12-2020 Transfer of Dr. Arati Hansda from Raigung to Jamboni, Jhargram district 243kb",
-    "description": "Official document: [ARD Orders] 20201204 04-12-2020 Transfer of Dr. Arati Hansda from Raigung to Jamboni, Jhargram district 243kb. Click download to view.",
+    "title": "[Transfer] 20201204 04-12-2020 Transfer of Dr. Arati Hansda from Raigung to Jamboni, Jhargram district 243kb",
+    "description": "Official document: [Transfer] 20201204 04-12-2020 Transfer of Dr. Arati Hansda from Raigung to Jamboni, Jhargram district 243kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1RmHBF-Cgx2xqdTtYdAYdXMI-inPgjl6n/view?usp=drivesdk"
   },
   {
@@ -2235,8 +2235,8 @@ export const noticesData = [
     "id": 171,
     "date": "October 14, 2020",
     "type": "Official",
-    "title": "[ARD Orders] 20201014 14-10-2020 Corrigendum regarding the transfer and posting of two veterinary officers in West Bengal 245kb",
-    "description": "Official document: [ARD Orders] 20201014 14-10-2020 Corrigendum regarding the transfer and posting of two veterinary officers in West Bengal 245kb. Click download to view.",
+    "title": "[Transfer] 20201014 14-10-2020 Corrigendum regarding the transfer and posting of two veterinary officers in West Bengal 245kb",
+    "description": "Official document: [Transfer] 20201014 14-10-2020 Corrigendum regarding the transfer and posting of two veterinary officers in West Bengal 245kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1F3YcbDKLmmB__5QSmnxVdP3FzQPiDi7r/view?usp=drivesdk"
   },
   {
@@ -2251,8 +2251,8 @@ export const noticesData = [
     "id": 169,
     "date": "October 12, 2020",
     "type": "Official",
-    "title": "[ARD Orders] 20201012 12-10-2020 Corrigendum regarding the transfer of Dr. Piyush Barman to SAHC, Mathabhanga, Coochbehar 229kb",
-    "description": "Official document: [ARD Orders] 20201012 12-10-2020 Corrigendum regarding the transfer of Dr. Piyush Barman to SAHC, Mathabhanga, Coochbehar 229kb. Click download to view.",
+    "title": "[Transfer] 20201012 12-10-2020 Corrigendum regarding the transfer of Dr. Piyush Barman to SAHC, Mathabhanga, Coochbehar 229kb",
+    "description": "Official document: [Transfer] 20201012 12-10-2020 Corrigendum regarding the transfer of Dr. Piyush Barman to SAHC, Mathabhanga, Coochbehar 229kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1YtiXjNmELGtzovnEEQdxPiMi1_sv7V_6/view?usp=drivesdk"
   },
   {
@@ -2275,8 +2275,8 @@ export const noticesData = [
     "id": 166,
     "date": "October 06, 2020",
     "type": "Official",
-    "title": "[ARD Orders] 20201006 06-10-2020 Transfer of Dr. Shib Sankar Soren from Gosaba to B.L.D.O. Binpur-II, Jhargram 208kb",
-    "description": "Official document: [ARD Orders] 20201006 06-10-2020 Transfer of Dr. Shib Sankar Soren from Gosaba to B.L.D.O. Binpur-II, Jhargram 208kb. Click download to view.",
+    "title": "[Transfer] 20201006 06-10-2020 Transfer of Dr. Shib Sankar Soren from Gosaba to B.L.D.O. Binpur-II, Jhargram 208kb",
+    "description": "Official document: [Transfer] 20201006 06-10-2020 Transfer of Dr. Shib Sankar Soren from Gosaba to B.L.D.O. Binpur-II, Jhargram 208kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1eT4iwhOdIW8d2Hyhx0j5DVvu3ekUHjMC/view?usp=drivesdk"
   },
   {
@@ -2299,16 +2299,16 @@ export const noticesData = [
     "id": 163,
     "date": "September 29, 2020",
     "type": "Official",
-    "title": "[ARD Orders] 20200929 29-09-2020 Transfer and posting of five West Bengal Animal Husbandry and Veterinary Service officers 1202kb",
-    "description": "Official document: [ARD Orders] 20200929 29-09-2020 Transfer and posting of five West Bengal Animal Husbandry and Veterinary Service officers 1202kb. Click download to view.",
+    "title": "[Transfer] 20200929 29-09-2020 Transfer and posting of five West Bengal Animal Husbandry and Veterinary Service officers 1202kb",
+    "description": "Official document: [Transfer] 20200929 29-09-2020 Transfer and posting of five West Bengal Animal Husbandry and Veterinary Service officers 1202kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1wwST-xTVqRZl_NaDK_e6Yd1IP3MYTX9K/view?usp=drivesdk"
   },
   {
     "id": 162,
     "date": "September 29, 2020",
     "type": "Official",
-    "title": "[ARD Orders] 20200929 29-09-2020 Transfer and posting of eight West Bengal Animal Husbandry and Veterinary Service officers 5602kb",
-    "description": "Official document: [ARD Orders] 20200929 29-09-2020 Transfer and posting of eight West Bengal Animal Husbandry and Veterinary Service officers 5602kb. Click download to view.",
+    "title": "[Transfer] 20200929 29-09-2020 Transfer and posting of eight West Bengal Animal Husbandry and Veterinary Service officers 5602kb",
+    "description": "Official document: [Transfer] 20200929 29-09-2020 Transfer and posting of eight West Bengal Animal Husbandry and Veterinary Service officers 5602kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1TRPEnCbsddDyPOQ3c9IrOAN2yLnD23Yt/view?usp=drivesdk"
   },
   {
@@ -2323,16 +2323,16 @@ export const noticesData = [
     "id": 160,
     "date": "September 22, 2020",
     "type": "Official",
-    "title": "[Appointment] 20200922 22-09-2020 Posting of Dr. Mrityunjoy Mondal as Veterinary Officer at IPGAE&R, Kolkata. 237kb",
-    "description": "Official document: [Appointment] 20200922 22-09-2020 Posting of Dr. Mrityunjoy Mondal as Veterinary Officer at IPGAE&R, Kolkata. 237kb. Click download to view.",
+    "title": "[Transfer] 20200922 22-09-2020 Posting of Dr. Mrityunjoy Mondal as Veterinary Officer at IPGAE&R, Kolkata. 237kb",
+    "description": "Official document: [Transfer] 20200922 22-09-2020 Posting of Dr. Mrityunjoy Mondal as Veterinary Officer at IPGAE&R, Kolkata. 237kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1Xv-eM7owFQwmQGJC6zwK3u3aVwj7iiFO/view?usp=drivesdk"
   },
   {
     "id": 159,
     "date": "September 21, 2020",
     "type": "Official",
-    "title": "[ARD Orders] 20200921 21-09-2020 Confirmation of service for Dr. Chandan Mukherjee, Assistant Director, ARD(C&DD), Bankura 392kb",
-    "description": "Official document: [ARD Orders] 20200921 21-09-2020 Confirmation of service for Dr. Chandan Mukherjee, Assistant Director, ARD(C&DD), Bankura 392kb. Click download to view.",
+    "title": "[Service Confirmation] 20200921 21-09-2020 Confirmation of service for Dr. Chandan Mukherjee, Assistant Director, ARD(C&DD), Bankura 392kb",
+    "description": "Official document: [Service Confirmation] 20200921 21-09-2020 Confirmation of service for Dr. Chandan Mukherjee, Assistant Director, ARD(C&DD), Bankura 392kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1ti_8spGPMAyUiC5z79rodu3V1kg498mU/view?usp=drivesdk"
   },
   {
@@ -2347,8 +2347,8 @@ export const noticesData = [
     "id": 157,
     "date": "September 10, 2020",
     "type": "Official",
-    "title": "[Appointment] 20200910 10-09-2020 Corrigendum regarding the place of posting for Dr. Avijit Mondal as Deputy Director. 241kb",
-    "description": "Official document: [Appointment] 20200910 10-09-2020 Corrigendum regarding the place of posting for Dr. Avijit Mondal as Deputy Director. 241kb. Click download to view.",
+    "title": "[Transfer] 20200910 10-09-2020 Corrigendum regarding the place of posting for Dr. Avijit Mondal as Deputy Director. 241kb",
+    "description": "Official document: [Transfer] 20200910 10-09-2020 Corrigendum regarding the place of posting for Dr. Avijit Mondal as Deputy Director. 241kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1Psdmczl653KY2PH3ZVkg59I7dl80HLdA/view?usp=drivesdk"
   },
   {
@@ -2379,8 +2379,8 @@ export const noticesData = [
     "id": 153,
     "date": "August 07, 2020",
     "type": "Official",
-    "title": "[ARD Orders] 20200807 07-08-2020 Transfer and posting of fifteen veterinary officers under the West Bengal Animal Husbandry Service 876kb",
-    "description": "Official document: [ARD Orders] 20200807 07-08-2020 Transfer and posting of fifteen veterinary officers under the West Bengal Animal Husbandry Service 876kb. Click download to view.",
+    "title": "[Transfer] 20200807 07-08-2020 Transfer and posting of fifteen veterinary officers under the West Bengal Animal Husbandry Service 876kb",
+    "description": "Official document: [Transfer] 20200807 07-08-2020 Transfer and posting of fifteen veterinary officers under the West Bengal Animal Husbandry Service 876kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/16GGT9x2IVY80D5DWYDsYeGoVLyoiBCBN/view?usp=drivesdk"
   },
   {
@@ -2443,8 +2443,8 @@ export const noticesData = [
     "id": 145,
     "date": "March 19, 2020",
     "type": "Official",
-    "title": "[other] 20200319 19-03-2020 Corrigendum regarding the posting location of Dr. Subhrangshu Sarkar as BLDO, Para, Purulia. 208kb",
-    "description": "Official document: [other] 20200319 19-03-2020 Corrigendum regarding the posting location of Dr. Subhrangshu Sarkar as BLDO, Para, Purulia. 208kb. Click download to view.",
+    "title": "[Transfer] 20200319 19-03-2020 Corrigendum regarding the posting location of Dr. Subhrangshu Sarkar as BLDO, Para, Purulia. 208kb",
+    "description": "Official document: [Transfer] 20200319 19-03-2020 Corrigendum regarding the posting location of Dr. Subhrangshu Sarkar as BLDO, Para, Purulia. 208kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1IugK0_U_uZbo8oIwe6L5K9PmOFzIY-QX/view?usp=drivesdk"
   },
   {
@@ -2459,8 +2459,8 @@ export const noticesData = [
     "id": 143,
     "date": "March 13, 2020",
     "type": "Official",
-    "title": "[ARD Orders] 20200313 13-03-2020 Transfer and posting of seventeen veterinary officers under the West Bengal Animal Husbandry Service 635kb",
-    "description": "Official document: [ARD Orders] 20200313 13-03-2020 Transfer and posting of seventeen veterinary officers under the West Bengal Animal Husbandry Service 635kb. Click download to view.",
+    "title": "[Transfer] 20200313 13-03-2020 Transfer and posting of seventeen veterinary officers under the West Bengal Animal Husbandry Service 635kb",
+    "description": "Official document: [Transfer] 20200313 13-03-2020 Transfer and posting of seventeen veterinary officers under the West Bengal Animal Husbandry Service 635kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/12svwMA8OEN_HajM2oezbOavLZItrKqni/view?usp=drivesdk"
   },
   {
@@ -2491,8 +2491,8 @@ export const noticesData = [
     "id": 139,
     "date": "February 20, 2020",
     "type": "Official",
-    "title": "[ARD Orders] 20200220 20-02-2020 Confirmation of service for Dr. Suman Biswas as Veterinary Officer in West Bengal 1295kb",
-    "description": "Official document: [ARD Orders] 20200220 20-02-2020 Confirmation of service for Dr. Suman Biswas as Veterinary Officer in West Bengal 1295kb. Click download to view.",
+    "title": "[Service Confirmation] 20200220 20-02-2020 Confirmation of service for Dr. Suman Biswas as Veterinary Officer in West Bengal 1295kb",
+    "description": "Official document: [Service Confirmation] 20200220 20-02-2020 Confirmation of service for Dr. Suman Biswas as Veterinary Officer in West Bengal 1295kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/199AI898rww2NCg85oc-DxJW_a6f1Slao/view?usp=drivesdk"
   },
   {
@@ -2515,16 +2515,16 @@ export const noticesData = [
     "id": 136,
     "date": "January 22, 2020",
     "type": "Official",
-    "title": "[ARD Orders] 20200122 22-01-2020 Appointment of directly recruited candidates to the post of Veterinary Officer in West Bengal 476kb",
-    "description": "Official document: [ARD Orders] 20200122 22-01-2020 Appointment of directly recruited candidates to the post of Veterinary Officer in West Bengal 476kb. Click download to view.",
+    "title": "[Appointment] 20200122 22-01-2020 Appointment of directly recruited candidates to the post of Veterinary Officer in West Bengal 476kb",
+    "description": "Official document: [Appointment] 20200122 22-01-2020 Appointment of directly recruited candidates to the post of Veterinary Officer in West Bengal 476kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1NeSNhLXHtbLBAAHdGw4liGtek8nzo0XK/view?usp=drivesdk"
   },
   {
     "id": 135,
     "date": "January 14, 2020",
     "type": "Official",
-    "title": "[Departmental Exam] 20200114 14-01-2020 Appointment of Dr. Kamal Adak as Veterinary Officer at BAHC, Muraroi-II, Birbhum. 317kb",
-    "description": "Official document: [Departmental Exam] 20200114 14-01-2020 Appointment of Dr. Kamal Adak as Veterinary Officer at BAHC, Muraroi-II, Birbhum. 317kb. Click download to view.",
+    "title": "[Appointment] 20200114 14-01-2020 Appointment of Dr. Kamal Adak as Veterinary Officer at BAHC, Muraroi-II, Birbhum. 317kb",
+    "description": "Official document: [Appointment] 20200114 14-01-2020 Appointment of Dr. Kamal Adak as Veterinary Officer at BAHC, Muraroi-II, Birbhum. 317kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1hvo0CHWXCuzAqKHoMRy4m9tnVPSYDSJp/view?usp=drivesdk"
   },
   {
@@ -2555,8 +2555,8 @@ export const noticesData = [
     "id": 131,
     "date": "December 16, 2019",
     "type": "Official",
-    "title": "[Departmental Exam] 20191216 16-12-2019 Appointment of Dr. Dipak Kumar Banerjee as Veterinary Officer at ABAHC, Uttar Dinajpur. 123kb",
-    "description": "Official document: [Departmental Exam] 20191216 16-12-2019 Appointment of Dr. Dipak Kumar Banerjee as Veterinary Officer at ABAHC, Uttar Dinajpur. 123kb. Click download to view.",
+    "title": "[Appointment] 20191216 16-12-2019 Appointment of Dr. Dipak Kumar Banerjee as Veterinary Officer at ABAHC, Uttar Dinajpur. 123kb",
+    "description": "Official document: [Appointment] 20191216 16-12-2019 Appointment of Dr. Dipak Kumar Banerjee as Veterinary Officer at ABAHC, Uttar Dinajpur. 123kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1tM0kruOEoKnMBe4U3z5mK5ITkk0zaMPj/view?usp=drivesdk"
   },
   {
@@ -2667,8 +2667,8 @@ export const noticesData = [
     "id": 117,
     "date": "September 03, 2019",
     "type": "Official",
-    "title": "[Departmental Exam] 20190903 03-09-2019 Appointment of directly recruited candidates to the post of Veterinary Officer in West Bengal. 452kb",
-    "description": "Official document: [Departmental Exam] 20190903 03-09-2019 Appointment of directly recruited candidates to the post of Veterinary Officer in West Bengal. 452kb. Click download to view.",
+    "title": "[Appointment] 20190903 03-09-2019 Appointment of directly recruited candidates to the post of Veterinary Officer in West Bengal. 452kb",
+    "description": "Official document: [Appointment] 20190903 03-09-2019 Appointment of directly recruited candidates to the post of Veterinary Officer in West Bengal. 452kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/11qMDTY3_LTjfEMxVglFt4n2dR1uWJc_3/view?usp=drivesdk"
   },
   {
@@ -2715,32 +2715,32 @@ export const noticesData = [
     "id": 111,
     "date": "July 19, 2019",
     "type": "Official",
-    "title": "[Departmental Exam] 20190719 19-07-2019 Appointment of Dr. Rinzee Tamang as Veterinary Officer at Panskura-II, Purba Medinipur. 282kb",
-    "description": "Official document: [Departmental Exam] 20190719 19-07-2019 Appointment of Dr. Rinzee Tamang as Veterinary Officer at Panskura-II, Purba Medinipur. 282kb. Click download to view.",
+    "title": "[Appointment] 20190719 19-07-2019 Appointment of Dr. Rinzee Tamang as Veterinary Officer at Panskura-II, Purba Medinipur. 282kb",
+    "description": "Official document: [Appointment] 20190719 19-07-2019 Appointment of Dr. Rinzee Tamang as Veterinary Officer at Panskura-II, Purba Medinipur. 282kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1-7fKKxKpHA9sHTOATXPzo4Wi7IBHoP3W/view?usp=drivesdk"
   },
   {
     "id": 110,
     "date": "June 25, 2019",
     "type": "Official",
-    "title": "[ARD Orders] 20190625 25-06-2019 Directing two Veterinary Officers to join their respective places of posting immediately. 210kb",
-    "description": "Official document: [ARD Orders] 20190625 25-06-2019 Directing two Veterinary Officers to join their respective places of posting immediately. 210kb. Click download to view.",
+    "title": "[Transfer] 20190625 25-06-2019 Directing two Veterinary Officers to join their respective places of posting immediately. 210kb",
+    "description": "Official document: [Transfer] 20190625 25-06-2019 Directing two Veterinary Officers to join their respective places of posting immediately. 210kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1j5DRUSeYFc-CGJLnKtkJUruQmNTDspDE/view?usp=drivesdk"
   },
   {
     "id": 109,
     "date": "June 18, 2019",
     "type": "Official",
-    "title": "[Promotion] 20190618 18-06-2019 Appointment of Dr. Nikhil Kumar Shit as Additional Director, Haringhata Farm 343kb",
-    "description": "Official document: [Promotion] 20190618 18-06-2019 Appointment of Dr. Nikhil Kumar Shit as Additional Director, Haringhata Farm 343kb. Click download to view.",
+    "title": "[Appointment] 20190618 18-06-2019 Appointment of Dr. Nikhil Kumar Shit as Additional Director, Haringhata Farm 343kb",
+    "description": "Official document: [Appointment] 20190618 18-06-2019 Appointment of Dr. Nikhil Kumar Shit as Additional Director, Haringhata Farm 343kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1h18-gC4uubTKfxNfMs33PyYPFaCNn2sy/view?usp=drivesdk"
   },
   {
     "id": 108,
     "date": "June 11, 2019",
     "type": "Official",
-    "title": "[Departmental Exam] 20190611 11-06-2019 Appointment of Veterinary Officers in West Bengal Animal Husbandry & Veterinary Services 584kb",
-    "description": "Official document: [Departmental Exam] 20190611 11-06-2019 Appointment of Veterinary Officers in West Bengal Animal Husbandry & Veterinary Services 584kb. Click download to view.",
+    "title": "[Appointment] 20190611 11-06-2019 Appointment of Veterinary Officers in West Bengal Animal Husbandry & Veterinary Services 584kb",
+    "description": "Official document: [Appointment] 20190611 11-06-2019 Appointment of Veterinary Officers in West Bengal Animal Husbandry & Veterinary Services 584kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1WcQfEHQQs329uv5jBA2pXt9rbkUtxU7b/view?usp=drivesdk"
   },
   {
@@ -2763,8 +2763,8 @@ export const noticesData = [
     "id": 105,
     "date": "February 22, 2019",
     "type": "Official",
-    "title": "[Appointment] 20190222 22-02-2019 Corrigendum modifying the place of posting for newly appointed Veterinary Officer Md. Aziz Shaikh. 302kb",
-    "description": "Official document: [Appointment] 20190222 22-02-2019 Corrigendum modifying the place of posting for newly appointed Veterinary Officer Md. Aziz Shaikh. 302kb. Click download to view.",
+    "title": "[Transfer] 20190222 22-02-2019 Corrigendum modifying the place of posting for newly appointed Veterinary Officer Md. Aziz Shaikh. 302kb",
+    "description": "Official document: [Transfer] 20190222 22-02-2019 Corrigendum modifying the place of posting for newly appointed Veterinary Officer Md. Aziz Shaikh. 302kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1TNwj4wtEfD_EG6H9cXmeBr3WoJvnwAKw/view?usp=drivesdk"
   },
   {
@@ -2843,8 +2843,8 @@ export const noticesData = [
     "id": 95,
     "date": "November 05, 2018",
     "type": "Official",
-    "title": "[Promotion] 20181105 05-11-2018 Promotion and temporary appointment of Sri Bratindra Nath Banerjee as Statistical Officer 295kb",
-    "description": "Official document: [Promotion] 20181105 05-11-2018 Promotion and temporary appointment of Sri Bratindra Nath Banerjee as Statistical Officer 295kb. Click download to view.",
+    "title": "[Appointment] 20181105 05-11-2018 Promotion and temporary appointment of Sri Bratindra Nath Banerjee as Statistical Officer 295kb",
+    "description": "Official document: [Appointment] 20181105 05-11-2018 Promotion and temporary appointment of Sri Bratindra Nath Banerjee as Statistical Officer 295kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1NdjG4P8RJ674nW9Es92zmKfIgLxEiF7W/view?usp=drivesdk"
   },
   {
@@ -2931,8 +2931,8 @@ export const noticesData = [
     "id": 84,
     "date": "June 04, 2018",
     "type": "Official",
-    "title": "[ARD Orders] 20180604 04-06-2018 Appointment of Director, Animal Husbandry & Veterinary Service as Nodal Officer for 20th Livestock C 302kb",
-    "description": "Official document: [ARD Orders] 20180604 04-06-2018 Appointment of Director, Animal Husbandry & Veterinary Service as Nodal Officer for 20th Livestock C 302kb. Click download to view.",
+    "title": "[Appointment] 20180604 04-06-2018 Appointment of Director, Animal Husbandry & Veterinary Service as Nodal Officer for 20th Livestock C 302kb",
+    "description": "Official document: [Appointment] 20180604 04-06-2018 Appointment of Director, Animal Husbandry & Veterinary Service as Nodal Officer for 20th Livestock C 302kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1mNollDypmbWcQyjO1G7Glv_3UiGYLL6D/view?usp=drivesdk"
   },
   {
@@ -2947,16 +2947,16 @@ export const noticesData = [
     "id": 82,
     "date": "April 06, 2018",
     "type": "Official",
-    "title": "[ARD Orders] 20180406 06-04-2018 Release order of Dr. Sibaji Patra, Veterinary Officer, DVH, Howrah from his current posting. 251kb",
-    "description": "Official document: [ARD Orders] 20180406 06-04-2018 Release order of Dr. Sibaji Patra, Veterinary Officer, DVH, Howrah from his current posting. 251kb. Click download to view.",
+    "title": "[Transfer] 20180406 06-04-2018 Release order of Dr. Sibaji Patra, Veterinary Officer, DVH, Howrah from his current posting. 251kb",
+    "description": "Official document: [Transfer] 20180406 06-04-2018 Release order of Dr. Sibaji Patra, Veterinary Officer, DVH, Howrah from his current posting. 251kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1iSa0REr5qU9DnRq4NeWfP5OHZ9pOD504/view?usp=drivesdk"
   },
   {
     "id": 81,
     "date": "March 27, 2018",
     "type": "Official",
-    "title": "[Promotion] 20180327 27-03-2018 Appointment of Sri Gopal Chandra Ghosh as Assistant Purchase Officer at Haringhata Farm. 271kb",
-    "description": "Official document: [Promotion] 20180327 27-03-2018 Appointment of Sri Gopal Chandra Ghosh as Assistant Purchase Officer at Haringhata Farm. 271kb. Click download to view.",
+    "title": "[Appointment] 20180327 27-03-2018 Appointment of Sri Gopal Chandra Ghosh as Assistant Purchase Officer at Haringhata Farm. 271kb",
+    "description": "Official document: [Appointment] 20180327 27-03-2018 Appointment of Sri Gopal Chandra Ghosh as Assistant Purchase Officer at Haringhata Farm. 271kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1SCrBxyWVkz8stq3sRJ59d6q2Nxb6BGfN/view?usp=drivesdk"
   },
   {
@@ -2971,8 +2971,8 @@ export const noticesData = [
     "id": 79,
     "date": "February 15, 2018",
     "type": "Official",
-    "title": "[Promotion] 20180215 15-02-2018 Promotion and posting of five officers to the post of Deputy Director, ARD. 649kb",
-    "description": "Official document: [Promotion] 20180215 15-02-2018 Promotion and posting of five officers to the post of Deputy Director, ARD. 649kb. Click download to view.",
+    "title": "[Transfer] 20180215 15-02-2018 Promotion and posting of five officers to the post of Deputy Director, ARD. 649kb",
+    "description": "Official document: [Transfer] 20180215 15-02-2018 Promotion and posting of five officers to the post of Deputy Director, ARD. 649kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1MxP8z51PxnGAz825cWJjNXBj4a_AFSFP/view?usp=drivesdk"
   },
   {
@@ -2995,8 +2995,8 @@ export const noticesData = [
     "id": 76,
     "date": "January 19, 2018",
     "type": "Official",
-    "title": "[ARD Orders] 20180119 19-01-2018 Engagement of departmental staff as enumerators for the 20th Livestock Census in Kolkata. 1524kb",
-    "description": "Official document: [ARD Orders] 20180119 19-01-2018 Engagement of departmental staff as enumerators for the 20th Livestock Census in Kolkata. 1524kb. Click download to view.",
+    "title": "[Appointment] 20180119 19-01-2018 Engagement of departmental staff as enumerators for the 20th Livestock Census in Kolkata. 1524kb",
+    "description": "Official document: [Appointment] 20180119 19-01-2018 Engagement of departmental staff as enumerators for the 20th Livestock Census in Kolkata. 1524kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1eQhytU6Z0ykjwkMzyK5DhVZXK-joidGq/view?usp=drivesdk"
   },
   {
@@ -3035,8 +3035,8 @@ export const noticesData = [
     "id": 71,
     "date": "December 06, 2017",
     "type": "Official",
-    "title": "[Promotion] 20171206 06-12-2017 Promotion and appointment of three Head Clerks to new administrative posts on temporary basis. 411kb",
-    "description": "Official document: [Promotion] 20171206 06-12-2017 Promotion and appointment of three Head Clerks to new administrative posts on temporary basis. 411kb. Click download to view.",
+    "title": "[Appointment] 20171206 06-12-2017 Promotion and appointment of three Head Clerks to new administrative posts on temporary basis. 411kb",
+    "description": "Official document: [Appointment] 20171206 06-12-2017 Promotion and appointment of three Head Clerks to new administrative posts on temporary basis. 411kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/13UTUL9piqiene9mQ-vBP9QWh0FzYjrcs/view?usp=drivesdk"
   },
   {
@@ -3051,8 +3051,8 @@ export const noticesData = [
     "id": 69,
     "date": "August 30, 2017",
     "type": "Official",
-    "title": "[other] 20170830 30-08-2017 Forwarding of official information and necessary action to various departmental officers and authori 435kb",
-    "description": "Official document: [other] 20170830 30-08-2017 Forwarding of official information and necessary action to various departmental officers and authori 435kb. Click download to view.",
+    "title": "[Act] 20170830 30-08-2017 Forwarding of official information and necessary action to various departmental officers and authori 435kb",
+    "description": "Official document: [Act] 20170830 30-08-2017 Forwarding of official information and necessary action to various departmental officers and authori 435kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1qcqHM2eKtTLx6GS4qQHEylvuoRnw7Zxg/view?usp=drivesdk"
   },
   {
@@ -3099,8 +3099,8 @@ export const noticesData = [
     "id": 63,
     "date": "June 27, 2017",
     "type": "Official",
-    "title": "[Departmental Exam] 20170627 27-06-2017 Appointment of Dr. Soumya Bose as Veterinary Officer at Block Animal Health Centre. 399kb",
-    "description": "Official document: [Departmental Exam] 20170627 27-06-2017 Appointment of Dr. Soumya Bose as Veterinary Officer at Block Animal Health Centre. 399kb. Click download to view.",
+    "title": "[Appointment] 20170627 27-06-2017 Appointment of Dr. Soumya Bose as Veterinary Officer at Block Animal Health Centre. 399kb",
+    "description": "Official document: [Appointment] 20170627 27-06-2017 Appointment of Dr. Soumya Bose as Veterinary Officer at Block Animal Health Centre. 399kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1Z_wgGSPChwtext09BWzpcjmaRhD0z67s/view?usp=drivesdk"
   },
   {
@@ -3147,8 +3147,8 @@ export const noticesData = [
     "id": 57,
     "date": "March 31, 2017",
     "type": "Official",
-    "title": "[other] 20170331 31-03-2017 Designation of State Public Information Officer under the Right to Information Act 2005. 330kb",
-    "description": "Official document: [other] 20170331 31-03-2017 Designation of State Public Information Officer under the Right to Information Act 2005. 330kb. Click download to view.",
+    "title": "[Act] 20170331 31-03-2017 Designation of State Public Information Officer under the Right to Information Act 2005. 330kb",
+    "description": "Official document: [Act] 20170331 31-03-2017 Designation of State Public Information Officer under the Right to Information Act 2005. 330kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/12_YHfbprLJP8iPxSyQFeWT80KjDs1VZg/view?usp=drivesdk"
   },
   {
@@ -3219,16 +3219,16 @@ export const noticesData = [
     "id": 48,
     "date": "November 23, 2016",
     "type": "Official",
-    "title": "[ARD Orders] 20161123 23-11-2016 Confirmation of service for Dr. Jayanta Chowdhury in West Bengal Animal Husbandry and Veterinary Ser 299kb",
-    "description": "Official document: [ARD Orders] 20161123 23-11-2016 Confirmation of service for Dr. Jayanta Chowdhury in West Bengal Animal Husbandry and Veterinary Ser 299kb. Click download to view.",
+    "title": "[Service Confirmation] 20161123 23-11-2016 Confirmation of service for Dr. Jayanta Chowdhury in West Bengal Animal Husbandry and Veterinary Ser 299kb",
+    "description": "Official document: [Service Confirmation] 20161123 23-11-2016 Confirmation of service for Dr. Jayanta Chowdhury in West Bengal Animal Husbandry and Veterinary Ser 299kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1BmMOq3PIOVZQX0nMHqJ2ruKi78rpIS1g/view?usp=drivesdk"
   },
   {
     "id": 47,
     "date": "November 21, 2016",
     "type": "Official",
-    "title": "[Departmental Exam] 20161121 21-11-2016 Appointment of two candidates to the post of Veterinary Officer on temporary basis. 593kb",
-    "description": "Official document: [Departmental Exam] 20161121 21-11-2016 Appointment of two candidates to the post of Veterinary Officer on temporary basis. 593kb. Click download to view.",
+    "title": "[Appointment] 20161121 21-11-2016 Appointment of two candidates to the post of Veterinary Officer on temporary basis. 593kb",
+    "description": "Official document: [Appointment] 20161121 21-11-2016 Appointment of two candidates to the post of Veterinary Officer on temporary basis. 593kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1qGGbOoAB9koAhXD_c-NDz85tv_cfx4mR/view?usp=drivesdk"
   },
   {
@@ -3283,8 +3283,8 @@ export const noticesData = [
     "id": 40,
     "date": "July 19, 2016",
     "type": "Official",
-    "title": "[ARD Orders] 20160719 19-07-2016 Corrigendum to the gradation list of Senior Technical Assistant under the Directorate of AH&VS. 664kb",
-    "description": "Official document: [ARD Orders] 20160719 19-07-2016 Corrigendum to the gradation list of Senior Technical Assistant under the Directorate of AH&VS. 664kb. Click download to view.",
+    "title": "[Promotion] 20160719 19-07-2016 Corrigendum to the gradation list of Senior Technical Assistant under the Directorate of AH&VS. 664kb",
+    "description": "Official document: [Promotion] 20160719 19-07-2016 Corrigendum to the gradation list of Senior Technical Assistant under the Directorate of AH&VS. 664kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1GYkew5CjeZSh-zIDHUsP7t85iko7sGyj/view?usp=drivesdk"
   },
   {
@@ -3339,16 +3339,16 @@ export const noticesData = [
     "id": 33,
     "date": "May 30, 2016",
     "type": "Official",
-    "title": "[Promotion] 20160530 30-05-2016 Promotion and appointment of forty-five officers to the post of Assistant Director 1199kb",
-    "description": "Official document: [Promotion] 20160530 30-05-2016 Promotion and appointment of forty-five officers to the post of Assistant Director 1199kb. Click download to view.",
+    "title": "[Appointment] 20160530 30-05-2016 Promotion and appointment of forty-five officers to the post of Assistant Director 1199kb",
+    "description": "Official document: [Appointment] 20160530 30-05-2016 Promotion and appointment of forty-five officers to the post of Assistant Director 1199kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1KPaeyzVYPnPuYwz3PwKRESRbSPTgcEx8/view?usp=drivesdk"
   },
   {
     "id": 32,
     "date": "May 25, 2016",
     "type": "Official",
-    "title": "[ARD Orders] 20160525 25-05-2016 Publication of the final gradation list of Senior Technical Assistant under the Directorate. 1169kb",
-    "description": "Official document: [ARD Orders] 20160525 25-05-2016 Publication of the final gradation list of Senior Technical Assistant under the Directorate. 1169kb. Click download to view.",
+    "title": "[Promotion] 20160525 25-05-2016 Publication of the final gradation list of Senior Technical Assistant under the Directorate. 1169kb",
+    "description": "Official document: [Promotion] 20160525 25-05-2016 Publication of the final gradation list of Senior Technical Assistant under the Directorate. 1169kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/13RZxZs5RB-KypC0MdceQPp7dsUfnf1Xg/view?usp=drivesdk"
   },
   {
@@ -3371,8 +3371,8 @@ export const noticesData = [
     "id": 29,
     "date": "September 03, 2015",
     "type": "Official",
-    "title": "[ARD Orders] 20150903 03-09-2015 Publication of the draft gradation list of Senior Technical Assistant under the Directorate. 1161kb",
-    "description": "Official document: [ARD Orders] 20150903 03-09-2015 Publication of the draft gradation list of Senior Technical Assistant under the Directorate. 1161kb. Click download to view.",
+    "title": "[Promotion] 20150903 03-09-2015 Publication of the draft gradation list of Senior Technical Assistant under the Directorate. 1161kb",
+    "description": "Official document: [Promotion] 20150903 03-09-2015 Publication of the draft gradation list of Senior Technical Assistant under the Directorate. 1161kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1L-rFVXNGXYdeOUmmQr0l_Dk0NXhe0TqC/view?usp=drivesdk"
   },
   {
@@ -3403,24 +3403,24 @@ export const noticesData = [
     "id": 25,
     "date": "July 23, 2015",
     "type": "Official",
-    "title": "[ARD Orders] 20150723 23-07-2015 Publication of the final gradation list of Assistant Superintendent of Livestock as of 2015. 8635kb",
-    "description": "Official document: [ARD Orders] 20150723 23-07-2015 Publication of the final gradation list of Assistant Superintendent of Livestock as of 2015. 8635kb. Click download to view.",
+    "title": "[Promotion] 20150723 23-07-2015 Publication of the final gradation list of Assistant Superintendent of Livestock as of 2015. 8635kb",
+    "description": "Official document: [Promotion] 20150723 23-07-2015 Publication of the final gradation list of Assistant Superintendent of Livestock as of 2015. 8635kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1__0lWbrwxocE9NROniMhi1VLngQ6G7jU/view?usp=drivesdk"
   },
   {
     "id": 24,
     "date": "July 23, 2015",
     "type": "Official",
-    "title": "[ARD Orders] 20150723 23-07-2015 Publication of the final gradation list for officers under the Animal Resources Development Departme 16577kb",
-    "description": "Official document: [ARD Orders] 20150723 23-07-2015 Publication of the final gradation list for officers under the Animal Resources Development Departme 16577kb. Click download to view.",
+    "title": "[Promotion] 20150723 23-07-2015 Publication of the final gradation list for officers under the Animal Resources Development Departme 16577kb",
+    "description": "Official document: [Promotion] 20150723 23-07-2015 Publication of the final gradation list for officers under the Animal Resources Development Departme 16577kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1KsUlipXHHlYve9UID8g-YYO31wc27wim/view?usp=drivesdk"
   },
   {
     "id": 23,
     "date": "July 21, 2015",
     "type": "Official",
-    "title": "[ARD Orders] 20150721 21-07-2015 Publication of Final Gradation List of Officers under Animal Resources Development Department 2834kb",
-    "description": "Official document: [ARD Orders] 20150721 21-07-2015 Publication of Final Gradation List of Officers under Animal Resources Development Department 2834kb. Click download to view.",
+    "title": "[Promotion] 20150721 21-07-2015 Publication of Final Gradation List of Officers under Animal Resources Development Department 2834kb",
+    "description": "Official document: [Promotion] 20150721 21-07-2015 Publication of Final Gradation List of Officers under Animal Resources Development Department 2834kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1PGXbd46Hvo57bQA9xpTLyB6Rkuvl91wp/view?usp=drivesdk"
   },
   {
@@ -3435,8 +3435,8 @@ export const noticesData = [
     "id": 21,
     "date": "May 26, 2015",
     "type": "Official",
-    "title": "[Promotion] 20150526 26-05-2015 Appointment of Dr. Bidyut Baran Roy as Additional Director, ARD (Health) on promotion. 807kb",
-    "description": "Official document: [Promotion] 20150526 26-05-2015 Appointment of Dr. Bidyut Baran Roy as Additional Director, ARD (Health) on promotion. 807kb. Click download to view.",
+    "title": "[Appointment] 20150526 26-05-2015 Appointment of Dr. Bidyut Baran Roy as Additional Director, ARD (Health) on promotion. 807kb",
+    "description": "Official document: [Appointment] 20150526 26-05-2015 Appointment of Dr. Bidyut Baran Roy as Additional Director, ARD (Health) on promotion. 807kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1aim_jmNWMhR5OUZ-7tiv9C8ju_6aEGcu/view?usp=drivesdk"
   },
   {
@@ -3523,8 +3523,8 @@ export const noticesData = [
     "id": 10,
     "date": "May 26, 2014",
     "type": "Official",
-    "title": "[Departmental Exam] 20140526 26-05-2014 Appointment of direct recruit candidates to West Bengal Animal Husbandry and Veterinary Services 1278kb",
-    "description": "Official document: [Departmental Exam] 20140526 26-05-2014 Appointment of direct recruit candidates to West Bengal Animal Husbandry and Veterinary Services 1278kb. Click download to view.",
+    "title": "[Appointment] 20140526 26-05-2014 Appointment of direct recruit candidates to West Bengal Animal Husbandry and Veterinary Services 1278kb",
+    "description": "Official document: [Appointment] 20140526 26-05-2014 Appointment of direct recruit candidates to West Bengal Animal Husbandry and Veterinary Services 1278kb.pdf. Click download to view.",
     "link": "https://drive.google.com/file/d/1r8_cuYRzx4iudU4IVfl7NbGHDuE9tlFm/view?usp=drivesdk"
   },
   {
